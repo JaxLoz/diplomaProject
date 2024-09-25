@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+ 
+.body-content{
+    @apply p-0;
+}
+.tablita {
+    @apply p-2; /* Espaciado interno */
+   
+  }
+  
+  .body .form-select {
+    @apply mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500; /* Estilos para los select */
+  }
+  
+  .body-content .table-responsive {
+    @apply overflow-x-auto; /* Aplica Tailwind para scroll horizontal */
+    @apply py-10;
+  }
+  
+  .body .table {
+    @apply min-w-full divide-y divide-gray-300 p-0;  /* Estilos para la tabla */
+  }
+
+  .tablita .selects {
+    @apply p-10;
+    @aplly space-y-96 > * + *
+  }
