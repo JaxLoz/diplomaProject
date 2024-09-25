@@ -9,7 +9,11 @@ const router = createRouter({
       name: 'home',
       component: () => import('@/layout/appLayout.vue'),
       children: [
-
+          {
+            path: '/dashboard',
+            name: 'dashboard',
+            component: () => import('@/components/barGrafic.vue')
+          }
       ]
     },
     {

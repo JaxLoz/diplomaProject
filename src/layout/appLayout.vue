@@ -2,7 +2,7 @@
     <div id="app-layout">
         <navBar />
         <main>
-
+            <router-view />
         </main>
     </div>
 </template>
