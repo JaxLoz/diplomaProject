@@ -11,11 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "chart.js": "^4.4.4",
-=======
     "axios": "^1.7.7",
->>>>>>> 2d046e051a040dbca84c41ca9572cb856379acea
     "flowbite": "^2.5.1",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
