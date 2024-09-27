@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import selectorComponent from '@/components/selectorComponent.vue';
-import { useResitrosStore } from '@/stores/registros.js'
+import { useRegitrosStore } from '@/stores/registros.js'
 
-const registerStore = useResitrosStore()
+const registerStore = useRegitrosStore()
 
 // Almacena los datos de la respuesta de la API
 const respuesta = computed(() => registerStore.registros) 
@@ -35,21 +35,6 @@ watch([filtroFacultad, filtroPrograma, filtroPeriodo], ([faculieSelected, progra
 })
 
 
-
-// Computed para filtrar los datos por facultad, programa y periodo seleccionados
-
-
-
-/** 
-const datosFiltrados = computed(() => {
-  return respuesta.value.filter((fila) => {
-    const coincideFacultad = !filtroFacultad.value || fila.facultad === filtroFacultad.value
-    const coincidePrograma = !filtroPrograma.value || fila.programa === filtroPrograma.value
-    const coincidePeriodo = !filtroPeriodo.value || fila.periodo === filtroPeriodo.value
-    return coincideFacultad && coincidePrograma && coincidePeriodo
-  })
-})
-  */
 </script>
 
 

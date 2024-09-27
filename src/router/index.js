@@ -19,6 +19,12 @@ const router = createRouter({
             path: '/table',
             name: 'table',
             component: () => import('@/views/ListadoTable.vue')
+          },
+
+          {
+            path: '/graph',
+            name: 'graph',
+            component: () => import('@/views/GraficosPage.vue')
           }
       ]
     },
