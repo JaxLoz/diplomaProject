@@ -7,17 +7,22 @@ export const useRegitrosStore = defineStore("registros", {
         facultades: [],
         programas: [],
         periodos: [],
+        estratos: {estrato_1: 0},
         registrosFiltrados: []
     }),
 
     actions: {
         async getRegisters() {
-            this.registros = await registrosService.getRegistros()
+            if(this.registros.length === 0){
+                this.registros = await registrosService.getRegistros()
+            }
         },
 
         getFaculties() {
+            if(this.facultades.length === 0){
             const onlyFaculties = this.registros.map(registro => registro.facultad)
             this.facultades = [...new Set(onlyFaculties)]
+            }
         },
 
         getProgramsByFaculty(faculty){
@@ -27,8 +32,10 @@ export const useRegitrosStore = defineStore("registros", {
         },
 
         getPeriods(){
+            if(this.periodos.length === 0){
             const onlyPeiords = this.registros.map(registro => registro.periodo)
             this.periodos = [...new Set(onlyPeiords)]
+            }
         },
 
         filteredRegisters(filtroFacultad, filtroPrograma, filtroPeriodo){
@@ -40,6 +47,33 @@ export const useRegitrosStore = defineStore("registros", {
             })
             this.registrosFiltrados = filterRegister
             return filterRegister
+        },
+
+        getStratumByDataFilter(){
+
+            const totalStratum = {
+                estrato_1: 0,
+                estrato_2: 0,
+                estrato_3: 0,
+                estrato_4: 0,
+                estrato_5: 0,
+                estrato_6: 0,
+            }
+
+            this.registrosFiltrados.forEach(registro => {
+                totalStratum.estrato_1 += Number(registro.estrato_1)
+                totalStratum.estrato_2 += Number(registro.estrato_2)
+                totalStratum.estrato_3 += Number(registro.estrato_3)
+                totalStratum.estrato_4 += Number(registro.estrato_4)
+                totalStratum.estrato_5 += Number(registro.estrato_5)
+                totalStratum.estrato_6 += Number(registro.estrato_6)
+            })
+
+            this.estratos = totalStratum;
+        },
+
+        cleanFilteredRegisters(){
+            this.registrosFiltrados = []
         }
     }
 })

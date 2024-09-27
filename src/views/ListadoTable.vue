@@ -22,6 +22,7 @@ onMounted(async () => {
   await registerStore.getRegisters()
   registerStore.getFaculties()
   registerStore.getPeriods()
+  registerStore.cleanFilteredRegisters()
 })
 
 // Watcher para aplicar los filtros

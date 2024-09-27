@@ -1,5 +1,4 @@
 
-
 <template>
     <div class="table-responsive">
       <div class="relative overflow-x-auto">
