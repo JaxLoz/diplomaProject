@@ -6,24 +6,24 @@
         
         <form class="max-w-sm mx-auto">
             <selectorComponent 
-                v-model=""
+                v-model="filtroFacultad"
                 :titleLabel="'Selecciona una facultad'"
                 :defaultOption="'Todas las facultades'"
-                :arrayOptions=""
+                :arrayOptions="facultades"
             />
     
             <selectorComponent 
-                v-model=""
-                :titleLabel="'Selecciona una programa'"
+                v-model="filtroPrograma"
+                :titleLabel="'Selecciona un programa'"
                 :defaultOption="'Todos los programas'"
-                :arrayOptions=""
+                :arrayOptions="programas"
             />
     
             <selectorComponent 
-                v-model=""
+                v-model="filtroPeriodo"
                 :titleLabel="'Selecciona un periodo'"
                 :defaultOption="'Todos los periodos'"
-                :arrayOptions=""
+                :arrayOptions="periodos"
             />
         </form>
     </div>
@@ -39,9 +39,18 @@
   </template>
 <script setup>
 import selectorComponent from '@/components/selectorComponent.vue';
-import useResitrosStore from '@/stores/registersStore';
+import { useRegitrosStore } from '@/stores/registros.js'
+import { computed, ref } from 'vue';
 
-const useRegistros = useRes
+const useRegistros = useRegitrosStore()
 
-const facultades = 
+const facultades = computed(() => useRegistros.facultades)
+const programas = computed(() => useRegistros.programas)
+const periodos = computed(() => useRegistros.periodos)
+
+const filtroFacultad = ref('')
+const filtroPrograma = ref('')
+const filtroPeriodo = ref('')
+
+
 </script>
