@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
-//import axiosInstance from "@/axios";
 import registrosService from "@/service/registrosService";
 
-export const useResitrosStore = defineStore("registros", {
+export const useRegitrosStore = defineStore("registros", {
     state: () => ({
         registros: [],
         facultades: [],
