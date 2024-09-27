@@ -5,111 +5,73 @@ import { useRegitrosStore } from '@/stores/registros.js'
 
 const registerStore = useRegitrosStore()
 
-// Almacena los datos de la respuesta de la API
-const respuesta = computed(() => registerStore.registros) 
+
+const respuesta = computed(() => registerStore.registros)
 const facultades = computed(() => registerStore.facultades)
 const programas = computed(() => registerStore.programas)
 const periodos = computed(() => registerStore.periodos)
 const registrosFiltrados = computed(() => registerStore.registrosFiltrados)
 
-// Almacena el valor seleccionado del filtro de facultad, programa y periodo
+// Filtros
 const filtroFacultad = ref('')
 const filtroPrograma = ref('')
 const filtroPeriodo = ref('')
-
 
 onMounted(async () => {
   await registerStore.getRegisters()
   registerStore.getFaculties()
   registerStore.getPeriods()
-  console.log(respuesta.value)
 })
 
-watch([filtroFacultad, filtroPrograma, filtroPeriodo], ([faculieSelected, programSeleted, periodSelected]) => {
-    if(faculieSelected !== ''){
-      registerStore.getProgramsByFaculty(faculieSelected)
-    }
-    console.log(faculieSelected)
-    registerStore.filteredRegisters(faculieSelected, programSeleted, periodSelected)
-    
+watch([filtroFacultad, filtroPrograma, filtroPeriodo], ([faculieSelected, programSelected, periodSelected]) => {
+  if (faculieSelected !== '') {
+    registerStore.getProgramsByFaculty(faculieSelected)
+  }
+  registerStore.filteredRegisters(faculieSelected, programSelected, periodSelected)
 })
-
 
 </script>
 
-
 <template>
     <div class="body-content">
-  <div class="tablita">
-
-    <div class="selects">
-    
-    <form class="max-w-sm mx-auto">
-        <selectorComponent 
-            v-model="filtroFacultad"
-            :titleLabel="'Selecciona una facultad'"
-            :defaultOption="'Todas las facultades'"
-            :arrayOptions="facultades"
-        />
-
-        <selectorComponent 
-            v-model="filtroPrograma"
-            :titleLabel="'Selecciona una programa'"
-            :defaultOption="'Todos los programas'"
-            :arrayOptions="programas"
-        />
-
-        <selectorComponent 
-            v-model="filtroPeriodo"
-            :titleLabel="'Selecciona un periodo'"
-            :defaultOption="'Todos los periodos'"
-            :arrayOptions="periodos"
-        />
-    </form>
-</div>
-
-
-    <!-- Tabla que muestra los datos filtrados -->
-    <div class="table-responsive">
-        <div class="relative overflow-x-auto">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Periodo
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Facultad
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Programa
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Total
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="fila in (registrosFiltrados.length !== 0 ? registrosFiltrados : respuesta )" :key="fila.id" class="bg-white border-b">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {{ fila.periodo }}
-                </th>
-                <td class="px-6 py-4">
-                    {{ fila.facultad }}
-                </td>
-                <td class="px-6 py-4">
-                    {{ fila.programa }}
-                </td>
-                <td class="px-6 py-4">
-                    {{ fila.total_matricula }}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-
+      <div class="tablita">
+        <div class="selects">
+          <!-- Selectores -->
+          <form class="max-w-sm mx-auto">
+            <selectorComponent 
+                v-model="filtroFacultad"
+                :titleLabel="'Selecciona una facultad'"
+                :defaultOption="'Todas las facultades'"
+                :arrayOptions="facultades"
+            />
+  
+            <selectorComponent 
+                v-model="filtroPrograma"
+                :titleLabel="'Selecciona un programa'"
+                :defaultOption="'Todos los programas'"
+                :arrayOptions="programas"
+            />
+  
+            <selectorComponent 
+                v-model="filtroPeriodo"
+                :titleLabel="'Selecciona un periodo'"
+                :defaultOption="'Todos los periodos'"
+                :arrayOptions="periodos"
+            />
+          </form>
+        </div>
+  
+        <!-- Si hay datos se muestran -->
+        <div v-if="registrosFiltrados.length > 0">
+          <!-- Componente de la Tabla -->
+          <FilterTable :datos="registrosFiltrados" />
+        </div>
+  
+        <div v-else>
+          <!-- Si no hay se muestra este mensaje -->
+          <p class="text-center text-gray-500 py-6">No se encontraron registros para los filtros seleccionados.</p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</template>
+  </template>
+  
