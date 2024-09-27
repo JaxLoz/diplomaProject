@@ -7,7 +7,7 @@ export const useRegitrosStore = defineStore("registros", {
         facultades: [],
         programas: [],
         periodos: [],
-        estratos: {estrato_1: 0},
+        estratos: {},
         registrosFiltrados: []
     }),
 

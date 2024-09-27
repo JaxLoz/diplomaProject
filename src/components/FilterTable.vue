@@ -12,7 +12,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="fila in datos" :key="fila.id" class="bg-white border-b">
+            <tr v-for="fila in props.datos" :key="fila.id" class="bg-white border-b">
               <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                 {{ fila.periodo }}
               </th>
