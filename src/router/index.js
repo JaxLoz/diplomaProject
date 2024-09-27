@@ -13,6 +13,12 @@ const router = createRouter({
             path: '/dashboard',
             name: 'dashboard',
             component: () => import('@/components/barGrafic.vue')
+          },
+
+          {
+            path: '/table',
+            name: 'table',
+            component: () => import('@/views/ListadoTable.vue')
           }
       ]
     },
@@ -31,16 +37,7 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/HomeView.vue')
-    },
-    {
-      path: '/table',
-      name: 'table',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/ListadoTable.vue')
     }
-
   ]
 })
 
