@@ -1,9 +1,10 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import selectorComponent from '@/components/selectorComponent.vue';
-import { useRegitrosStore } from '@/stores/registros.js'
+import { useResitrosStore } from '@/stores/registros.js'
+import FilterTable from '@/components/FilterTable.vue'; 
 
-const registerStore = useRegitrosStore()
+const registerStore = useResitrosStore()
 
 // Computed para obtener todos los registros, facultades, programas y periodos
 const respuesta = computed(() => registerStore.registros)
