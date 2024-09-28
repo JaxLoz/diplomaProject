@@ -5,9 +5,10 @@
  
 .body-content{
     @apply p-0;
+    @apply my-10;
 }
 .tablita {
-    @apply p-2; /* Espaciado interno */
+    @apply p-1; /* Espaciado interno */
    
   }
   
@@ -28,3 +29,8 @@
     @apply p-10;
     @aplly space-y-96 > * + *
   }
+
+  .table-responsive {
+    max-height: 350px; /*ajustar la altura maxima de la tabla*/
+  }
+
