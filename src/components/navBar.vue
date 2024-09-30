@@ -78,15 +78,7 @@
                 :class="{ 'text-white': !$route.path.includes('/sesiones') }"
               >Sesiones</router-link>
             </li>
-            <li>
-              <router-link 
-                to="/contact" 
-                class="block py-2 px-3 rounded md:p-0" 
-                active-class="text-blue-700" 
-                exact-active-class="text-blue-700"
-                :class="{ 'text-white': !$route.path.includes('/contact') }"
-              >Contact</router-link>
-            </li>
+
           </ul>
         </div>
       </div>
