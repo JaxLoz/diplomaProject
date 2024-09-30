@@ -34,3 +34,11 @@
     max-height: 350px; /*ajustar la altura maxima de la tabla*/
   }
 
+  .content {
+    margin-left: 250px;
+    margin-top: 60px;
+    
+    padding: 20px;
+    flex-grow: 1;
+    background-color: #ecf0f1;
+  }

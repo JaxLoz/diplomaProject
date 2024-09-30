@@ -4,6 +4,7 @@ import selectorComponent from '@/components/selectorComponent.vue';
 import { useRegitrosStore } from '@/stores/registros.js'
 import FilterTable from '@/components/FilterTable.vue'; 
 import FooterN from '@/components/Footer-n.vue';
+import side_bar from '@/components/side_bar.vue';
 
 const registerStore = useRegitrosStore()
 
@@ -61,6 +62,7 @@ const paginatedData = computed(() => {
 </script>
 
 <template>
+  
   <div class="body-content">
     <div class="tablita">
       <div class="selects">

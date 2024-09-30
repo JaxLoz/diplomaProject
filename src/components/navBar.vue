@@ -4,7 +4,7 @@
 
 <nav class="fixed top-0 left-0 w-full bg-white border-gray-200 dark:bg-gray-900">
 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-<a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+<a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse pt-0">
     <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
 </a>
@@ -72,12 +72,12 @@
             </li>
             <li>
               <router-link 
-                to="/pricing" 
+                to="/sesiones" 
                 class="block py-2 px-3 rounded md:p-0" 
                 active-class="text-blue-700" 
                 exact-active-class="text-blue-700"
-                :class="{ 'text-white': !$route.path.includes('/pricing') }"
-              >Pricing</router-link>
+                :class="{ 'text-white': !$route.path.includes('/sesiones') }"
+              >Sesiones</router-link>
             </li>
             <li>
               <router-link 
