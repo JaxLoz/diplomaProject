@@ -6,6 +6,10 @@
 .body-content{
     @apply p-0;
     @apply my-10;
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 20px;
+    flex-grow: 1;
 }
 .tablita {
     @apply p-1; /* Espaciado interno */
@@ -37,8 +41,27 @@
   .content {
     margin-left: 250px;
     margin-top: 60px;
-    
     padding: 20px;
     flex-grow: 1;
-    background-color: #ecf0f1;
+   
+  }
+
+  footer{
+    @apply ml-5;
+    @apply pl-56;
+  }
+
+
+/* para grafica */
+
+ .content2 {
+  @apply space-y-96
+  }
+
+  .graph {
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 20px;
+    flex-grow: 1;
+   
   }

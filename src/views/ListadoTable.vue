@@ -62,7 +62,7 @@ const paginatedData = computed(() => {
 </script>
 
 <template>
-  
+  <side_bar />
   <div class="body-content">
     <div class="tablita">
       <div class="selects">

@@ -1,16 +1,21 @@
+<script setup>
+import Side_bar from './side_bar.vue'
+</script>
+
 <template>
-  <div class="w-1/2">
-    <Doughnut
-      id="my-chart-id"
-      :options="chartOptions"
-      :data="chartData"
-    />
+  <div class="graph">
+    <div class="w-1/2">
+      <Doughnut
+        id="my-chart-id"
+        :options="chartOptions"
+        :data="chartData"
+      />
+    </div>
   </div>
-   
-  </template>
-  
-  <script>
-  import { Doughnut } from 'vue-chartjs'
+</template>
+
+<script>
+import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js'
 import { useRegitrosStore } from '@/stores/registros.js'
 
@@ -22,16 +27,12 @@ export default {
   data() {
     return {
       useRegistros: useRegitrosStore(),
-      
       chartOptions: {
-        
         responsive: true,
-        
         plugins: {
           legend: {
             position: 'top',
           },
-          
           title: {
             display: true,
             text: 'Estratos de los estudiantes'
@@ -40,12 +41,10 @@ export default {
       }
     }
   },
-
   computed: {
     estratos() {
       return this.useRegistros.estratos
     },
-
     chartData() {
       return {
         labels: Object.keys(this.estratos),
@@ -73,4 +72,14 @@ export default {
     }
   }
 }
-  </script>
+</script>
+
+<style scoped>
+.graph {
+  margin-left: 250px;
+  margin-top: 60px;
+  padding: 20px;
+  flex-grow: 1;
+}
+</style>
+

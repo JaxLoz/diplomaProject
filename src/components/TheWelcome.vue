@@ -1,7 +1,8 @@
 <script setup>
-
+import side_bar from './side_bar.vue';
 </script>
 
 <template>
-<div class="index">Inicio</div>
+<side_bar />
+<div class="index"></div>
 </template>

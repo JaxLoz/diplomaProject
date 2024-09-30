@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import navBar from '@/components/navBar.vue';
 import Side_bar from '@/components/side_bar.vue';
+import FooterN from '@/components/Footer-n.vue';
 </script>
 <template>
       <div class="navBar">
@@ -10,11 +11,10 @@ import Side_bar from '@/components/side_bar.vue';
   <div class="sideBar">
     <Side_bar />
   </div>
-  <div class="content">
+  <div class="content2">
+    <div class="content">
   <main>
-
-
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -183,9 +183,13 @@ import Side_bar from '@/components/side_bar.vue';
         </tbody>
     </table>
 </div>
-
   </main>
 </div>
+<div class="footer">
+    <FooterN />
+</div>
+  </div>
+
   </template>
   
 

@@ -25,6 +25,11 @@ const router = createRouter({
             path: '/graph',
             name: 'graph',
             component: () => import('@/views/GraficosPage.vue')
+          },
+          {
+            path: '/sesion',
+            name: 'sesioh',
+            component: () => import('@/views/sessions_actas.vue')
           }
       ]
     },

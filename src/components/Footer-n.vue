@@ -1,4 +1,8 @@
 <template>
+  <div id="app" class="flex flex-col min-h-3"> <!-- Asegúrate de que el contenedor principal use Flexbox -->
+    <div class="flex-grow"> <!-- Este div puede contener tu contenido principal -->
+      <!-- Aquí va tu contenido principal -->
+    </div>
     <footer class="bg-gray-800 text-white shadow m-0">
       <div class="w-full max-w-screen-xl mx-auto p-10 md:py-10">
         <div class="sm:flex sm:items-center sm:justify-between">
@@ -25,6 +29,16 @@
         <span class="block text-sm text-gray-400 sm:text-center">© 2023 <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>. All Rights Reserved.</span>
       </div>
     </footer>
-  </template>
-  
-  
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'FooterComponent',
+}
+</script>
+<style>
+
+
+
+</style>
