@@ -30,6 +30,11 @@ const router = createRouter({
             path: '/sesion',
             name: 'sesioh',
             component: () => import('@/views/sessions_actas.vue')
+          },
+          {
+            path: '/tareas',
+            name: 'tareas',
+            component: () => import('@/views/tareas_actas.vue')
           }
       ]
     },
