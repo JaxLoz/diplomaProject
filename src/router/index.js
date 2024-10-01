@@ -35,6 +35,11 @@ const router = createRouter({
             path: '/tareas',
             name: 'tareas',
             component: () => import('@/views/tareas_actas.vue')
+          },
+          {
+            path: '/invitacion',
+            name: 'invitacion',
+            component: () => import('@/views/invitacion/InvitationView.vue')
           }
       ]
     },

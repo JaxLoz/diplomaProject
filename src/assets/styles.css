@@ -40,10 +40,9 @@
 
   .content {
     margin-left: 250px;
-    margin-top: 60px;
+    margin-top: 100px;
     padding: 20px;
     flex-grow: 1;
-   
   }
 
   footer{
@@ -65,3 +64,8 @@
     flex-grow: 1;
    
   }
+
+ .invitacion{
+  display: flex;
+  flex-direction: column;
+ }

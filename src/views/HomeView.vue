@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import TheWelcome from '../components/TheWelcome.vue'
 import navBar from '../components/navBar.vue'
 import Side_bar from '@/components/side_bar.vue';
+
 </script>
 
 <template>
