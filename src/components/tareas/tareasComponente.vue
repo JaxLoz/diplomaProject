@@ -14,10 +14,10 @@
             <div id="dropdownAction" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
                     <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Crear Tarea</a>
-                    </li>
-                    
-                    
+  <a href="#" @click="openCreateModal" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+    Crear Tarea
+  </a>
+</li>
                 </ul>
             </div>
         </div>
@@ -82,10 +82,10 @@
                     Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
                 </td>
                 <td class="px-6 py-4">
-        <a href="#" 
-       @click.prevent="openModal()" 
+    <a href="#" 
+       @click.prevent="openEditModal({ name: 'A1', description: 'Descripción de A1', date: '28/02/2023' })" 
        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-     </td>
+</td>
 
             </tr>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -112,10 +112,10 @@
                     Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
                 </td>
                 <td class="px-6 py-4">
-        <a href="#" 
-       @click.prevent="openModal()" 
+    <a href="#" 
+       @click.prevent="openEditModal({ name: 'A1', description: 'Descripción de A1', date: '28/02/2023' })" 
        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-     </td>
+</td>
             </tr>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="w-4 p-4">
@@ -141,84 +141,117 @@
                     Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
                 </td>
                 <td class="px-6 py-4">
-        <a href="#" 
-       @click.prevent="openModal()" 
+    <a href="#" 
+       @click.prevent="openEditModal({ name: 'A1', description: 'Descripción de A1', date: '28/02/2023' })" 
        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-     </td>
+</td>
             </tr>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">           
             </tr>
         </tbody>
     </table>
-    <div 
-    v-if="showModal" 
-    tabindex="-1" 
-    aria-hidden="true" 
-    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
+
+    <div v-if="showModal" 
+     tabindex="-1" 
+     aria-hidden="true" 
+     class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Editar tarea</h3>
-                <button 
-                    type="button" 
-                    @click="closeModal()" 
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ modalTitle }}</h3>
+                <button type="button" @click="closeModal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
                     <span class="sr-only">Cerrar modal</span>
                 </button>
             </div>
-            <!-- Modal body -->
-            <form class="p-4 md:p-5">
-                <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del encargado" required="">
-                    </div>
-                    <div class="col-span-2 ">
-                        <label for="dependencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
-                        <input type="text" name="dependencia" id="dependencia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Descripción de la tarea" required="">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="fecha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha entrega</label>
-                        <input type="date" name="fecha" id="fecha" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                    </div>
-                    
-                </div>
-                <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Guardar cambios
-                </button>
-            </form>
-        </div>
+        <!-- Modal body -->
+        <form class="p-4 md:p-5" @submit.prevent="submitTask">
+          <div class="grid gap-4 mb-4 grid-cols-2">
+            <div class="col-span-2">
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+              <input type="text" name="name" id="name" v-model="taskName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del encargado" required>
+            </div>
+            <div class="col-span-2">
+              <label for="dependencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
+              <input type="text" name="dependencia" id="dependencia" v-model="taskDescription" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Descripción de la tarea" required>
+            </div>
+            <div class="col-span-2">
+              <label for="fecha" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha entrega</label>
+              <input type="date" name="fecha" id="fecha" v-model="taskDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+            </div>
+            <!-- Mostrar campo ID de sesión solo cuando se crea una nueva tarea -->
+            <div class="col-span-2" v-if="!isEditing">
+              <label for="sessionId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID de Sesión</label>
+              <input type="text" name="sessionId" id="sessionId" v-model="sessionId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="ID de la sesión" required>
+            </div>
+          </div>
+          <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+            {{ isEditing ? 'Guardar cambios' : 'Crear Tarea' }}
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
-</div>
-
 </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { initFlowbite } from 'flowbite';
 
-// Estado para controlar la visibilidad del modal
+// Estado para controlar la visibilidad del modal y si se está editando
 const showModal = ref(false);
+const isEditing = ref(false);
+const modalTitle = ref('');
+const taskName = ref('');
+const taskDescription = ref('');
+const taskDate = ref('');
+const sessionId = ref(''); // Solo para cuando se crea una nueva tarea
 
 // Inicializar Flowbite
 onMounted(() => {
     initFlowbite();
 });
 
-// Función para abrir el modal
-const openModal = () => {
+// Función para abrir el modal para editar
+const openEditModal = (task) => {
+    modalTitle.value = 'Editar tarea';
+    isEditing.value = true;
+    taskName.value = task.name;
+    taskDescription.value = task.description;
+    taskDate.value = task.date;
+    sessionId.value = ''; // No se necesita en edición
+    showModal.value = true; // Asegúrate de que esta línea esté presente
+};
+// Función para abrir el modal para crear una nueva tarea
+const openCreateModal = () => {
+    modalTitle.value = 'Crear nueva tarea';
+    isEditing.value = false;
+    taskName.value = '';
+    taskDescription.value = '';
+    taskDate.value = '';
+    sessionId.value = ''; // Aquí debes pasar el ID de la sesión actual
     showModal.value = true;
 };
 
 // Función para cerrar el modal
 const closeModal = () => {
     showModal.value = false;
+};
+
+// Función para manejar el envío del formulario
+const submitTask = () => {
+    if (isEditing.value) {
+        console.log(`Editando tarea: ${taskName.value}, Descripción: ${taskDescription.value}, Fecha: ${taskDate.value}`);
+    } else {
+        console.log(`Nueva tarea creada: ${taskName.value}, Descripción: ${taskDescription.value}, Fecha: ${taskDate.value}, ID de Sesión: ${sessionId.value}`);
+    }
+    closeModal();
 };
 </script>
