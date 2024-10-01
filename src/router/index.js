@@ -12,7 +12,7 @@ const router = createRouter({
           {
             path: '/dashboard',
             name: 'dashboard',
-            component: () => import('@/components/barGrafic.vue')
+            component: () => import('@/components/util/barGrafic.vue')
           },
 
           {

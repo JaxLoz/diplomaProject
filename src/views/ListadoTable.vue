@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import selectorComponent from '@/components/selectorComponent.vue';
+import selectorComponent from '@/components/util/selectorComponent.vue';
 import { useRegitrosStore } from '@/stores/registros.js'
-import FilterTable from '@/components/FilterTable.vue'; 
+import FilterTable from '@/components/util/FilterTable.vue'; 
 
 
 const registerStore = useRegitrosStore()
