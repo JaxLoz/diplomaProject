@@ -11,9 +11,29 @@
 
 </template>
 <script>
-import { onMounted } from 'vue';
 import { Datepicker } from 'flowbite-datepicker';
+import { onMounted } from 'vue';
 
+
+onMounted(() => {
+  const datepickerInput = document.getElementById('datepicker');
+
+  const options = {
+    defaultDatepicketId: false,
+    autohide: false,
+    rangerPicker: true,
+    orientation: 'bottom',
+    format: 'dd/mm/yyyy',
+    autoSelectToday: 1,
+    title: 'que cule calendario'
+
+  }
+
+  new Datepicker(datepickerInput, options)
+})
+
+
+/** 
 export default {
   name: 'DatepickerComponent',
   setup() {
@@ -29,4 +49,5 @@ export default {
     });
   }
 }
+  */
 </script>
