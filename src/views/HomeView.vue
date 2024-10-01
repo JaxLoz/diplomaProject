@@ -1,8 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import TheWelcome from '../components/TheWelcome.vue'
-import navBar from '../components/navBar.vue'
-import Side_bar from '@/components/side_bar.vue';
+import navBar from '../components/icons/util/navBar.vue'
+import Side_bar from '@/components/icons/util/side_bar.vue';
 
 </script>
 
