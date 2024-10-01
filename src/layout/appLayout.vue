@@ -1,11 +1,20 @@
 <template>
-    <div id="app-layout">
-        <navBar />
-        <main>
-            <router-view />
-        </main>
+  <div class="flex flex-col min-h-screen overflow-x-hidden">
+    <navBar class="w-full" />
+    <div class="flex flex-1 overflow-hidden">
+      <Side_bar class="flex-shrink-0" />
+      <main class="flex-1 overflow-y-auto p-4 dark:bg-gray-900 bg-white">
+        <div class="max-w-full">
+          <router-view />
+        </div>
+      </main>
     </div>
+    <FooterN class="w-full" />
+  </div>
 </template>
+
 <script setup>
 import navBar from '@/components/navBar.vue'
+import Side_bar from '@/components/side_bar.vue'
+import FooterN from '@/components/Footer-n.vue'
 </script>

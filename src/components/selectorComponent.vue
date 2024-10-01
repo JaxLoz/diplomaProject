@@ -11,7 +11,6 @@
         <br>
 </template>
 <script setup>
-import { defineProps, defineModel } from 'vue'
 
 const dataSelected = defineModel() // props bidireccional (pasar datos entre componentes padres e hijos y viceversa)
 

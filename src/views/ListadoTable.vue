@@ -3,8 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import selectorComponent from '@/components/selectorComponent.vue';
 import { useRegitrosStore } from '@/stores/registros.js'
 import FilterTable from '@/components/FilterTable.vue'; 
-import FooterN from '@/components/Footer-n.vue';
-import side_bar from '@/components/side_bar.vue';
+
 
 const registerStore = useRegitrosStore()
 
@@ -62,11 +61,10 @@ const paginatedData = computed(() => {
 </script>
 
 <template>
-  <side_bar />
-  <div class="body-content">
+  <div class="body-content ">
     <div class="tablita">
       <div class="selects">
-        <!-- Selectores -->
+       
         <form class="max-w-sm mx-auto">
           <selectorComponent 
             v-model="filtroFacultad"
@@ -94,7 +92,7 @@ const paginatedData = computed(() => {
       <!-- Si hay datos se muestran -->
       <div v-if="paginatedData.length > 0">
         <!-- Cambiado: Contenedor con scroll utilizando Tailwind -->
-        <div class="max-h-96 overflow-y-auto border border-gray-300 mt-5">
+        <div class="">
           <!-- Componente de la Tabla -->
           <FilterTable :datos="paginatedData" />
         </div>
@@ -125,7 +123,6 @@ const paginatedData = computed(() => {
     </div>
     <br>
   </div>
-  <FooterN />
 </template>
 
 

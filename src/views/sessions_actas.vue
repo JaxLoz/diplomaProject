@@ -1,16 +1,12 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
 import navBar from '@/components/navBar.vue';
-import Side_bar from '@/components/side_bar.vue';
-import FooterN from '@/components/Footer-n.vue';
+
 </script>
 <template>
       <div class="navBar">
     <navBar />
   </div>
-  <div class="sideBar">
-    <Side_bar />
-  </div>
+  
   <div class="content2">
     <div class="content">
   <main>
@@ -186,9 +182,7 @@ import FooterN from '@/components/Footer-n.vue';
 
   </main>
 </div>
-<div class="footer">
-    <FooterN />
-</div>
+
   </div>
 
   </template>

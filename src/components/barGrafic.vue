@@ -1,10 +1,10 @@
 <script setup>
-import Side_bar from './side_bar.vue'
+
 </script>
 
 <template>
   <div class="graph">
-    <div class="w-1/2">
+    <div class=" w-1/2">
       <Doughnut
         id="my-chart-id"
         :options="chartOptions"

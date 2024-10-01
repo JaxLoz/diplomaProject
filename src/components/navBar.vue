@@ -1,16 +1,28 @@
 <template>
   <header class="antialiased">
     
-<nav class="fixed top-0 left-0 w-full bg-white border-gray-200 dark:bg-gray-900">
-<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+<nav class="fixed top-0 left-0 w-full bg-white border-gray-200 dark:bg-gray-900 z-50">
+<div class="max-w-full flex flex-wrap items-center justify-between mx-auto py-4 px-8 border-b dark:border-b-gray-800">
 <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse pt-0">
     <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
 </a>
-<div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+<div class="flex items-center md:order-2 space-x-4 md:space-x-4 rtl:space-x-reverse">
     <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
       <span class="sr-only">Open user menu</span>
       <img class="w-8 h-8 rounded-full" src="/src/assets/img/image12.jpg" alt="user photo">
+    </button>
+
+    <button @click.prevent="toggleDarkMode" type="button" class="text-gray-900 bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-2.5  dark:bg-gray-900 dark:text-white dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+      
+      <svg v-if="isDarkMode" class="w-[16px] h-[16px] text-gray-500 transition duration-75 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M11.675 2.015a.998.998 0 0 0-.403.011C6.09 2.4 2 6.722 2 12c0 5.523 4.477 10 10 10 4.356 0 8.058-2.784 9.43-6.667a1 1 0 0 0-1.02-1.33c-.08.006-.105.005-.127.005h-.001l-.028-.002A5.227 5.227 0 0 0 20 14a8 8 0 0 1-8-8c0-.952.121-1.752.404-2.558a.996.996 0 0 0 .096-.428V3a1 1 0 0 0-.825-.985Z" clip-rule="evenodd"/>
+      </svg> 
+
+      <svg v-else class="w-[18px] h-[18px] text-gray-500 transition duration-75 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z" clip-rule="evenodd"/>
+      </svg>
+
     </button>
     <!-- Dropdown menu -->
     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
@@ -41,45 +53,7 @@
     </button>
   </div>
   <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 " id="navbar-user">
-    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-      <li>
-              <router-link 
-                to="/inicio" 
-                class="block py-2 px-3 rounded md:p-0" 
-                active-class="text-blue-700" 
-                exact-active-class="text-blue-700"
-                :class="{ 'text-white': !$route.path.includes('/inicio') }"
-              >Inicio</router-link>
-            </li>
-            <li>
-              <router-link 
-                to="/table" 
-                class="block py-2 px-3 rounded md:p-0" 
-                active-class="text-blue-700" 
-                exact-active-class="text-blue-700"
-                :class="{ 'text-white': !$route.path.includes('/table') }"
-              >Listado</router-link>
-            </li>
-            <li>
-              <router-link 
-                to="/graph" 
-                class="block py-2 px-3 rounded md:p-0" 
-                active-class="text-blue-700" 
-                exact-active-class="text-blue-700"
-                :class="{ 'text-white': !$route.path.includes('/graph') }"
-              >Grafico</router-link>
-            </li>
-            <li>
-              <router-link 
-                to="/sesiones" 
-                class="block py-2 px-3 rounded md:p-0" 
-                active-class="text-blue-700" 
-                exact-active-class="text-blue-700"
-                :class="{ 'text-white': !$route.path.includes('/sesiones') }"
-              >Sesiones</router-link>
-            </li>
-
-          </ul>
+        <h2 class="text-gray-900 rounded-lg dark:text-white font-bold">ManejoActas.com</h2>
         </div>
       </div>
     </nav>
@@ -88,8 +62,17 @@
 
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { initFlowbite} from 'flowbite'
+import DarkModeService from '@/service/DarkModeService.js'
+
+const isDarkMode = ref(false)
+
+const toggleDarkMode = () => {
+  isDarkMode.value = !isDarkMode.value
+  DarkModeService.setDarMode(isDarkMode.value)
+  console.log(isDarkMode.value)
+}
 
 onMounted(() => {
   initFlowbite()
