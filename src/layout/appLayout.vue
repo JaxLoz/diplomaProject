@@ -3,7 +3,7 @@
     <navBar class="w-full" />
     <div class="flex flex-1 overflow-hidden">
       <Side_bar class="flex-shrink-0" />
-      <main class="flex-1 overflow-y-auto p-4 dark:bg-gray-900 bg-white">
+      <main class="flex-1 overflow-y-hidden p-4 dark:bg-gray-900 bg-white">
         <div class="max-w-full">
           <router-view />
         </div>

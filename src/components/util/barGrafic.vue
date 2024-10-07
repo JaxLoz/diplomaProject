@@ -74,12 +74,5 @@ export default {
 }
 </script>
 
-<style scoped>
-.graph {
-  margin-left: 250px;
-  margin-top: 60px;
-  padding: 20px;
-  flex-grow: 1;
-}
-</style>
+
 

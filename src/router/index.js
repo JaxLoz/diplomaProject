@@ -29,7 +29,7 @@ const router = createRouter({
           {
             path: '/sesion',
             name: 'sesioh',
-            component: () => import('@/views/sessions_actas.vue')
+            component: () => import('@/views/sesion/sessions_actas.vue')
           },
           {
             path: '/tareas',
@@ -62,7 +62,7 @@ const router = createRouter({
     {
       path: '/sesiones',
       name: 'sesiones',
-      component: () => import('@/views/sessions_actas.vue')
+      component: () => import('@/views/sesion/sessions_actas.vue')
     }
   ]
 })
