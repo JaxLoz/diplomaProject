@@ -7,6 +7,10 @@
   .field-model {
     @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white;
   }
+
+  .icon-button{
+    @apply text-gray-500 transition duration-75 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white
+  }
 }
 
 

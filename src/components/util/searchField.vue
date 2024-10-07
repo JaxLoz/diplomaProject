@@ -4,8 +4,7 @@
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ props.label }}</label>
         <div class="mb-1">
           <input 
-            @input="searchMethod" 
-            v-model="search" 
+            v-model="searchField" 
             type="text" 
             :placeholder="props.placeholder" 
             :class="props.style !== '' ? props.style : 'py-2 px-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'"
@@ -14,7 +13,7 @@
         
         <ul v-if="search !== ''" class="absolute w-full text-base list-none bg-white divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
           <li 
-            v-for="item in listMembersFinded" 
+            v-for="item in props.listItems" 
             :key="item.id" 
             class="flex items-center justify-between p-3 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
           >
@@ -42,27 +41,16 @@
   </template>
   
 <script setup>
-import {ref} from 'vue'
-
-import { useInvitacionStore } from '@/stores/invitacion';
-
-const useInvitation = useInvitacionStore();
-
-
-const search = ref('');
-const listMembersFinded = ref([]);
+const searchField = defineModel('modelValue');
 const emit = defineEmits(['itemSelected']);
 
 const props = defineProps({
-    searchInfo: {type: Array, Required: true, default: new Array()}, 
+    searchInfo: {type: Array, Required: true, default: new Array()},
+    listItems: {type: Array, Required: false, default: new Array()}, 
     label: {type: String, Required: true, default: "TextLabel"},
     placeholder: {type: String, Required: false, default: ""},
     style: {type: String, Required: false, default: ""}
 })
-
-const searchMethod = () => {
-    listMembersFinded.value = useInvitation.searchGuest(search.value);
-}
 
 const addItem = (item) => {
     emit('itemSelected', item);

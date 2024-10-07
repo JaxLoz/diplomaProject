@@ -58,58 +58,74 @@
                 <th scope="col" class="px-6 py-3">
                     hora de fin
                 </th>
+
+                <th scope="col" class="px-6 py-3">
+                   
+                </th>
+                
             </tr>
         </thead>
         <tbody>
 
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                
-                <td class="px-6 py-4">
-                    1
-                </td>
-
-                <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td class="px-6 py-4">
+                1
+            </td>
+    
+            <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <div class="flex items-center">
                     <div class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                        <span class="font-medium text-gray-600 dark:text-gray-300">{{ 'JL' }}</span>
+                        <span class="font-medium text-gray-600 dark:text-gray-300">JL</span>
                     </div>
                     <div class="ps-3">
-                        <div class="text-base font-semibold">A1</div>
-                        <div class="font-normal text-gray-500">a1@flowbite.com</div>
-                    </div>  
-                </td>
-
-                
-
-                <td class="px-6 py-4">
-                    28/02/2023
-                </td>
-                
-                <td scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                        <div class="text-base font-semibold">Javier Eduardo Montes Delgado</div>
+                        <div class="font-normal text-gray-500">javviemontesdelgado200@gmail.com</div>
+                    </div>
+                </div>  
+            </td>
+    
+            <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <div class="flex items-center">
                     <div class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                        <span class="font-medium text-gray-600 dark:text-gray-300">{{ 'JL' }}</span>
+                        <span class="font-medium text-gray-600 dark:text-gray-300">JO</span>
                     </div>
                     <div class="ps-3">
-                        <div class="text-base font-semibold">A1</div>
-                        <div class="font-normal text-gray-500">a1@flowbite.com</div>
-                    </div>  
-                </td>
+                        <div class="text-base font-semibold">Jose Francisco Ortiz Morales</div>
+                        <div class="font-normal text-gray-500">josefranc1020@gmail.com</div>
+                    </div>
+                </div>  
+            </td>
+            <td class="px-6 py-4">28/02/2023</td>
+            <td class="px-6 py-4">00:00:00</td>
+            <td class="px-6 py-4">00:00:00</td>
 
-                <td class="px-6 py-4">
-                    28/02/2023
-                </td>
+            <td class="px-6 py-4">
+                <div class="flex flex-row justify-between items-center">
+                    <div>
+                        <svg class="w-[18px] h-[18px] icon-button" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    
+                    <div>
+                        <svg class="w-[18px] h-[18px] icon-button" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
 
-                <td class="px-6 py-4">
-                    Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
-                </td>
-                <td class="px-6 py-4">
-                    <a href="#" 
-                    @click.prevent="openEditModal({ name: 'A1', description: 'Descripción de A1', date: '28/02/2023' })" 
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                </td>
+                    <div>
+                        <svg class="w-[18px] h-[18px] icon-button" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M7 9v6a4 4 0 0 0 4 4h4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1v2Z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M13 3.054V7H9.2a2 2 0 0 1 .281-.432l2.46-2.87A2 2 0 0 1 13 3.054ZM15 3v4a2 2 0 0 1-2 2H9v6a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3Z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
 
-                
 
-            </tr>
+
+            </td>
+</tr>
             
         </tbody>
     </table>
@@ -156,18 +172,4 @@ const openCreateModal = () => {
     sessionStore.setShowModelSession(true);
 };
 
-// Función para cerrar el modal
-const closeModal = () => {
-    showModal.value = false;
-};
-
-// Función para manejar el envío del formulario
-const submitTask = () => {
-    if (isEditing.value) {
-        console.log(`Editando tarea: ${taskName.value}, Descripción: ${taskDescription.value}, Fecha: ${taskDate.value}`);
-    } else {
-        console.log(`Nueva tarea creada: ${taskName.value}, Descripción: ${taskDescription.value}, Fecha: ${taskDate.value}, ID de Sesión: ${sessionId.value}`);
-    }
-    closeModal();
-};
 </script>

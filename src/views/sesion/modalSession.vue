@@ -70,7 +70,9 @@
 
                     <div class="col-span-2">
                       <searchField
+                      v-model="search"
                       :searchInfo="members"
+                      :listItems="dataSearched"
                       :label="'Invitados'"
                       :placeholder="'Buscar invitados'"
                       :style="'field-model'"
@@ -107,22 +109,27 @@ import listComponent from '@/components/util/listComponent.vue';
 
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
-import { computed } from 'vue';
+import { useMiembrosStore } from '@/stores/miembros';
+import { computed, ref } from 'vue';
 
+// Inicializacion de los stores
 const sessionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
+const membersStore = useMiembrosStore()
 
+// Variables computadas
 const members = computed(() => invitacionStore.members)
 const guests = computed(() => invitacionStore.guests)
+const showModal = computed(() => sessionStore.getShowModelSession())
+const dataSearched = computed(() => membersStore.searchMember(search.value))
 
-
+// Variables reactivas
+const search = ref("") // referencia del v-model del componente searchField
 const dataSession = {
   date: ""
 }
 
-const showModal = computed(() => sessionStore.getShowModelSession())
-console.log(showModal.value)
-
+// Props, emits, models
 const props = defineProps({
     title: {type: String, Required: true, Default: "titulo del modal"},
 })
