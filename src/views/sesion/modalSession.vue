@@ -23,14 +23,17 @@
                 <form class="p-4 md:p-5" @submit.prevent="submitTask">
                   <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
-                      <fieldForm 
+                      <fieldForm
+                      v-model="dataSession.place" 
                       :fieldType="'text'" 
                       :label="'Lugar'"
                       :style="'field-model'"
                       :placeholder="'Donde se realizara la sesion?'"/>
                     </div>
+
                     <div class="col-span-2">
-                      <fieldForm 
+                      <fieldForm
+                      v-model="dataSession.president" 
                       :fieldType="'text'" 
                       :label="'Presidente'"
                       :style="'field-model'"
@@ -39,6 +42,7 @@
                     </div>
                     <div class="col-span-2">
                       <fieldForm 
+                      v-model="dataSession.secretary"
                       :fieldType="'text'" 
                       :label="'Secretario'"
                       :style="'field-model'"
@@ -57,13 +61,15 @@
                     </div>
 
                     <div class="col-span-1">
-                      <timePicket 
+                      <timePicket
+                      v-model="dataSession.startHour" 
                       :label="'Hora de inicio'" 
                       :style="'block w-full p-2.5 leading-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'" />
                     </div>
 
                     <div class="col-span-1">
                       <timePicket 
+                      v-model="dataSession.endHour"
                       :label="'Hora de fin'" 
                       :style="'block w-full p-2.5 leading-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'" />
                     </div>
@@ -90,7 +96,7 @@
                     </div>
 
             </div>
-            <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button @click.prevent="createSession" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
             {{ 'Crear Sesion' }}
           </button>
@@ -125,9 +131,16 @@ const dataSearched = computed(() => membersStore.searchMember(search.value))
 
 // Variables reactivas
 const search = ref("") // referencia del v-model del componente searchField
-const dataSession = {
-  date: ""
-}
+const dataSession = ref({
+  place: "",
+  president: "",
+  secretary: "",
+  date: "",
+  startHour: "",
+  endHour: ""
+})
+
+let id = 1
 
 // Props, emits, models
 const props = defineProps({
@@ -135,6 +148,12 @@ const props = defineProps({
 })
 
 //Metodos
+
+const createSession = () => {
+  
+  dataSession.value.id = id++;
+  sessionStore.addNewSession(dataSession.value)
+}
 
 const closeModal = () => {
     sessionStore.setShowModelSession(false)

@@ -136,7 +136,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {onMounted } from 'vue';
 import { initFlowbite } from 'flowbite';
 import { useSessionStore } from '@/stores/session';
 
@@ -144,13 +144,7 @@ const sessionStore = useSessionStore();
 
 
 // Estado para controlar la visibilidad del modal y si se está editando
-const showModal = defineModel()
-const isEditing = ref(false);
-const modalTitle = ref('');
-const taskName = ref('');
-const taskDescription = ref('');
-const taskDate = ref('');
-const sessionId = ref(''); // Solo para cuando se crea una nueva tarea
+ // Solo para cuando se crea una nueva tarea
 
 // Inicializar Flowbite
 onMounted(() => {
@@ -158,15 +152,7 @@ onMounted(() => {
 });
 
 // Función para abrir el modal para editar
-const openEditModal = (task) => {
-    modalTitle.value = 'Editar tarea';
-    isEditing.value = true;
-    taskName.value = task.name;
-    taskDescription.value = task.description;
-    taskDate.value = task.date;
-    sessionId.value = ''; // No se necesita en edición
-    showModal.value = true; // Asegúrate de que esta línea esté presente
-};
+
 // Función para abrir el modal para crear una nueva tarea
 const openCreateModal = () => {
     sessionStore.setShowModelSession(true);
