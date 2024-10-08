@@ -1,5 +1,5 @@
 <template>
-    <div id="search-content" class="max-w-2xl mx-auto mt-8">
+    <div id="search-content" class="max-w-2xl mx-auto mt-2">
       <div id="invitations-section" class="relative">
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ props.label }}</label>
         <div class="mb-1">
