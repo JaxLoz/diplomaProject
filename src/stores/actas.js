@@ -2,16 +2,15 @@ import { defineStore } from "pinia";
 
 export const useSessionStore = defineStore("sesion", {
     state: () => ({
-        showModalSession: false,
-         
+        showModalactas: false,
     }),
     actions: {
         setShowModelSession(value){
-            this.showModalSession = value
+            this.showModalactas = value
         },
 
         getShowModelSession(){
-            return this.showModalSession
+            return this.showModalactas
         }
     }
 })
