@@ -1,8 +1,5 @@
-
 <template>
-  <Teleport to="body">
-
-    <div v-if="showModal" 
+    <div
     tabindex="-1" 
     aria-hidden="true" 
     class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
@@ -96,15 +93,20 @@
                     </div>
 
             </div>
-            <button @click.prevent="createSession" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-            {{ 'Crear Sesion' }}
+            <button @click.prevent="buttonAction" type="submit" class="text-white inline-flex items-center gap-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <svg v-if="!onUpdateMode" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+              </svg>
+              <svg v-else class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+              </svg>
+            {{ onUpdateMode ? 'Actualizar sesion' :'Crear Sesion' }}
           </button>
         </form>
       </div>
     </div>
   </div>
-</Teleport>
+
 </template>
 <script setup>
 import datepickedComponent from '@/components/util/datepickedComponent.vue'
@@ -116,7 +118,8 @@ import listComponent from '@/components/util/listComponent.vue';
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
 import { useMiembrosStore } from '@/stores/miembros';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+
 
 // Inicializacion de los stores
 const sessionStore = useSessionStore()
@@ -126,7 +129,7 @@ const membersStore = useMiembrosStore()
 // Variables computadas
 const members = computed(() => invitacionStore.members)
 const guests = computed(() => invitacionStore.guests)
-const showModal = computed(() => sessionStore.getShowModelSession())
+const onUpdateMode = computed(() => sessionStore.getOnUpdateMode())
 const dataSearched = computed(() => membersStore.searchMember(search.value))
 
 // Variables reactivas
@@ -139,15 +142,32 @@ const dataSession = ref({
   startHour: "",
   endHour: ""
 })
-
 let id = 1
+
+// Hooks de ciclos de vida
+
+onMounted(() => {
+  if (sessionStore.getOnUpdateMode()){
+    dataSession.value.place = props.infoToUpdate.place
+    dataSession.value.president = props.infoToUpdate.president
+    dataSession.value.secretary = props.infoToUpdate.secretary
+    dataSession.value.date = props.infoToUpdate.date
+    dataSession.value.startHour = props.infoToUpdate.startHour
+    dataSession.value.endHour = props.infoToUpdate.endHour
+  }
+})
 
 // Props, emits, models
 const props = defineProps({
     title: {type: String, Required: true, Default: "titulo del modal"},
+    infoToUpdate: {type: Object, Required: false, Default: {}}
 })
 
 //Metodos
+
+const buttonAction = () => {
+  !onUpdateMode.value ? createSession() : updateSession()
+}
 
 const createSession = () => {
   
@@ -155,8 +175,13 @@ const createSession = () => {
   sessionStore.addNewSession(dataSession.value)
 }
 
+const updateSession = () => {
+  console.log("Actualizando sesion")
+}
+
 const closeModal = () => {
     sessionStore.setShowModelSession(false)
+    sessionStore.setOnUpdateMode(false)
     invitacionStore.cleanGuestsList()
 }
 
