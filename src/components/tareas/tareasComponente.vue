@@ -47,10 +47,16 @@
                     Id de sesión
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Id de tarea
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Fecha de entrega
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Descripción
+                </th>
+                 <th scope="col" class="px-6 py-3">
+                    Estado
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Acción
@@ -76,10 +82,18 @@
                     82
                 </td>
                 <td class="px-6 py-4">
+                    1
+                </td>
+                <td class="px-6 py-4">
                     28/02/2023
                 </td>
                 <td class="px-6 py-4">
                     Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
+                </td>
+                               <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Finalizado
+                    </div>
                 </td>
                 <td class="px-6 py-4">
     <a href="#" 
@@ -106,10 +120,18 @@
                     193
                 </td>
                 <td class="px-6 py-4">
+                    2
+                </td>
+                <td class="px-6 py-4">
                     16/08/2023
                 </td>
                 <td class="px-6 py-4">
                     Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
+                </td>
+                               <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Sin comenzar
+                    </div>
                 </td>
                 <td class="px-6 py-4">
     <a href="#" 
@@ -135,10 +157,19 @@
                     02
                 </td>
                 <td class="px-6 py-4">
+                    3
+                </td>
+                <td class="px-6 py-4">
                     05/03/2020
                 </td>
                 <td class="px-6 py-4">
                     Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
+                </td>
+                       
+               <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div> En proceso
+                    </div>
                 </td>
                 <td class="px-6 py-4">
     <a href="#" 
