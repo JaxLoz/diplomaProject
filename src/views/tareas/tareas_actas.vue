@@ -5,9 +5,8 @@ import tareasComponente from '@/components/tareas/tareasComponente.vue';
 <template>
       <div class="invitacion">
         <tareasComponente />
-  </div>
-
-  </template>
+      </div>
+</template>
   
 
   
