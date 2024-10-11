@@ -8,9 +8,9 @@
         </svg>
       </div>
       <input 
-        ref="datepickerRef" 
+        ref="datepickerRef"
         v-model="dateInfo" 
-        type="text" 
+        type="date" 
         :class="props.style !== '' ? props.style : 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'" 
         :placeholder="props.placeholder"
       >
@@ -23,24 +23,28 @@ import { ref, onMounted } from 'vue';
 import { Datepicker } from 'flowbite-datepicker';
 
 const datepickerRef = ref(null); // en vue 3 en vez de obtener la referencia el elemento input por medio de getById, se obtiene por medio del atributo ref en el elemento input
-const dateInfo = defineModel();
+const dateInfo = defineModel('modelValue');
+const dataPickedIntance = ref(null);
+
 const props = defineProps({
   title: {type: String, Required: false, default: "Date"},
   label: {type: String, Required: false, default: "LabelDefault"},
   placeholder: {type: String, Required: false, default: ""},
   style: {type: String, Required: false, default: ""}
 })
+ 
 
 onMounted(() => {
-  console.log(props.title)
   if (datepickerRef.value) {
-    new Datepicker(datepickerRef.value, {
+    dataPickedIntance.value = new Datepicker(datepickerRef.value, {
       autohide: true,
       orientation: 'top',
-      format: 'dd/mm/yyyy',
+      format: 'yyyy-mm-dd',
       autoSelectToday: true,
       title: props.title,
     });
   }
 });
+
+
 </script>
