@@ -118,7 +118,7 @@ const dataSearched = computed(() => membersStore.searchMember(search.value))
 
 const search = ref("") 
 
-const showModal = ref(true);
+const showModal = ref(false);
 
 const toggleModal = () => {
     showModal.value = !showModal.value;
