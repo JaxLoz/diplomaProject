@@ -45,6 +45,16 @@ const router = createRouter({
             path: '/actas',
             name: 'actas',
             component: () => import('@/views/actas/actas.vue')
+          },
+          {
+            path: '/solicitudes',
+            name: 'solicitudes.index',
+            component: () => import('@/views/solicitudes/SolicitudesView.vue')
+          },
+          {
+            path: '/descripciones',
+            name: 'descripciones.index',
+            component: () => import('@/views/descripciones/DescripcionesView.vue')
           }
       ]
     },
