@@ -60,6 +60,7 @@ export const useRegitrosStore = defineStore("registros", {
                 estrato_6: 0,
             }
 
+            
             this.registrosFiltrados.forEach(registro => {
                 totalStratum.estrato_1 += Number(registro.estrato_1)
                 totalStratum.estrato_2 += Number(registro.estrato_2)
