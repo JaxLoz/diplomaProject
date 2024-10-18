@@ -10,6 +10,7 @@ export const useSessionStore = defineStore("sesion", {
     actions: {
 
         addNewSession(session){
+            
             this.sessions = [{...session}, ...this.sessions]
         },
 

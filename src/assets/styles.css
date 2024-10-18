@@ -11,6 +11,14 @@
   .icon-button{
     @apply text-gray-500 transition duration-75 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white
   }
+
+  .form-label {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white
+  }
+
+  .calendar-style {
+    @apply bg-gray-50 dark:bg-gray-600 text-gray-900 dark:text-white rounded-lg
+  }
 }
 
 

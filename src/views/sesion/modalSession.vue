@@ -48,14 +48,42 @@
                     </div>
 
                     <div class="col-span-2">
-                      <datepickedComponent 
-                      v-model="dataSession.date" 
-                      :title="'Fecha de la sessión'" 
-                      :label="'Fecha'" 
-                      :placeholder="'Cuendo sera la session?'"
-                      :style="'block w-full ps-10 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'"
-                      />
+                      <label for="base-input" class="form-label">Fecha</label>
+                      <DatePicker 
+                      v-model="dataSession.date"
+                      dateFormat="yy-mm-dd"
+                      placeholder="Cuando se realizara la sesion?"
+                      pt:root:class="relative"
+                      pt:dropdown:class="absolute right-0 inset-y-0 end-0 pe-3.5"
+                      pt:panel:class="calendar-style drop-shadow-md"
+                      pt:pcInputText:root:class="field-model"
+                      pt:calendar:class="flex flex-col items-center p-4"
+                      pt:header:class="flex flex-row items-center justify-around w-full pb-6 pt-2"
+                      pt:title:class="flex flex-row gap-4"
+                      pt:selectMonth:class="rounded-md px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:selectYear:class="rounded-md px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:pcPrevButton:root:class="flex flex-row items-center h-full w-10 rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:pcNextButton:root:class="flex flex-row items-center h-full w-10 rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:dayView:class="w-11/12"
+                      pt:tableHeaderRow:class="flex flex-row justify-around pb-4"
+                      pt:tableBody:class="flex flex-col gap-4 justify-center"
+                      pt:tableBodyRow:class="flex flex-row justify-around items-center"
+                      pt:dayCell:class="w-10 h-7 text-center"
+                      pt:day:class="rounded-full hover:bg-gray-200 dark:hover:bg-gray-500 py-2.5 px-3 cursor-pointer"
+                      pt:monthView:class="grid grid-cols-3 grid-rows-4 justify-items-center gap-2 pb-6"
+                      pt:month:class="rounded-md hover:bg-gray-200 dark:hover:bg-gray-500 py-2 px-6 cursor-pointer"
+                      pt:yearView:class="grid grid-cols-2 grid-rows-5 justify-items-center gap-2 pb-6"
+                      pt:year:class="rounded-md hover:bg-gray-200 dark:hover:bg-gray-500 py-2 px-4 cursor-pointer" 
+                      showIcon>
+                      <template #dropdownicon>
+                          <svg class="w-[18px] h-[18px] text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                              <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
+                          </svg>
+                      </template>
+                    </DatePicker>
                     </div>
+
+                    
 
                     <div class="col-span-1">
                       <timePicket
@@ -109,11 +137,12 @@
 
 </template>
 <script setup>
-import datepickedComponent from '@/components/util/datepickedComponent.vue'
+import DatePicker from 'primevue/datepicker';
 import fieldForm from '@/components/util/fieldForm.vue'
 import timePicket from '@/components/util/timePicket.vue';
 import searchField from '@/components/util/searchField.vue';
 import listComponent from '@/components/util/listComponent.vue';
+import formatDateService from '@/service/formatDateService';
 
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
@@ -171,6 +200,7 @@ const buttonAction = () => {
 
 const createSession = () => {
   
+  dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
   dataSession.value.id = id++;
   sessionStore.addNewSession(dataSession.value)
 }
