@@ -86,17 +86,57 @@
                     
 
                     <div class="col-span-1">
-                      <timePicket
-                      v-model="dataSession.startHour" 
-                      :label="'Hora de inicio'" 
-                      :style="'block w-full p-2.5 leading-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'" />
+                      <label for="base-input" class="form-label">Hora de Inicio</label>
+                      <DatePicker
+                      v-model="dataSession.startHour"
+                      pt:root:class="relative"
+                      pt:dropdown:class="absolute right-0 inset-y-0 end-0 pe-3.5"
+                      pt:panel:class="calendar-style drop-shadow-md"
+                      pt:pcInputText:root:class="field-model"
+                      pt:timePicker:class="flex flex-row justify-center items-center gap-2 py-2"
+                      pt:hourPicker:class="flex flex-col items-center gap-1.5"
+                      pt:minutePicker:class="flex flex-col items-center gap-1.5"
+                      pt:pcincrementbutton:root:class="flex flex-row items-center rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:pcdecrementbutton:root:class="flex flex-row items-center rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:pcincrementbutton:label:class="w-0 h-0"
+                      pt:pcdecrementbutton:label:class="w-0 h-0"
+                      timeOnly
+                      showIcon
+                      placeholder="A que hora inicia?"
+                      >
+                        <template #dropdownicon>
+                          <svg class="w-[18px] h-[18px] text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                          </svg>
+                        </template>
+                      </DatePicker>
                     </div>
 
                     <div class="col-span-1">
-                      <timePicket 
+                      <label for="base-input" class="form-label">Hora de finalizacion</label>
+                      <DatePicker
                       v-model="dataSession.endHour"
-                      :label="'Hora de fin'" 
-                      :style="'block w-full p-2.5 leading-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'" />
+                      pt:root:class="relative"
+                      pt:dropdown:class="absolute right-0 inset-y-0 end-0 pe-3.5"
+                      pt:panel:class="calendar-style drop-shadow-md"
+                      pt:pcInputText:root:class="field-model"
+                      pt:timePicker:class="flex flex-row justify-center items-center gap-2 py-2"
+                      pt:hourPicker:class="flex flex-col items-center gap-1.5"
+                      pt:minutePicker:class="flex flex-col items-center gap-1.5"
+                      pt:pcincrementbutton:root:class="flex flex-row items-center rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:pcdecrementbutton:root:class="flex flex-row items-center rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
+                      pt:pcincrementbutton:label:class="w-0 h-0"
+                      pt:pcdecrementbutton:label:class="w-0 h-0"
+                      timeOnly
+                      showIcon
+                      placeholder="A que hora finaliza?"
+                      >
+                        <template #dropdownicon>
+                          <svg class="w-[18px] h-[18px] text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                          </svg>
+                        </template>
+                      </DatePicker>
                     </div>
 
                     <div class="col-span-2">
@@ -139,7 +179,6 @@
 <script setup>
 import DatePicker from 'primevue/datepicker';
 import fieldForm from '@/components/util/fieldForm.vue'
-import timePicket from '@/components/util/timePicket.vue';
 import searchField from '@/components/util/searchField.vue';
 import listComponent from '@/components/util/listComponent.vue';
 import formatDateService from '@/service/formatDateService';
@@ -201,6 +240,8 @@ const buttonAction = () => {
 const createSession = () => {
   
   dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
+  dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour) // extracion de la hora hh:mm
+  dataSession.value.endHour = formatDateService.extractHour(dataSession.value.endHour) // extracion de la hora hh:mm
   dataSession.value.id = id++;
   sessionStore.addNewSession(dataSession.value)
 }
