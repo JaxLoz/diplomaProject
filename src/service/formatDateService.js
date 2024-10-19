@@ -5,7 +5,7 @@ function extractDate (infDate){
 
 function extractHour (infDate){
     const originalDate = new Date(infDate)
-    return originalDate.toISOString().split('T')[1].slice(0,5)
+    return originalDate.toISOString().split('T')[1].slice(3,8)
 }
 
 export default{extractDate, extractHour}

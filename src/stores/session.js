@@ -4,6 +4,7 @@ export const useSessionStore = defineStore("sesion", {
     state: () => ({
         sessions: [],
         showModalSession: false,
+        showResumenModalSession: false,
         onUpdateMode: false
          
     }),
@@ -18,6 +19,10 @@ export const useSessionStore = defineStore("sesion", {
             this.showModalSession = value
         },
 
+        setShowResumenModalSession(value){
+            this.showResumenModalSession = value
+        },
+
         setOnUpdateMode(value){
             this.onUpdateMode = value
         },
@@ -26,10 +31,14 @@ export const useSessionStore = defineStore("sesion", {
             return this.showModalSession
         },
 
+        getShowResumenModalSession(){
+            return this.showResumenModalSession
+        },
+
         getOnUpdateMode(){
             return this.onUpdateMode
         },
-
+        
         getSessionByid(id){
             const sessionWanted = this.sessions.find(session => session.id == id);
             return sessionWanted

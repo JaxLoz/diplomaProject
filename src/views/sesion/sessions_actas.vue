@@ -4,6 +4,7 @@
       <sesionTabla 
       :data="infoSession"
       @updateSession="getInfoSessionForUpdate"
+      @viewSession="console.log('view')"
       />
     </div>
     <modalSession
@@ -11,6 +12,8 @@
     :title="!onUpdateModeModal ? 'Nueva sesion' : 'Actualizar sesion'"
     :infoToUpdate="!onUpdateModeModal ? {} : infoSessionToUpdate"
     />
+
+    <modalResumeSession v-if="showModalResume"/>
   </div>
 
 </template>
@@ -18,6 +21,7 @@
 <script setup>
 import sesionTabla from '@/components/sesion/sesionTabla.vue'
 import modalSession from '@/views/sesion/modalSession.vue'
+import modalResumeSession from './modalResumeSession.vue';
 
 import { useSessionStore } from '@/stores/session'
 import { computed, ref } from 'vue';
@@ -26,6 +30,7 @@ const sessionStore = useSessionStore()
 
 const infoSession = computed(() => sessionStore.sessions)
 const showModal = computed(() => sessionStore.getShowModelSession())
+const showModalResume = computed(() => sessionStore.getShowResumenModalSession())
 const onUpdateModeModal = computed(() => sessionStore.getOnUpdateMode())
 
 const infoSessionToUpdate = ref({})
