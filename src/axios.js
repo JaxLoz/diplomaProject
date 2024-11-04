@@ -1,11 +1,22 @@
 import Axios from "axios";
 
 const axiosInstance = Axios.create({
-    baseURL: 'https://www.datos.gov.co/resource',
+    baseURL: 'http://127.0.0.1:8000/api',
     Headers: {
          "Content-Type": "application/json",
         "Accept": "application/json"
     }
+})
+
+axiosInstance.interceptors.request.use(function (config) {
+    
+    const tokent = sessionStorage.getItem('tk');
+
+    if(tokent){
+        config.headers.Authorization = 'Bearer ' + JSON.parse(tokent);
+    }
+
+    return config;
 })
 
 const requestAxios = async (endpoint, methodValue, dataValue) => {
@@ -20,14 +31,19 @@ const requestAxios = async (endpoint, methodValue, dataValue) => {
         return {
             data: response.data,
             status: response.status,
-            error: null
+            error: false
         }
 
     }catch(error){
-        return {
-            data: null,
-            error: error
+        if(error.response){
+            return {
+                data: error.response.data,
+                status: error.response.status,
+                headers: error.response.headers,
+                error: true
+            }
         }
+        
     }
 }
 

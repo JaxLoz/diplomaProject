@@ -28,7 +28,7 @@ const router = createRouter({
           },
           {
             path: '/sesion',
-            name: 'sesioh',
+            name: 'sesion',
             component: () => import('@/views/sesion/sessions_actas.vue')
           },
           {
@@ -58,27 +58,28 @@ const router = createRouter({
           }
       ]
     },
+
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/auth',
+      name: 'auth',
+      component: () => import('@/layout/authLayout.vue'),
+      children: [
+        {
+          path: 'login',
+          name: 'login',
+          component: () => import('@/views/auth/loginApp.vue')
+        },
+
+        {
+          path: 'register',
+          name: 'register',
+          component: () => import('@/views/auth/registerUser.vue')
+        }
+      ]
+        
     },
-    {
-      path: '/inicio',
-      name: 'inicio',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/HomeView.vue')
-    },
-    {
-      path: '/sesiones',
-      name: 'sesiones',
-      component: () => import('@/views/sesion/sessions_actas.vue')
-    }
+
+
   ]
 })
 

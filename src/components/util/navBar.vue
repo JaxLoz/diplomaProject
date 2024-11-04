@@ -10,7 +10,9 @@
 <div class="flex items-center md:order-2 space-x-4 md:space-x-4 rtl:space-x-reverse">
     <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
       <span class="sr-only">Open user menu</span>
-      <img class="w-8 h-8 rounded-full" src="/src/assets/img/image12.jpg" alt="user photo">
+      <div class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+          <span class="font-medium text-gray-600 dark:text-gray-300">{{ nameNomenclature() }}</span>
+        </div>
     </button>
 
     <button @click.prevent="toggleDarkMode" type="button" class="text-gray-900 bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-2.5  dark:bg-gray-900 dark:text-white dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
@@ -27,8 +29,8 @@
     <!-- Dropdown menu -->
     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
       <div class="px-4 py-3">
-        <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+        <span class="block text-sm text-gray-900 dark:text-white">{{ profileInf.name }}</span>
+        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ profileInf.mail }}</span>
       </div>
         <ul class="py-2" aria-labelledby="user-menu-button">
           <li>
@@ -41,7 +43,7 @@
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
           </li>
           <li>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+            <a href="#" @click="logOut" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Cerrar sesion</a>
           </li>
         </ul>
       </div>
@@ -62,9 +64,30 @@
 
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import router from '@/router';
 import { initFlowbite} from 'flowbite'
 import DarkModeService from '@/service/DarkModeService.js'
+import stringFormat from '@/service/stringFormat.js';
+
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
+
+
+
+const profileInf = {
+   name:  computed(() => authStore.getProfile().name),
+   mail: computed(() =>authStore.getProfile().email),
+}
+
+
+const nameNomenclature = () =>{
+  if(sessionStorage.getItem('profile') !== null) {
+    const profileSessinStorege = JSON.parse(sessionStorage.getItem('profile'))
+    return stringFormat.getAcronymName(profileSessinStorege.name)
+  }
+}
 
 const isDarkMode = ref(false)
 
@@ -74,8 +97,15 @@ const toggleDarkMode = () => {
   console.log(isDarkMode.value)
 }
 
+const logOut = () => {
+  router.push({name: 'login'})
+  sessionStorage.removeItem('tk')
+  sessionStorage.removeItem('profile')
+}
+
 onMounted(() => {
   initFlowbite()
+  authStore.getInfProfile()
 })
 
 </script>
