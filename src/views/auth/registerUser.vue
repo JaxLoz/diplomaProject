@@ -32,6 +32,7 @@
                   <div>
                     <fieldForm
                     v-model="registerData.nombre"
+                      :idElement="'nombre-field'"
                       :fieldType="'text'" 
                       :label="'Nombre'"
                       :style="'field-model'"
@@ -42,6 +43,7 @@
                   <div>
                     <fieldForm 
                     v-model="registerData.cargo"
+                      :idElement="'cargo-field'"
                       :fieldType="'text'" 
                       :label="'Cargo'"
                       :style="'field-model'"
@@ -53,6 +55,7 @@
                     <fieldForm 
                         v-if="registerData.rol === 'estudiante' || registerData.rol === 'invitado'"
                         v-model="registerData.dependencia"
+                      :idElement="'dependencia-field'"
                       :fieldType="'text'" 
                       :label="'Dependencia'"
                       :style="'field-model'"
@@ -63,6 +66,7 @@
                   <div>
                     <fieldForm 
                     v-model="registerData.email"
+                      :idElement="'email-field'"
                       :fieldType="'email'" 
                       :label="'Correo'"
                       :style="'field-model'"
@@ -73,6 +77,7 @@
                   <div>
                     <fieldForm 
                     v-model="registerData.password"
+                      :idElement="'password-field'"
                       :fieldType="'password'" 
                       :label="'Contraseña'"
                       :style="'field-model'"
@@ -83,6 +88,7 @@
                   <div>
                     <fieldForm 
                     v-model="registerData.password_confirmation"
+                      :idElement="'password-confirmation-field'"
                       :fieldType="'password'" 
                       :label="'Confirmar contraseña'"
                       :style="'field-model'"
@@ -116,16 +122,40 @@
             </div>
           </div>
         </div>
+          <AlertModal class="absolute bottom-0" 
+            v-if="showErrorAlertModal && !showSuccesfullAlertModal"
+            :message="messageError"
+            :typeAlert="'error'"
+            @closeAlert="authStore.hidenErrorAlertModal()"
+           />
+
+           <AlertModal class="absolute bottom-0" 
+            v-if="!showErrorAlertModal && showSuccesfullAlertModal"
+            :message="messageSuccesfull"
+            :typeAlert="'Succesfull'"
+            @closeAlert="authStore.hidenSusccessAlertModal()"
+           />
+
       </div>
     </div>
+
+    
+
   </template>
 <script setup>
 import fieldForm from '@/components/util/fieldForm.vue';
-import { ref } from 'vue';
+import { computed, onBeforeUnmount, ref } from 'vue';
+import AlertModal from '@/components/util/AlertsModal.vue';
 
 import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore()
+
+const showErrorAlertModal = computed(() => authStore.getShowErrorAlert())
+const showSuccesfullAlertModal = computed(() => authStore.getShowSuccessAlert())
+
+const messageError = computed(() => authStore.getDateError())
+const messageSuccesfull = computed(() => authStore.getDataSuccesfull())
 
 const registerData = ref({
   rol: '',
@@ -141,4 +171,14 @@ const registerUser = () => {
     authStore.register(registerData.value)
     console.log(registerData.value)
 }
+
+onBeforeUnmount(() => {
+  if(showErrorAlertModal.value){
+    authStore.hidenErrorAlertModal()
+  }
+  if(showSuccesfullAlertModal.value){
+    authStore.hidenSusccessAlertModal()
+  }
+})
+
 </script>

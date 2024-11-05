@@ -4,7 +4,11 @@ export const useAuthStore = defineStore("auth", {
 
     state: () => ({
         profile: {},
-        nameAcronym: ""
+        nameAcronym: "",
+        showErrorAlert: false,
+        showSuccessAlert: false,
+        dataError: {},
+        dataSuccesfull: {}
     }),
 
     actions: {
@@ -13,35 +17,80 @@ export const useAuthStore = defineStore("auth", {
             return this.profile;
         },
 
-        async test(){
-            const response = await axios.requestAxios('/testAPI', 'GET')
-            console.log(response)
+        getDataSuccesfull(){
+            return this.dataSuccesfull
         },
+
+        getDateError(){
+            return this.dataError;
+        },
+
+        setDataError(data){
+            this.dataError = {...data};
+        },
+
+        setDataSuccesfull(data){
+            this.dataSuccesfull = {...data}
+        },
+
+        showErrorAlertModal(){
+            this.showErrorAlert = true;
+        },
+
+        showSuccessAlertModal(){
+            this.showSuccessAlert = true;
+        },
+
+        hidenSusccessAlertModal(){
+            this.showSuccessAlert = false;
+            this.dataSuccesfull = {};
+        },
+
+        hidenErrorAlertModal(){
+            this.showErrorAlert = false;
+            this.dataError = {};
+        },
+
+        getShowErrorAlert(){
+            return this.showErrorAlert;
+        },
+
+        getShowSuccessAlert(){
+            return this.showSuccessAlert;
+        },
+
 
         async register(registerData){
 
-            const response = await axios.requestAxios('/register', 'POST', registerData)
-            console.log(response)
+            const response = await axios.requestAxios('/register', 'POST', registerData)   
+            
+            if(response.error){
+               console.log(response.data)
+               this.setDataError(response.data)
+               this.showErrorAlertModal() 
+            }else{
+                this.showSuccessAlertModal()
+                this.setDataSuccesfull(response.data)
+            }
         },
 
         async login(credentials){
             const response = await axios.requestAxios('/login', 'POST', credentials)
-            
-            console.log(response)
 
-            sessionStorage.setItem('tk', JSON.stringify(response.data.token))
-            
             if(response.error){
-                console.log('hubo un error y se capturo (pendiente para tratar elegantemente)')
+                this.setDataError(response.data)
+                this.showErrorAlertModal()
+            } else{
+                sessionStorage.setItem('tk', JSON.stringify(response.data.token))
+                await this.getInfProfile()
             } 
-            
         },
 
         async getInfProfile(){
             const response = await axios.requestAxios('/profile', 'GET');
             this.profile = {...response.data.data};
             sessionStorage.setItem('profile', JSON.stringify({email: this.profile.email, name: this.profile.name}))
-            console.log(response)
+            //console.log(response)
         }
         
     }

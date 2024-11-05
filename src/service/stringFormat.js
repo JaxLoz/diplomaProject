@@ -8,10 +8,7 @@ function getAcronymName (name){
                     
     const option3 = partsName.length == 4 ? partsName[0].charAt(0).toUpperCase()+partsName[2].charAt(0).toUpperCase() :"" 
     
-    console.log(option1+option2+option3)
-    return option1+option2+option3
-
-                
+    return option1+option2+option3               
 }
 
 export default {getAcronymName}
