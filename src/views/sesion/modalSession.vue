@@ -88,6 +88,7 @@
                     <div class="col-span-2">
                       <label for="base-input" class="form-label">Hora de Inicio</label>
                       <DatePicker
+                      
                       v-model="dataSession.startHour"
                       pt:root:class="relative"
                       pt:dropdown:class="absolute right-0 inset-y-0 end-0 pe-3.5"
@@ -181,6 +182,7 @@ const dataSession = ref({
   secretary: "",
   date: "",
   startHour: "",
+  endHour:"00:00"
 })
 let id = 1
 
@@ -213,7 +215,6 @@ const createSession = () => {
   
   dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
   dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour) // extracion de la hora hh:mm
-  dataSession.value.endHour = formatDateService.extractHour(dataSession.value.endHour) // extracion de la hora hh:mm
   dataSession.value.id = id++;
   sessionStore.addNewSession(dataSession.value)
 }
