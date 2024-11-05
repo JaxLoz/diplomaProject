@@ -184,7 +184,6 @@ const dataSession = ref({
   startHour: "",
   endHour:"00:00"
 })
-let id = 1
 
 // Hooks de ciclos de vida
 
@@ -215,8 +214,8 @@ const createSession = () => {
   
   dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
   dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour) // extracion de la hora hh:mm
-  dataSession.value.id = id++;
-  sessionStore.addNewSession(dataSession.value)
+  sessionStore.createSession(dataSession.value)
+  sessionStore.fetchSessions()
 }
 
 const updateSession = () => {

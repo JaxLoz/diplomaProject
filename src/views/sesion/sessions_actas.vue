@@ -26,7 +26,7 @@ import modalSession from '@/views/sesion/modalSession.vue'
 import modalResumeSession from './modalResumeSession.vue';
 
 import { useSessionStore } from '@/stores/session'
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const sessionStore = useSessionStore()
 
@@ -57,5 +57,9 @@ const saveSession = async (sessionData) => {
     sessionStore.setShowModelSession(false)
     infoSessionToUpdate.value = {}  // Limpiar el formulario
     sessionStore.setOnUpdateMode(false)
-}
+} 
+onMounted(()=>{{
+  sessionStore.fetchSessions();
+  
+}})
 </script>

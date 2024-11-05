@@ -1,3 +1,6 @@
+<script>
+import formatDateService from '@/service/formatDateService';
+</script>
 <template>
     
     <div class="relative overflow-y-auto shadow-md sm:rounded-lg">
@@ -72,15 +75,15 @@
            </thead>
            <tbody>
    
-           <tr v-for="element in props.data" :key="element.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+           <tr v-for="element in props.data" :key="element.IDSESION" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                <td class="px-6 py-4">
-                   {{ element.id }}
+                   {{ element.IDSESION}}
                </td>
        
                <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                    <div class="flex items-center">
                        <div class="ps-3">
-                           <div class="text-base font-semibold">{{ element.president }}</div>
+                           <div class="text-base font-semibold">{{ element.PRESIDENTE }}</div>
                        </div>
                    </div>  
                </td>
@@ -88,15 +91,16 @@
                <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                    <div class="flex items-center">
                        <div class="ps-3">
-                           <div class="text-base font-semibold">{{ element.secretary }}</div>
+                           <div class="text-base font-semibold">{{ element.SECRETARIO }}</div>
                            
                        </div>
                    </div>  
                </td>
-               <td class="px-6 py-4">{{ element.place }}</td>
-               <td class="px-6 py-4">{{ element.date }}</td>
-               <td class="px-6 py-4">{{ element.startHour }}</td>
-               <td class="px-6 py-4">{{ element.endHour }}</td>
+               <td class="px-6 py-4">{{ element.LUGAR }}</td>
+               <td class="px-6 py-4">{{ formatDateService.extractDate(element.FECHA) }}</td>
+               <td class="px-6 py-4">{{ formatDateService.extractHour(element.HORARIO_INICIO )}}</td>
+                <td class="px-6 py-4">{{ formatDateService.extractHour(element.HORARIO_FINAL) }}</td>
+
    
                <td class="px-6 py-4">
                    <div class="flex flex-row justify-between items-center">
@@ -137,6 +141,9 @@
    import {onMounted } from 'vue';
    import { initFlowbite } from 'flowbite';
    import { useSessionStore } from '@/stores/session';
+   
+ 
+
    
    const sessionStore = useSessionStore();
    

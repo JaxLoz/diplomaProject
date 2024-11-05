@@ -1,6 +1,6 @@
-function extractDate (infDate){
-    const originalDate = new Date(infDate)
-    return originalDate.toISOString().split('T')[0]
+function extractDate(infDate) {
+    const originalDate = new Date(infDate);
+    return originalDate.toISOString().split('T')[0];
 }
 
 function extractHour(infDate) {
@@ -9,4 +9,7 @@ function extractHour(infDate) {
 }
 
 
-export default{extractDate, extractHour}
+
+
+
+export default { extractDate, extractHour };
