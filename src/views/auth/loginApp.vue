@@ -75,6 +75,9 @@ const closedAlertError = () => {
 }
 
 onMounted(() => {
+    if(sessionStorage.getItem('profile')){
+        sessionStorage.removeItem('profile')
+    }
     if(sessionStorage.getItem('tk')) {
         sessionStorage.removeItem('tk')
     }

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useMiembrosStore = defineStore('miembros', {
     state: () => ({
-        members: [
+        allUsers: [
             {
                 id: 1,
                 firstname: "Javier Eduardo",
@@ -33,10 +33,10 @@ export const useMiembrosStore = defineStore('miembros', {
 
         searchMember(searchInfo){
             if(searchInfo !== undefined && searchInfo !== '') {
-               const memberSearch = this.members.filter(member => {
-                return member.firstname.toLowerCase().includes(searchInfo.toLowerCase()) || member.lastname.toLowerCase().includes(searchInfo.toLowerCase()) || member.email.toLowerCase().includes(searchInfo.toLowerCase())
+               const UserSearch = this.allUsers.filter(user => {
+                return user.firstname.toLowerCase().includes(searchInfo.toLowerCase()) || user.lastname.toLowerCase().includes(searchInfo.toLowerCase()) || user.email.toLowerCase().includes(searchInfo.toLowerCase())
                })
-               return memberSearch
+               return UserSearch
             }
         }
         

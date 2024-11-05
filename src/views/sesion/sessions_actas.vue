@@ -36,7 +36,7 @@ const onUpdateModeModal = computed(() => sessionStore.getOnUpdateMode())
 const infoSessionToUpdate = ref({})
 
 const getInfoSessionForUpdate = (idSession) => {
-    infoSessionToUpdate.value = sessionStore.getSessionByid(idSession)
+    infoSessionToUpdate.value = sessionStore.getSessionByid(idSession) //informacion de la acta para actualizar
 }
 
 </script>

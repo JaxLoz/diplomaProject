@@ -27,7 +27,7 @@ export const useInvitacionStore = defineStore('invitacion', {
             email: "migue@gmail.com"
         }],
 
-        guests: []
+        guests: [] // se almacenan los posibles invitados
     }),
 
     actions: {

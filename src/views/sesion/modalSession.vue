@@ -85,7 +85,7 @@
 
                     
 
-                    <div class="col-span-1">
+                    <div class="col-span-2">
                       <label for="base-input" class="form-label">Hora de Inicio</label>
                       <DatePicker
                       v-model="dataSession.startHour"
@@ -103,33 +103,6 @@
                       timeOnly
                       showIcon
                       placeholder="A que hora inicia?"
-                      >
-                        <template #dropdownicon>
-                          <svg class="w-[18px] h-[18px] text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
-                          </svg>
-                        </template>
-                      </DatePicker>
-                    </div>
-
-                    <div class="col-span-1">
-                      <label for="base-input" class="form-label">Hora de finalizacion</label>
-                      <DatePicker
-                      v-model="dataSession.endHour"
-                      pt:root:class="relative"
-                      pt:dropdown:class="absolute right-0 inset-y-0 end-0 pe-3.5"
-                      pt:panel:class="calendar-style drop-shadow-md"
-                      pt:pcInputText:root:class="field-model"
-                      pt:timePicker:class="flex flex-row justify-center items-center gap-2 py-2"
-                      pt:hourPicker:class="flex flex-col items-center gap-1.5"
-                      pt:minutePicker:class="flex flex-col items-center gap-1.5"
-                      pt:pcincrementbutton:root:class="flex flex-row items-center rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
-                      pt:pcdecrementbutton:root:class="flex flex-row items-center rounded-full p-2 justify-center hover:bg-gray-200 dark:hover:bg-gray-500"
-                      pt:pcincrementbutton:label:class="w-0 h-0"
-                      pt:pcdecrementbutton:label:class="w-0 h-0"
-                      timeOnly
-                      showIcon
-                      placeholder="A que hora finaliza?"
                       >
                         <template #dropdownicon>
                           <svg class="w-[18px] h-[18px] text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -185,20 +158,20 @@ import formatDateService from '@/service/formatDateService';
 
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
-import { useMiembrosStore } from '@/stores/miembros';
+//import { useMiembrosStore } from '@/stores/miembros';
 import { computed, onMounted, ref } from 'vue';
 
 
 // Inicializacion de los stores
 const sessionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
-const membersStore = useMiembrosStore()
+//const membersStore = useMiembrosStore()
 
 // Variables computadas
 const members = computed(() => invitacionStore.members)
 const guests = computed(() => invitacionStore.guests)
 const onUpdateMode = computed(() => sessionStore.getOnUpdateMode())
-const dataSearched = computed(() => membersStore.searchMember(search.value))
+const dataSearched = computed(() => invitacionStore.searchGuest(search.value))
 
 // Variables reactivas
 const search = ref("") // referencia del v-model del componente searchField
@@ -208,7 +181,6 @@ const dataSession = ref({
   secretary: "",
   date: "",
   startHour: "",
-  endHour: ""
 })
 let id = 1
 

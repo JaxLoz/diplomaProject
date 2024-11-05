@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
+import axios from "@/axios";
 
 export const useSessionStore = defineStore("sesion", {
     state: () => ({
         sessions: [],
         showModalSession: false,
         showResumenModalSession: false,
-        onUpdateMode: false
+        onUpdateMode: false,
+    
          
     }),
     actions: {
