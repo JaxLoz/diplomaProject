@@ -42,6 +42,19 @@ export const useSessionStore = defineStore("sesion", {
         getSessionByid(id){
             const sessionWanted = this.sessions.find(session => session.id == id);
             return sessionWanted
+        },
+
+        async createSession(sessionData) {
+                const response = await axios.post('/sesion','POST', sessionData)
+        
+                if(response.error){
+                    this.setDataError(response.data)
+                    this.showErrorAlertModal()
+                } else{
+                    sessionStorage.setItem('tk', JSON.stringify(response.data.token))
+                    await this.getInfProfile()
+                } 
+            } 
         }
-    }
-})
+    
+    })
