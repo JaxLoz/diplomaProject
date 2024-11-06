@@ -66,11 +66,19 @@ export const useSessionStore = defineStore("sesion", {
 
         async updateSession(id, sessionData) {
             try {
-                const response = await axios.put(`/sesion/update/${id}`, sessionData);
+                const response = await axios.requestAxios(`/sesion/update/${id}`, 'PUT', {
+                    LUGAR: sessionData.place,
+                    FECHA: sessionData.date,
+                    HORARIO_INICIO: sessionData.startHour,
+                    HORARIO_FINAL: sessionData.endHour,
+                    PRESIDENTE: sessionData.president,
+                    SECRETARIO: sessionData.secretary
+                    });
                 this.sessions = this.sessions.map(session =>
                     session.IDSESION === id ? response.data : session
                 );
-                return response.data;
+                console.log(response);
+                return response;
             } catch (error) {
                 console.error("Error updating session:", error);
                 return null;
