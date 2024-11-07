@@ -156,17 +156,15 @@ import fieldForm from '@/components/util/fieldForm.vue'
 import searchField from '@/components/util/searchField.vue';
 import listComponent from '@/components/util/listComponent.vue';
 import formatDateService from '@/service/formatDateService';
+import axios from 'axios'
 
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
-//import { useMiembrosStore } from '@/stores/miembros';
 import { computed, onMounted, ref } from 'vue';
 
-
-// Inicializacion de los stores
+// Inicialización de los stores
 const sessionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
-//const membersStore = useMiembrosStore()
 
 // Variables computadas
 const members = computed(() => invitacionStore.members)
@@ -175,66 +173,129 @@ const onUpdateMode = computed(() => sessionStore.getOnUpdateMode())
 const dataSearched = computed(() => invitacionStore.searchGuest(search.value))
 
 // Variables reactivas
-const search = ref("") // referencia del v-model del componente searchField
+const search = ref("");
 const dataSession = ref({
+  IDSESION: null,
   place: "",
   president: "",
   secretary: "",
   date: "",
   startHour: "",
-  endHour:"00:00"
-})
+  endHour: "00:00"
+});
 
-// Hooks de ciclos de vida
+const validationErrors = ref([]);  // Array para almacenar los errores de validación
 
-onMounted(() => {
-  if (sessionStore.getOnUpdateMode()){
-    dataSession.value.place = props.infoToUpdate.place
-    dataSession.value.president = props.infoToUpdate.president
-    dataSession.value.secretary = props.infoToUpdate.secretary
-    dataSession.value.date = props.infoToUpdate.date
-    dataSession.value.startHour = props.infoToUpdate.startHour
-    dataSession.value.endHour = props.infoToUpdate.endHour
+// Validación de campos obligatorios
+const validateFields = () => {
+  validationErrors.value = [];
+  if (!dataSession.value.place) validationErrors.value.push("El lugar es obligatorio.");
+  if (!dataSession.value.president) validationErrors.value.push("El presidente es obligatorio.");
+  if (!dataSession.value.secretary) validationErrors.value.push("El secretario es obligatorio.");
+  if (!dataSession.value.date) validationErrors.value.push("La fecha es obligatoria.");
+  if (!dataSession.value.startHour) validationErrors.value.push("La hora de inicio es obligatoria.");
+  return validationErrors.value.length === 0;
+};
+
+onMounted(async () => {
+  if (sessionStore.getOnUpdateMode() && props.infoToUpdate?.sesion) {
+    const sessionData = props.infoToUpdate.sesion;
+      
+    if (sessionData.IDSESION) {
+      try {
+        const response = await axios.get(`/api/sesion/${sessionData.IDSESION}`);
+        const sessionResponseData = response.data;
+        dataSession.value = {
+          IDSESION: sessionResponseData.IDSESION,
+          place: sessionResponseData.LUGAR,
+          president: sessionResponseData.PRESIDENTE,
+          secretary: sessionResponseData.SECRETARIO,
+          date: sessionResponseData.FECHA,
+          startHour: sessionResponseData.HORARIO_INICIO,
+          endHour: sessionResponseData.HORARIO_FIN || "00:00"
+        };
+      } catch (error) {
+        console.error("Error al cargar los datos de la sesión:", error);
+      }
+    } else {
+      console.error("Error: IDSESION no está definido en `sessionData`.");
+    }
+  } else {
+    console.error("Error: infoToUpdate o sesion no están definidos correctamente.");
   }
-})
+});
+
+// Validar y enviar los datos
+const submitTask = async () => {
+  if (!validateFields()) {
+    console.error('Errores de validación:', validationErrors.value);
+    return;
+  }
+  
+  try {
+    if (dataSession.value.IDSESION) {
+      const response = await axios.put(`/api/sesion/update/${dataSession.value.IDSESION}`, dataSession.value);
+      console.log('Sesión actualizada:', response.data);
+    } else {
+      const response = await axios.post('/api/sesion/save', dataSession.value);
+      console.log('Sesión creada:', response.data);
+    }
+  } catch (error) {
+    console.error('Error al enviar los datos:', error);
+  }
+};
 
 // Props, emits, models
 const props = defineProps({
-    title: {type: String, Required: true, Default: "titulo del modal"},
-    infoToUpdate: {type: Object, Required: false, Default: {}}
-})
+  title: { type: String, required: true, default: "titulo del modal" },
+  infoToUpdate: { type: Object, required: false, default: () => ({}) }
+});
 
-//Metodos
-
+// Métodos
 const buttonAction = () => {
-  !onUpdateMode.value ? createSession() : updateSession()
-}
+  if (!validateFields()) return;
+  if (onUpdateMode.value) {
+    updateSession();
+  } else {
+    createSession();
+  }
+};
 
 const createSession = () => {
-  
-  dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
-  dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour) // extracion de la hora hh:mm
-  sessionStore.createSession(dataSession.value)
-  sessionStore.fetchSessions()
-}
+  dataSession.value.date = formatDateService.extractDate(dataSession.value.date);
+  dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour);
+  sessionStore.createSession(dataSession.value);
+  sessionStore.fetchSessions();
+};
 
-const updateSession = () => {
-  console.log("Actualizando sesion")
-}
+const updateSession = async () => {
+  if (!dataSession.value.IDSESION) {
+    console.error("Error: ID de la sesión no está definido en dataSession.value");
+    return;
+  }
+
+  try {
+    dataSession.value.date = formatDateService.extractDate(dataSession.value.date);
+    dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour);
+    await sessionStore.updateSession(dataSession.value.IDSESION, dataSession.value);
+    await sessionStore.fetchSessions();
+    console.log("Sesión actualizada exitosamente");
+  } catch (error) {
+    console.error("Error actualizando sesión:", error);
+  }
+};
 
 const closeModal = () => {
-    sessionStore.setShowModelSession(false)
-    sessionStore.setOnUpdateMode(false)
-    invitacionStore.cleanGuestsList()
-}
+  sessionStore.setShowModelSession(false);
+  sessionStore.setOnUpdateMode(false);
+  invitacionStore.cleanGuestsList();
+};
 
 const addGuest = (member) => {
-    invitacionStore.addGuest(member)
-}
+  invitacionStore.addGuest(member);
+};
 
 const deleteItem = (guest) => {
-  invitacionStore.removeGuest(guest)
-}
-
-
+  invitacionStore.removeGuest(guest);
+};
 </script>

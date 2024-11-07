@@ -38,7 +38,6 @@
     </div>
   </template>
 <script setup>
-import selectorComponent from '@/components/icons/util/selectorComponent.vue';
 import { useRegitrosStore } from '@/stores/registros.js'
 import { computed, onMounted, ref, watch } from 'vue';
 

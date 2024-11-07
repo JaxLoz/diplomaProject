@@ -35,14 +35,19 @@ export const useSessionStore = defineStore("sesion", {
         },
 
         async getSessionById(id) {
+            if (!id) {
+                throw new Error('ID de sesión no proporcionado');
+            }
             try {
-                const response = await axios.get(`/sesion/${id}`);
+                const response = await axios.requestAxios(`/sesion/${id}`, 'GET');
                 return response.data;
             } catch (error) {
                 console.error("Error fetching session by ID:", error);
-                return null;
+                throw error;
             }
-        },
+        }
+        
+        ,
         async createSession(sessionData) {
             // if (!sessionData || !sessionData.nombre || !sessionData.fechaInicio) {
             //     console.error("Error: sessionData is incomplete");
@@ -65,7 +70,22 @@ export const useSessionStore = defineStore("sesion", {
         
 
         async updateSession(id, sessionData) {
+            console.log("ID de sesión en updateSession:", id);
+            console.log("Datos de sesión en updateSession:", sessionData);
+        
+            if (!id) {
+                console.error("Error: ID de sesión no proporcionado en updateSession");
+                return null;
+            }
+            console.log("sessionData antes de llamar a updateSession", sessionData);
+        
             try {
+                if (!sessionData || !sessionData.place) {
+                    console.error("Datos inválidos para la sesión:", sessionData);
+                    return;  // Detener la ejecución si los datos no son válidos
+                }
+        
+                // Realizar la solicitud PUT utilizando requestAxios
                 const response = await axios.requestAxios(`/sesion/update/${id}`, 'PUT', {
                     LUGAR: sessionData.place,
                     FECHA: sessionData.date,
@@ -73,17 +93,33 @@ export const useSessionStore = defineStore("sesion", {
                     HORARIO_FINAL: sessionData.endHour,
                     PRESIDENTE: sessionData.president,
                     SECRETARIO: sessionData.secretary
-                    });
+                });
+        
+                // Verificar si hubo un error en la respuesta
+                if (response.error) {
+                    console.error("Error en la respuesta de la API:", response.data);
+                    return null;  // En caso de error, retornamos null
+                }
+        
+                console.log("Sesión actualizada:", response.data);
+        
+                // Actualizar la sesión en el arreglo local
+                const updatedSession = response.data;
+        
                 this.sessions = this.sessions.map(session =>
-                    session.IDSESION === id ? response.data : session
+                    session.IDSESION === id ? updatedSession : session
                 );
-                console.log(response);
-                return response;
+        
+                return updatedSession;  // Devuelve la sesión actualizada
+        
             } catch (error) {
-                console.error("Error updating session:", error);
+                console.error("Error inesperado:", error.message);
                 return null;
             }
-        },
+        }
+        
+        
+        ,
 
         async deleteSession(id) {
             try {
