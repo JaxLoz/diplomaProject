@@ -1,3 +1,6 @@
+<script>
+import formatDateService from '@/service/formatDateService';
+</script>
 <template>
     
     <div class="relative overflow-y-auto shadow-md sm:rounded-lg">
@@ -5,7 +8,7 @@
            <div>
                <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                    <span class="sr-only">Action button</span>
-                   Action
+                   Crear Sesión
                    <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                    </svg>
@@ -72,15 +75,15 @@
            </thead>
            <tbody>
    
-           <tr v-for="element in props.data" :key="element.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+           <tr v-for="element in props.data" :key="element.IDSESION" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                <td class="px-6 py-4">
-                   {{ element.id }}
+                   {{ element.IDSESION}}
                </td>
        
                <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                    <div class="flex items-center">
                        <div class="ps-3">
-                           <div class="text-base font-semibold">{{ element.president }}</div>
+                           <div class="text-base font-semibold">{{ element.PRESIDENTE }}</div>
                        </div>
                    </div>  
                </td>
@@ -88,15 +91,16 @@
                <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                    <div class="flex items-center">
                        <div class="ps-3">
-                           <div class="text-base font-semibold">{{ element.secretary }}</div>
+                           <div class="text-base font-semibold">{{ element.SECRETARIO }}</div>
                            
                        </div>
                    </div>  
                </td>
-               <td class="px-6 py-4">{{ element.place }}</td>
-               <td class="px-6 py-4">{{ element.date }}</td>
-               <td class="px-6 py-4">{{ element.startHour }}</td>
-               <td class="px-6 py-4">{{ element.endHour }}</td>
+               <td class="px-6 py-4">{{ element.LUGAR }}</td>
+               <td class="px-6 py-4">{{ formatDateService.extractDate(element.FECHA) }}</td>
+               <td class="px-6 py-4">{{ formatDateService.extractHour24(element.HORARIO_INICIO)}}</td>
+                <td class="px-6 py-4">{{ formatDateService.extractHour24(element.HORARIO_FINAL) }}</td>
+
    
                <td class="px-6 py-4">
                    <div class="flex flex-row justify-between items-center">
@@ -137,6 +141,9 @@
    import {onMounted } from 'vue';
    import { initFlowbite } from 'flowbite';
    import { useSessionStore } from '@/stores/session';
+   
+ 
+
    
    const sessionStore = useSessionStore();
    
