@@ -17,10 +17,18 @@
             :key="item.id" 
             class="flex items-center justify-between p-3 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
           >
-            <div>
-              <span class="block font-medium">{{ item.firstname + ' ' + item.lastname }}</span>
-              <span class="block text-sm text-gray-500 ml-2 dark:text-gray-400">{{ item.email }}</span>
+
+          <div class="flex flex-row gap-x-8">
+            <div class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                <span class="font-medium text-gray-600 dark:text-gray-300">{{ stringFormat.getAcronymName(item.NOMBRE) }}</span>
             </div>
+
+            <div class="flex flex-col justify-start items-start">
+              <span class="font-medium">{{ item.NOMBRE }}</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400">{{ item.email }}</span>
+            </div>
+
+          </div>
             <button 
               type="button" 
               @click="addItem(item)"
@@ -42,8 +50,11 @@
   </template>
   
 <script setup>
+import stringFormat from '@/service/stringFormat';
+
 const searchField = defineModel('modelValue');
 const emit = defineEmits(['itemSelected']);
+
 
 const props = defineProps({
     searchInfo: {type: Array, Required: true, default: new Array()},

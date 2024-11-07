@@ -168,7 +168,7 @@ const invitacionStore = useInvitacionStore()
 //const membersStore = useMiembrosStore()
 
 // Variables computadas
-const members = computed(() => invitacionStore.members)
+const members = computed(() => invitacionStore.usersWithOutStudents)
 const guests = computed(() => invitacionStore.guests)
 const onUpdateMode = computed(() => sessionStore.getOnUpdateMode())
 const dataSearched = computed(() => invitacionStore.searchGuest(search.value))
@@ -195,6 +195,9 @@ onMounted(() => {
     dataSession.value.startHour = props.infoToUpdate.startHour
     dataSession.value.endHour = props.infoToUpdate.endHour
   }
+
+  invitacionStore.getUserWithOutStudents();
+
 })
 
 // Props, emits, models

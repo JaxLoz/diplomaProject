@@ -7,16 +7,16 @@
             :key="element.id" 
             class="flex items-center justify-between p-3 mb-1 rounded-md text-sm text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 dark:text-gray-200"
           >
-          
+          <div class="flex flex-row gap-x-8">
             <div class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                <span class="font-medium text-gray-600 dark:text-gray-300">{{ element.firstname.slice(0,1)+element.lastname.slice(0,1) }}</span>
+                <span class="font-medium text-gray-600 dark:text-gray-300">{{ stringFormat.getAcronymName(element.NOMBRE) }}</span>
             </div>
 
-            <div>
-              <span class="block font-medium">{{ element.firstname + ' ' + element.lastname }}</span>
-              <span class="block text-sm text-gray-500 ml-2 dark:text-gray-400">{{ element.email }}</span>
+            <div class="flex flex-col justify-start items-start">
+              <span class="font-medium">{{ element.NOMBRE }}</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400">{{ element.email }}</span>
             </div>
-
+          </div>
             <button 
               type="button" 
               @click="deleteItem(element)">
@@ -29,6 +29,8 @@
     </div>
 </template>
 <script setup>
+import stringFormat from '@/service/stringFormat';
+
     const props = defineProps({
         label: {type: String, Required: true, default: "TextLabel"},
         style: {type: String, Required: false, default: ""},

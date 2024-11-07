@@ -1,42 +1,62 @@
 import { defineStore } from "pinia";
+import axios from "@/axios";
 
 export const useInvitacionStore = defineStore('invitacion', {
     state: () => ({
-        members: [{
-            id: 1,
-            firstname: "Javier Eduardo",
-            lastname: "Montes Delgado",
-            email: "jav2323@gmail.com"
-        },
-        {
-            id: 2,
-            firstname: "Moises Elias",
-            lastname: "Silva Perez",
-            email: "moi@gmail.com"
-        },
-        {
-            id: 3,
-            firstname: "Jose Fracisco",
-            lastname: "Ortiz Moreles",
-            email: "josef@gmail.com"
-        },
-        {
-            id: 4,
-            firstname: "Miguel Alfonos",
-            lastname: "Negrete Romero",
-            email: "migue@gmail.com"
-        }],
-
+        usersWithOutStudents: [],
         guests: [] // se almacenan los posibles invitados
     }),
 
     actions: {
+
+        //busca los invitados que no son estudiantes en la base de datos
+        async getInvitadosWithAoutStudents(){
+            const invitadosResponse = await axios.requestAxios('/invitado/InvitadosWithOutStudents', 'GET')
+            console.log(invitadosResponse.data)
+            return invitadosResponse.data
+        },
+
+        //busca los miembros en la base de datos
+        async getMiembros(){
+            const miembrosResponse = await axios.requestAxios('miembro/allInf', 'GET')
+            console.log(miembrosResponse.data)
+
+            return miembrosResponse.data
+        },
+
+        // se crea un arreglo con la combinacion de los miembros e invitados que se recupareron de la base de datos
+        async getUserWithOutStudents(){
+            const InvitadosWithOutStudents = await this.getInvitadosWithAoutStudents();
+            const miembros = await this.getMiembros();
+
+            this.usersWithOutStudents = [...miembros, ...InvitadosWithOutStudents]
+        },
+
+        //envia la lista de miembros que seran invitados a su respectivo endpoint para registrarlos en la base de datos
+        async sendInvitationMembers(){
+            //const members = this.getGuestInvitation();
+
+        },
+         
+        // esto extrae los miembros que se han seleccionado para la invitacion que estan en la variable guests
+        getMemberInvitation(){
+            const members = this.guests.filter(guest => Object.keys(guest).includes('id_miembro'))
+            return members;
+        },
+
+        // esto extrae los invitados que se han seleccionado para la invitacion que estan en la variable guests
+        getGuestInvitation(){
+            const invGuests = this.guests.filter(guest => Object.keys(guest).includes('id_invitado'))
+            return invGuests;
+        },
+
+        
         searchGuest(searchInfo) {
             if(searchInfo !== undefined && searchInfo !== '') {
-                const memberGuest = this.members.filter(member => {
-                    return member.firstname.toLowerCase().includes(searchInfo.toLowerCase()) || member.lastname.toLowerCase().includes(searchInfo.toLowerCase()) || member.email.toLowerCase().includes(searchInfo.toLowerCase())
+                const userGuest = this.usersWithOutStudents.filter(user => {
+                    return user.NOMBRE.toLowerCase().includes(searchInfo.toLowerCase()) || user.email.includes(searchInfo)
                  })
-                 return memberGuest
+                 return userGuest
             }
         },
 
