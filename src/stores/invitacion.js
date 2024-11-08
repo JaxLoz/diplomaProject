@@ -4,10 +4,56 @@ import axios from "@/axios";
 export const useInvitacionStore = defineStore('invitacion', {
     state: () => ({
         usersWithOutStudents: [],
-        guests: [] // se almacenan los posibles invitados
+        guests: [], // se almacenan los posibles invitados
+        showErrorAlert: false,
+        showSuccessAlert: false,
+        dataError: {},
+        dataSuccesfull: {}
     }),
 
     actions: {
+
+        getDataSuccesfull(){
+            return this.dataSuccesfull
+        },
+
+        getDateError(){
+            return this.dataError;
+        },
+
+        setDataError(data){
+            this.dataError = {...data};
+        },
+
+        setDataSuccesfull(data){
+            this.dataSuccesfull = {...data}
+        },
+
+        showErrorAlertModal(){
+            this.showErrorAlert = true;
+        },
+
+        showSuccessAlertModal(){
+            this.showSuccessAlert = true;
+        },
+
+        hidenSusccessAlertModal(){
+            this.showSuccessAlert = false;
+            this.dataSuccesfull = {};
+        },
+
+        hidenErrorAlertModal(){
+            this.showErrorAlert = false;
+            this.dataError = {};
+        },
+
+        getShowErrorAlert(){
+            return this.showErrorAlert;
+        },
+
+        getShowSuccessAlert(){
+            return this.showSuccessAlert;
+        },
 
         //busca los invitados que no son estudiantes en la base de datos
         async getInvitadosWithAoutStudents(){
@@ -61,8 +107,16 @@ export const useInvitacionStore = defineStore('invitacion', {
                 const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
                 const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
 
+                //tratamiento de errores
+                if(responseMembersInvited.error){
+                    this.setDataError(responseMembersInvited.data)
+                }
+
                 console.log(responseGuestInvited)
                 console.log(responseMembersInvited)
+
+
+
             }else if(guestToInvite.length > 0){
                 const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
                 console.log(responseGuestInvited)
