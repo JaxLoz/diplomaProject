@@ -156,17 +156,15 @@ import fieldForm from '@/components/util/fieldForm.vue'
 import searchField from '@/components/util/searchField.vue';
 import listComponent from '@/components/util/listComponent.vue';
 import formatDateService from '@/service/formatDateService';
+import axios from 'axios'
 
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
-//import { useMiembrosStore } from '@/stores/miembros';
 import { computed, onMounted, ref } from 'vue';
 
-
-// Inicializacion de los stores
+// Inicialización de los stores
 const sessionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
-//const membersStore = useMiembrosStore()
 
 // Variables computadas
 const members = computed(() => invitacionStore.usersWithOutStudents)
@@ -175,8 +173,9 @@ const onUpdateMode = computed(() => sessionStore.getOnUpdateMode())
 const dataSearched = computed(() => invitacionStore.searchGuest(search.value))
 
 // Variables reactivas
-const search = ref("") // referencia del v-model del componente searchField
+const search = ref("");
 const dataSession = ref({
+  IDSESION: null,
   place: "",
   president: "",
   secretary: "",
@@ -204,15 +203,19 @@ onMounted(() => {
 
 // Props, emits, models
 const props = defineProps({
-    title: {type: String, Required: true, Default: "titulo del modal"},
-    infoToUpdate: {type: Object, Required: false, Default: {}}
-})
+  title: { type: String, required: true, default: "titulo del modal" },
+  infoToUpdate: { type: Object, required: false, default: () => ({}) }
+});
 
-//Metodos
-
+// Métodos
 const buttonAction = () => {
-  !onUpdateMode.value ? createSession() : updateSession()
-}
+  if (!validateFields()) return;
+  if (onUpdateMode.value) {
+    updateSession();
+  } else {
+    createSession();
+  }
+};
 
 const createSession = async () => {
   
@@ -232,18 +235,16 @@ const updateSession = () => {
 }
 
 const closeModal = () => {
-    sessionStore.setShowModelSession(false)
-    sessionStore.setOnUpdateMode(false)
-    invitacionStore.cleanGuestsList()
-}
+  sessionStore.setShowModelSession(false);
+  sessionStore.setOnUpdateMode(false);
+  invitacionStore.cleanGuestsList();
+};
 
 const addGuest = (member) => {
-    invitacionStore.addGuest(member)
-}
+  invitacionStore.addGuest(member);
+};
 
 const deleteItem = (guest) => {
-  invitacionStore.removeGuest(guest)
-}
-
-
+  invitacionStore.removeGuest(guest);
+};
 </script>

@@ -18,22 +18,22 @@
 
 </template>
 
-<script setup>
-import sesionTabla from '@/components/sesion/sesionTabla.vue'
-import modalSession from '@/views/sesion/modalSession.vue'
-import modalResumeSession from './modalResumeSession.vue';
+  <script setup>
+  import sesionTabla from '@/components/sesion/sesionTabla.vue'
+  import modalSession from '@/views/sesion/modalSession.vue'
+  import modalResumeSession from './modalResumeSession.vue';
 
-import { useSessionStore } from '@/stores/session'
-import { computed, onMounted, ref } from 'vue';
+  import { useSessionStore } from '@/stores/session'
+  import { computed, onMounted, ref } from 'vue';
 
-const sessionStore = useSessionStore()
+  const sessionStore = useSessionStore()
 
-const infoSession = computed(() => sessionStore.sessions)
-const showModal = computed(() => sessionStore.getShowModelSession())
-const showModalResume = computed(() => sessionStore.getShowResumenModalSession())
-const onUpdateModeModal = computed(() => sessionStore.getOnUpdateMode())
+  const infoSession = computed(() => sessionStore.sessions)
+  const showModal = computed(() => sessionStore.getShowModelSession())
+  const showModalResume = computed(() => sessionStore.getShowResumenModalSession())
+  const onUpdateModeModal = computed(() => sessionStore.getOnUpdateMode())
 
-const infoSessionToUpdate = ref({})
+  const infoSessionToUpdate = ref({})
 
 const getInfoSessionForUpdate = (sesionInf) => {
   console.log(sesionInf)
