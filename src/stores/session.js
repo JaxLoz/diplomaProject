@@ -64,23 +64,21 @@ export const useSessionStore = defineStore("sesion", {
         },
         
 
-        async updateSession(id, sessionData) {
+        async updateSession(sessionData) {
+            const id = sessionData.IDSESION;  // Asegúrate de que el ID esté aquí
             console.log("ID de sesión en updateSession:", id);
             console.log("Datos de sesión en updateSession:", sessionData);
-        
+            
             if (!id) {
                 console.error("Error: ID de sesión no proporcionado en updateSession");
                 return null;
             }
-            console.log("sessionData antes de llamar a updateSession", sessionData);
+            if (!sessionData || !sessionData.place) {
+                console.error("Datos inválidos para la sesión:", sessionData);
+                return;  // Detener la ejecución si los datos no son válidos
+            }
         
             try {
-                if (!sessionData || !sessionData.place) {
-                    console.error("Datos inválidos para la sesión:", sessionData);
-                    return;  // Detener la ejecución si los datos no son válidos
-                }
-        
-                // Realizar la solicitud PUT utilizando requestAxios
                 const response = await axios.requestAxios(`/sesion/update/${id}`, 'PUT', {
                     LUGAR: sessionData.place,
                     FECHA: sessionData.date,
@@ -90,28 +88,25 @@ export const useSessionStore = defineStore("sesion", {
                     SECRETARIO: sessionData.secretary
                 });
         
-                // Verificar si hubo un error en la respuesta
                 if (response.error) {
                     console.error("Error en la respuesta de la API:", response.data);
-                    return null;  // En caso de error, retornamos null
+                    return null;
                 }
         
-                console.log("Sesión actualizada:", response.data);
+                console.log("Sesión actualizada:", response);
         
-                // Actualizar la sesión en el arreglo local
-                const updatedSession = response.data;
-        
+                const updatedSession = response;
                 this.sessions = this.sessions.map(session =>
                     session.IDSESION === id ? updatedSession : session
                 );
         
-                return updatedSession;  // Devuelve la sesión actualizada
-        
+                return updatedSession;
             } catch (error) {
                 console.error("Error inesperado:", error.message);
                 return null;
             }
         }
+        
         
         
         ,

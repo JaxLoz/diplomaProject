@@ -1,6 +1,11 @@
-function extractDate(infDate) {
-    const originalDate = new Date(infDate);
-    return originalDate.toISOString().split('T')[0];
+function extractDate(date) {
+    if (!date) return 'Fecha no válida'; // Manejamos valores vacíos
+    try {
+        return new Date(date).toISOString().split('T')[0];
+    } catch (error) {
+        console.error('Error al formatear la fecha:', error);
+        return 'Fecha inválida';
+    }
 }
 
 function extractHour(infDate) {
