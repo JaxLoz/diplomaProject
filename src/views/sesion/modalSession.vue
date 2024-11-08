@@ -188,12 +188,13 @@ const dataSession = ref({
 onMounted(() => {
   if (sessionStore.getOnUpdateMode()){
     console.log(props.infoToUpdate)
+    dataSession.value.IDSESION = props.infoToUpdate.IDSESION
     dataSession.value.place = props.infoToUpdate.LUGAR
     dataSession.value.president = props.infoToUpdate.PRESIDENTE
     dataSession.value.secretary = props.infoToUpdate.SECRETARIO
     dataSession.value.date = formatDateService.extractDate(props.infoToUpdate.FECHA)
-    dataSession.value.startHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_INICIO)
-    dataSession.value.endHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_FINAL)
+    dataSession.value.startHour = formatDateService.extractHour24(props.infoToUpdate.HORARIO_INICIO)
+    dataSession.value.endHour = formatDateService.extractHour24(props.infoToUpdate.HORARIO_FINAL)
   }
 
   invitacionStore.getUserWithOutStudents();
@@ -228,9 +229,31 @@ const createSession = async () => {
   
 }
 
-const updateSession = () => {
-  console.log("Actualizando sesion")
-}
+const updateSession = async () => {
+  console.log("Actualizando sesion");
+
+  if (!dataSession.value || typeof dataSession.value !== 'object') {
+    console.error("Error: dataSession.value no está definido o no es un objeto.");
+    return;
+  }
+
+  if (isNaN(new Date(dataSession.value.date)) || isNaN(new Date(dataSession.value.startHour))) {
+    console.error("Fecha o hora de inicio inválida:", dataSession.value.date, dataSession.value.startHour);
+    return;
+  }
+
+  dataSession.value.data = formatDateService.extractDate(dataSession.value.date);
+  dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour);
+  
+  const responseSesionUpdated = await sessionStore.updateSession(dataSession.value);
+  
+  if (responseSesionUpdated >= 200) {
+    await sessionStore.fetchSessions();
+    await invitacionStore.sendInvitationMembers(responseSesionUpdated.data.sesion.IDSESION);
+  }
+};
+
+
 
 const closeModal = () => {
   sessionStore.setShowModelSession(false);
