@@ -24,6 +24,26 @@ export const useInvitacionStore = defineStore('invitacion', {
             return miembrosResponse.data
         },
 
+        //registra las invitaciones para AsistenciaMiembros
+        async registerAsistenciaMiembros(idSesion, listMembers){
+            const response = await axios.requestAxios('asistenciaMiembros/save', 'POST', {
+                idSesion: idSesion,
+                listMiembros: [...listMembers]
+            })
+
+            return response
+        },
+
+        //registra las invitaciones para AsistenciaInvitados
+        async registerAsistenciaInvitados(idSesion, listGuests){
+            const response = await axios.requestAxios('asistenciaInvitados/save', 'POST', {
+                idSesion: idSesion, 
+                listInvitados: [...listGuests]
+            })
+
+            return response
+        },
+
         // se crea un arreglo con la combinacion de los miembros e invitados que se recupareron de la base de datos
         async getUserWithOutStudents(){
             const InvitadosWithOutStudents = await this.getInvitadosWithAoutStudents();
@@ -33,9 +53,26 @@ export const useInvitacionStore = defineStore('invitacion', {
         },
 
         //envia la lista de miembros que seran invitados a su respectivo endpoint para registrarlos en la base de datos
-        async sendInvitationMembers(){
-            //const members = this.getGuestInvitation();
+        async sendInvitationMembers(idSesion){
+            const guestToInvite = this.getGuestInvitation(); // datos que van para AsistenciaInvitados
+            const membersToInvite = this.getMemberInvitation(); // datos que van para AsistenciaMiembros
 
+            if(guestToInvite.length > 0 && membersToInvite.length > 0){
+                const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
+                const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
+
+                console.log(responseGuestInvited)
+                console.log(responseMembersInvited)
+            }else if(guestToInvite.length > 0){
+                const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
+                console.log(responseGuestInvited)
+            }else if(membersToInvite.length > 0){
+                const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
+                console.log(responseMembersInvited)
+            }
+
+            console.log(guestToInvite)
+            console.log(membersToInvite)
         },
          
         // esto extrae los miembros que se han seleccionado para la invitacion que estan en la variable guests

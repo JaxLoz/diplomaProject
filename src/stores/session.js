@@ -44,22 +44,17 @@ export const useSessionStore = defineStore("sesion", {
             }
         },
         async createSession(sessionData) {
-            // if (!sessionData || !sessionData.nombre || !sessionData.fechaInicio) {
-            //     console.error("Error: sessionData is incomplete");
-            //     return null;
-            // }
-        const response = await axios.requestAxios('/sesion/save','POST', {
-        LUGAR: sessionData.place,
-        FECHA: sessionData.date,
-        HORARIO_INICIO: sessionData.startHour,
-        HORARIO_FINAL: sessionData.endHour,
-        PRESIDENTE: sessionData.president,
-        SECRETARIO: sessionData.secretary
-        });
-        console.log(sessionData);
-                // this.sessions = [response.data, ...this.sessions];
-                console.log(response);
-                return response;
+           
+            const response = await axios.requestAxios('/sesion/save','POST', {
+                LUGAR: sessionData.place,
+                FECHA: sessionData.date,
+                HORARIO_INICIO: sessionData.startHour,
+                HORARIO_FINAL: sessionData.endHour,
+                PRESIDENTE: sessionData.president,
+                SECRETARIO: sessionData.secretary
+            });
+            console.log(response);
+            return response;
     
         },
         

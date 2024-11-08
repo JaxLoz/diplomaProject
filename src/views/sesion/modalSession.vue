@@ -189,12 +189,13 @@ const dataSession = ref({
 
 onMounted(() => {
   if (sessionStore.getOnUpdateMode()){
-    dataSession.value.place = props.infoToUpdate.place
-    dataSession.value.president = props.infoToUpdate.president
-    dataSession.value.secretary = props.infoToUpdate.secretary
-    dataSession.value.date = props.infoToUpdate.date
-    dataSession.value.startHour = props.infoToUpdate.startHour
-    dataSession.value.endHour = props.infoToUpdate.endHour
+    console.log(props.infoToUpdate)
+    dataSession.value.place = props.infoToUpdate.LUGAR
+    dataSession.value.president = props.infoToUpdate.PRESIDENTE
+    dataSession.value.secretary = props.infoToUpdate.SECRETARIO
+    dataSession.value.date = formatDateService.extractDate(props.infoToUpdate.FECHA)
+    dataSession.value.startHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_INICIO)
+    dataSession.value.endHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_FINAL)
   }
 
   invitacionStore.getUserWithOutStudents();
@@ -213,12 +214,17 @@ const buttonAction = () => {
   !onUpdateMode.value ? createSession() : updateSession()
 }
 
-const createSession = () => {
+const createSession = async () => {
   
   dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
   dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour) // extracion de la hora hh:mm
-  sessionStore.createSession(dataSession.value)
-  sessionStore.fetchSessions()
+  const responseSesionCreated = await sessionStore.createSession(dataSession.value)
+  
+  if(responseSesionCreated.status >= 200){
+    await sessionStore.fetchSessions()
+    await invitacionStore.sendInvitationMembers(responseSesionCreated.data.sesion.IDSESION)
+  }
+  
 }
 
 const updateSession = () => {
