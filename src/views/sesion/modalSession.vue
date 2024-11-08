@@ -156,7 +156,6 @@ import fieldForm from '@/components/util/fieldForm.vue'
 import searchField from '@/components/util/searchField.vue';
 import listComponent from '@/components/util/listComponent.vue';
 import formatDateService from '@/service/formatDateService';
-import axios from 'axios'
 
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
@@ -209,7 +208,6 @@ const props = defineProps({
 
 // Métodos
 const buttonAction = () => {
-  if (!validateFields()) return;
   if (onUpdateMode.value) {
     updateSession();
   } else {
