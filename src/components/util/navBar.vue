@@ -3,9 +3,9 @@
     
 <nav class="fixed top-0 left-0 w-full bg-white border-gray-200 dark:bg-gray-900 z-50">
 <div class="max-w-full flex flex-wrap items-center justify-between mx-auto py-4 px-8 border-b dark:border-b-gray-800">
-<a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse pt-0">
-    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+<a href="@/assets/img/icon.png" class="flex items-center space-x-3 rtl:space-x-reverse pt-0">
+    <img src="@/assets/img/icon.png" class="h-8" alt="Flowbite Logo" />
+    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Act Manager</span>
 </a>
 <div class="flex items-center md:order-2 space-x-4 md:space-x-4 rtl:space-x-reverse">
     <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
@@ -55,7 +55,7 @@
     </button>
   </div>
   <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 " id="navbar-user">
-        <h2 class="text-gray-900 rounded-lg dark:text-white font-bold">ManejoActas.com</h2>
+        <h2 class="text-gray-900 rounded-lg dark:text-white font-bold">Act Manager</h2>
         </div>
       </div>
     </nav>
