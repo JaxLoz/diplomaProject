@@ -38,6 +38,17 @@ const router = createRouter({
 
           },
           {
+            path: '/SesionSolicitud',
+            name: 'SesionSolicitud',
+            component: () => import('@/views/sesion/SesionSolicitudView.vue')
+          },
+          {
+            path: '/SesionProposicion',
+            name: 'SesionProposicion',
+            component: () => import('@/views/sesion/SesionProposicionView.vue')
+
+          },
+          {
             path: '/tareas',
             name: 'tareas',
             component: () => import('@/views/tareas/tareas_actas.vue')
