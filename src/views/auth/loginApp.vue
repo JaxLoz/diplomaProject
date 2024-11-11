@@ -53,7 +53,6 @@ import AlertModal from '@/components/util/AlertsModal.vue';
 
 const authStore = useAuthStore()
 
-
 const showAlertModal = computed(() => authStore.getShowErrorAlert())
 const messageError = computed(() => authStore.getDateError())
 

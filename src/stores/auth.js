@@ -63,7 +63,7 @@ export const useAuthStore = defineStore("auth", {
         async register(registerData){
 
             const response = await axios.requestAxios('/register', 'POST', registerData)   
-            
+
             if(response.error){
                console.log(response.data)
                this.setDataError(response.data)

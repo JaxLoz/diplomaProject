@@ -7,28 +7,60 @@ export const useSessionStore = defineStore("sesion", {
         showModalSession: false,
         showResumenModalSession: false,
         onUpdateMode: false,
+        showErrorAlert: false,
+        showSuccessAlert: false,
+        dataError: {},
+        dataSuccesfull: {}
     }),
     actions: {
-        // async submitTask() {
-        //     try {
-        //         const response = await axios.post('http://127.0.0.1:8000/api/sesion/save', {
-        //             LUGAR: this.dataSession.LUGAR,
-        //             FECHA: this.dataSession.FECHA,
-        //             HORARIO_INICIO: this.dataSession.HORARIO_INICIO,
-        //             HORARIO_FINAL: this.dataSession.HORARIO_FINAL,
-        //             PRESIDENTE: this.dataSession.PRESIDENTE,
-        //             SECRETARIO: this.dataSession.SECRETARIO,
-        //         });
-        //         console.log('Sesion creada con éxito', response.data);
-        //     } catch (error) {
-        //         console.error('Error al crear la sesión:', error.response ? error.response.data : error.message);
-        //     }
-        // },
         
+        getDataSuccesfull(){
+            return this.dataSuccesfull
+        },
+
+        getDateError(){
+            return this.dataError;
+        },
+
+        setDataError(data){
+            this.dataError = {...data};
+        },
+
+        setDataSuccesfull(data){
+            this.dataSuccesfull = {...data}
+        },
+
+        showErrorAlertModal(){
+            this.showErrorAlert = true;
+        },
+
+        showSuccessAlertModal(){
+            this.showSuccessAlert = true;
+        },
+
+        hidenSusccessAlertModal(){
+            this.showSuccessAlert = false;
+            this.dataSuccesfull = {};
+        },
+
+        hidenErrorAlertModal(){
+            this.showErrorAlert = false;
+            this.dataError = {};
+        },
+
+        getShowErrorAlert(){
+            return this.showErrorAlert;
+        },
+
+        getShowSuccessAlert(){
+            return this.showSuccessAlert;
+        },
+
         async fetchSessions() {
             try {
                 const response = await axios.requestAxios('/sesion/all','GET');
                 this.sessions = response.data.sesion;
+                console.log(this.sessions)
             } catch (error) {
                 console.error("Error fetching sessions:", error);
             }
@@ -65,20 +97,8 @@ export const useSessionStore = defineStore("sesion", {
         
 
         async updateSession(sessionData) {
-            const id = sessionData.IDSESION;  // Asegúrate de que el ID esté aquí
-            console.log("ID de sesión en updateSession:", id);
-            console.log("Datos de sesión en updateSession:", sessionData);
+                const id = sessionData.IDSESION;  // Asegúrate de que el ID esté aquí
             
-            if (!id) {
-                console.error("Error: ID de sesión no proporcionado en updateSession");
-                return null;
-            }
-            if (!sessionData || !sessionData.place) {
-                console.error("Datos inválidos para la sesión:", sessionData);
-                return;  // Detener la ejecución si los datos no son válidos
-            }
-        
-            try {
                 const response = await axios.requestAxios(`/sesion/update/${id}`, 'PUT', {
                     LUGAR: sessionData.place,
                     FECHA: sessionData.date,
@@ -88,28 +108,19 @@ export const useSessionStore = defineStore("sesion", {
                     SECRETARIO: sessionData.secretary
                 });
         
+                this.showSuccessAlertModal();
+                this.setDataSuccesfull(response.data);
+
                 if (response.error) {
                     console.error("Error en la respuesta de la API:", response.data);
-                    return null;
+                    this.showErrorAlertModal();
+                    this.setDataError(response.data); // Mostrar la alerta de error
                 }
         
-                console.log("Sesión actualizada:", response);
+                //console.log("Sesión actualizada:", response);
+                return response;
         
-                const updatedSession = response;
-                this.sessions = this.sessions.map(session =>
-                    session.IDSESION === id ? updatedSession : session
-                );
-        
-                return updatedSession;
-            } catch (error) {
-                console.error("Error inesperado:", error.message);
-                return null;
-            }
-        }
-        
-        
-        
-        ,
+        },
 
         async deleteSession(id) {
             try {

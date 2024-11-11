@@ -97,9 +97,9 @@ import formatDateService from '@/service/formatDateService';
                    </div>  
                </td>
                <td class="px-6 py-4">{{ element.LUGAR }}</td>
-                <td class="px-6 py-4">{{ element.FECHA ? formatDateService.extractDate(element.FECHA) : 'Fecha de inicio' }}</td>
-                <td class="px-6 py-4">{{ element.HORARIO_INICIO ? formatDateService.extractHour24(element.HORARIO_INICIO) : 'Hora no disponible' }}</td>
-                <td class="px-6 py-4">{{ element.HORARIO_FINAL ? formatDateService.extractHour24(element.HORARIO_FINAL) : 'Hora no disponible' }}</td>
+                <td class="px-6 py-4">{{ formatDateService.extractDate(element.FECHA) }}</td>
+                <td class="px-6 py-4">{{ formatDateService.extractHour(element.HORARIO_INICIO) }}</td>
+                <td class="px-6 py-4">{{ formatDateService.extractHour(element.HORARIO_FINAL) }}</td>
 
 
    

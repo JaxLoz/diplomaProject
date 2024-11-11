@@ -123,14 +123,14 @@
           </div>
         </div>
           <AlertModal class="absolute bottom-0" 
-            v-if="showErrorAlertModal && !showSuccesfullAlertModal"
+            v-if="showErrorAlertModal"
             :message="messageError"
             :typeAlert="'error'"
             @closeAlert="authStore.hidenErrorAlertModal()"
            />
 
            <AlertModal class="absolute bottom-0" 
-            v-if="!showErrorAlertModal && showSuccesfullAlertModal"
+            v-if="showSuccesfullAlertModal"
             :message="messageSuccesfull"
             :typeAlert="'Succesfull'"
             @closeAlert="authStore.hidenSusccessAlertModal()"

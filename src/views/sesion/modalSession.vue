@@ -90,6 +90,7 @@
                       <DatePicker
                       
                       v-model="dataSession.startHour"
+                      hourFormat="12"
                       pt:root:class="relative"
                       pt:dropdown:class="absolute right-0 inset-y-0 end-0 pe-3.5"
                       pt:panel:class="calendar-style drop-shadow-md"
@@ -115,6 +116,7 @@
 
                     <div class="col-span-2">
                       <searchField
+                      v-if="!onUpdateMode"
                       v-model="search"
                       :searchInfo="members"
                       :listItems="dataSearched"
@@ -147,6 +149,20 @@
         </form>
       </div>
     </div>
+
+    <AlertsModal class="absolute bottom-0"
+      v-if="showSuccesfullAlertModal"
+      :message="dataSuccesfull"
+      :typeAlert="'succesfull'"
+      @closeAlert="sessionStore.hidenSusccessAlertModal()"
+    />
+
+    <AlertsModal class="absolute bottom-0"
+      v-if="showErrorAlertModal"
+      :message="dataError"
+      :typeAlert="'error'"
+      @closeAlert="sessionStore.hidenErrorAlertModal()"
+`   />
   </div>
 
 </template>
@@ -156,20 +172,29 @@ import fieldForm from '@/components/util/fieldForm.vue'
 import searchField from '@/components/util/searchField.vue';
 import listComponent from '@/components/util/listComponent.vue';
 import formatDateService from '@/service/formatDateService';
+import AlertsModal from '@/components/util/AlertsModal.vue';
 
 import { useSessionStore } from '@/stores/session'
 import { useInvitacionStore } from '@/stores/invitacion';
+import { useActaStore } from '@/stores/actas';
 import { computed, onMounted, ref } from 'vue';
 
 // Inicialización de los stores
 const sessionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
+const actasStore = useActaStore()
 
 // Variables computadas
 const members = computed(() => invitacionStore.usersWithOutStudents)
 const guests = computed(() => invitacionStore.guests)
 const onUpdateMode = computed(() => sessionStore.getOnUpdateMode())
 const dataSearched = computed(() => invitacionStore.searchGuest(search.value))
+
+const showErrorAlertModal = computed(() => sessionStore.getShowErrorAlert());
+const showSuccesfullAlertModal = computed(() => sessionStore.getShowSuccessAlert())
+
+const dataError = computed(() => sessionStore.getDateError());
+const dataSuccesfull = computed(() => sessionStore.getDataSuccesfull());
 
 // Variables reactivas
 const search = ref("");
@@ -192,9 +217,11 @@ onMounted(() => {
     dataSession.value.place = props.infoToUpdate.LUGAR
     dataSession.value.president = props.infoToUpdate.PRESIDENTE
     dataSession.value.secretary = props.infoToUpdate.SECRETARIO
-    dataSession.value.date = formatDateService.extractDate(props.infoToUpdate.FECHA)
-    dataSession.value.startHour = formatDateService.extractHour24(props.infoToUpdate.HORARIO_INICIO)
-    dataSession.value.endHour = formatDateService.extractHour24(props.infoToUpdate.HORARIO_FINAL)
+    dataSession.value.date = new Date(formatDateService.extractDate(props.infoToUpdate.FECHA))
+    dataSession.value.startHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_INICIO)
+    dataSession.value.endHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_FINAL)
+
+    formatDateService.getHourFromString(props.infoToUpdate.HORARIO_INICIO)
   }
 
   invitacionStore.getUserWithOutStudents();
@@ -219,12 +246,14 @@ const buttonAction = () => {
 const createSession = async () => {
   
   dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
-  dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour) // extracion de la hora hh:mm
+  dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour)
+  console.log(dataSession.value.startHour)
   const responseSesionCreated = await sessionStore.createSession(dataSession.value)
   
   if(responseSesionCreated.status >= 200){
     await sessionStore.fetchSessions()
     await invitacionStore.sendInvitationMembers(responseSesionCreated.data.sesion.IDSESION)
+    await actasStore.createActa(responseSesionCreated.data.sesion.IDSESION)
   }
   
 }
@@ -237,19 +266,14 @@ const updateSession = async () => {
     return;
   }
 
-  if (isNaN(new Date(dataSession.value.date)) || isNaN(new Date(dataSession.value.startHour))) {
-    console.error("Fecha o hora de inicio inválida:", dataSession.value.date, dataSession.value.startHour);
-    return;
-  }
 
   dataSession.value.data = formatDateService.extractDate(dataSession.value.date);
   dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour);
   
   const responseSesionUpdated = await sessionStore.updateSession(dataSession.value);
   
-  if (responseSesionUpdated >= 200) {
+  if (responseSesionUpdated.status >= 200) {
     await sessionStore.fetchSessions();
-    await invitacionStore.sendInvitationMembers(responseSesionUpdated.data.sesion.IDSESION);
   }
 };
 
