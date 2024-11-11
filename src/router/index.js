@@ -32,6 +32,12 @@ const router = createRouter({
             component: () => import('@/views/sesion/sessions_actas.vue')
           },
           {
+            path: '/SesionView',
+            name: 'SesionView',
+            component: () => import('@/views/sesion/SesionGeneralView.vue')
+
+          },
+          {
             path: '/tareas',
             name: 'tareas',
             component: () => import('@/views/tareas/tareas_actas.vue')
