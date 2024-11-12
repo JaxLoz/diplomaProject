@@ -2,7 +2,11 @@
 import formatDateService from '@/service/formatDateService';
 </script>
 <template>
-    
+    <div class="titleSesion">
+<!-- Titutlo -->
+<h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">Sesiones</h2>
+
+</div>
     <div class="relative overflow-y-auto shadow-md sm:rounded-lg">
        <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
            <div>
