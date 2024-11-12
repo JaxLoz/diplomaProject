@@ -67,12 +67,13 @@ export const useActaStore = defineStore("acta", {
                 SESION_IDSESION: idSesion
             })
 
-            this.setDataSuccesfull(response.data);
-
             if(response.error){
                 this.setDataError(response.data);
                 this.showErrorAlertModal();
                 console.error(response.data);
+            }else{
+                this.setDataSuccesfull(response.data);
+                this.showSuccessAlertModal();
             }
         },
     }

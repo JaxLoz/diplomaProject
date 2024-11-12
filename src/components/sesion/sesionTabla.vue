@@ -152,8 +152,8 @@ import formatDateService from '@/service/formatDateService';
         emit('updateSession', sesionInf);
    }
 
-   const viewSessionAction = () => {
-        sessionStore.setShowResumenModalSession(true);
-   }
+//    const viewSessionAction = () => {
+//         sessionStore.setShowResumenModalSession(true);
+//    }
    
    </script>

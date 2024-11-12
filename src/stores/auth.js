@@ -88,8 +88,9 @@ export const useAuthStore = defineStore("auth", {
 
         async getInfProfile(){
             const response = await axios.requestAxios('/profile', 'GET');
-            this.profile = {...response.data.data};
-            sessionStorage.setItem('profile', JSON.stringify({email: this.profile.email, name: this.profile.name}))
+            this.profile = {...response.data.data[0]};
+            console.log(this.profile.nombre);
+            sessionStorage.setItem('profile', JSON.stringify({email: this.profile.email, nombre: this.profile.nombre}))
             //console.log(response)
         }
         

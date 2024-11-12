@@ -90,7 +90,17 @@ export const useSessionStore = defineStore("sesion", {
                 PRESIDENTE: sessionData.president,
                 SECRETARIO: sessionData.secretary
             });
-            console.log(response);
+
+            
+
+            if(response.error){
+                this.setDataError(response.data);
+                this.showErrorAlertModal()
+            }else{
+                this.setDataSuccesfull(response.data);
+                this.showSuccessAlertModal();
+            }
+
             return response;
     
         },
@@ -108,13 +118,15 @@ export const useSessionStore = defineStore("sesion", {
                     SECRETARIO: sessionData.secretary
                 });
         
-                this.showSuccessAlertModal();
-                this.setDataSuccesfull(response.data);
+                
 
                 if (response.error) {
                     console.error("Error en la respuesta de la API:", response.data);
                     this.showErrorAlertModal();
                     this.setDataError(response.data); // Mostrar la alerta de error
+                }else{
+                    this.showSuccessAlertModal();
+                    this.setDataSuccesfull(response.data);
                 }
         
                 //console.log("Sesión actualizada:", response);

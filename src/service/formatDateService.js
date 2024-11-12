@@ -1,7 +1,7 @@
 function extractDate(date) {
     if (!date) return 'Fecha no válida'; // Manejamos valores vacíos
     try {
-        return new Date(date).toISOString().split('T')[0];
+        return new Date(date).toLocaleDateString('es-CO', { timeZone: 'America/Bogota' });
     } catch (error) {
         console.error('Error al formatear la fecha:', error);
         return 'Fecha inválida';

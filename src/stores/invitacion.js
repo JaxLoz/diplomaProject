@@ -107,21 +107,41 @@ export const useInvitacionStore = defineStore('invitacion', {
                 const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
                 const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
 
-                //tratamiento de errores
-                if(responseMembersInvited.error){
-                    this.setDataError(responseMembersInvited.data)
+                //tratamiento de errores para invitados
+                if(responseMembersInvited.error && responseMembersInvited.error){
+                    this.setDataError(responseMembersInvited.data.message = 'Error durante el registro de invitaciones de miembros e inivitados')
+                    this.showErrorAlertModal();
+                }else{
+                    this.setDataSuccesfull(responseGuestInvited.data.message = 'Invitaciones registradas con exito')
+                    this.showSuccessAlertModal();
                 }
-
                 console.log(responseGuestInvited)
                 console.log(responseMembersInvited)
 
-
-
             }else if(guestToInvite.length > 0){
                 const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
+                
+
+                if(responseGuestInvited.error){
+                    this.setDataError(responseGuestInvited.data);
+                    this.showErrorAlertModal();
+                }else{
+                    this.setDataSuccesfull(responseGuestInvited.data);
+                    this.showSuccessAlertModal();
+                }
+
                 console.log(responseGuestInvited)
             }else if(membersToInvite.length > 0){
                 const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
+
+                if(responseMembersInvited.error){
+                    this.setDataError(responseMembersInvited.data);
+                    this.showErrorAlertModal();
+                }else{
+                    this.setDataSuccesfull(responseMembersInvited.data);
+                    this.showSuccessAlertModal();
+                }
+
                 console.log(responseMembersInvited)
             }
 

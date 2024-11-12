@@ -29,8 +29,8 @@
     <!-- Dropdown menu -->
     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
       <div class="px-4 py-3">
-        <span class="block text-sm text-gray-900 dark:text-white">{{ profileInf.name }}</span>
-        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ profileInf.mail }}</span>
+        <span class="block text-sm text-gray-900 dark:text-white">{{ profileInf.nombre }}</span>
+        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ profileInf.email }}</span>
       </div>
         <ul class="py-2" aria-labelledby="user-menu-button">
           <li>
@@ -77,15 +77,15 @@ const authStore = useAuthStore()
 
 
 const profileInf = {
-   name:  computed(() => authStore.getProfile().name),
-   mail: computed(() =>authStore.getProfile().email),
+   nombre:  computed(() => authStore.getProfile().nombre),
+   email: computed(() =>authStore.getProfile().email),
 }
 
 
 const nameNomenclature = () =>{
   if(sessionStorage.getItem('profile') !== null) {
     const profileSessinStorege = JSON.parse(sessionStorage.getItem('profile'))
-    return stringFormat.getAcronymName(profileSessinStorege.name)
+    return stringFormat.getAcronymName(profileSessinStorege.nombre)
   }
 }
 

@@ -1,11 +1,18 @@
 <template>    
   <div class="content overflow-hidden">
-    <div class="overflow-x-auto w-full">
+    <div class="flex flex-col gap-6 items-center">
+      <div class="overflow-x-auto w-full">
       <sesionTabla 
-      :data="infoSession"
+      :data="infoSession.data"
       @updateSession="getInfoSessionForUpdate"
       @viewSession="console.log('view')"
       />
+    </div>
+    <div>
+      <paginationBar
+      :links="infoSession.links"
+      />
+    </div>
     </div>
     <modalSession
       v-if="showModal"  
@@ -22,6 +29,7 @@
   import sesionTabla from '@/components/sesion/sesionTabla.vue'
   import modalSession from '@/views/sesion/modalSession.vue'
   import modalResumeSession from './modalResumeSession.vue';
+  import paginationBar from '@/components/util/paginationBar.vue';
 
   import { useSessionStore } from '@/stores/session'
   import { computed, onMounted, ref } from 'vue';

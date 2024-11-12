@@ -2,7 +2,7 @@
     <div
     tabindex="-1" 
     aria-hidden="true" 
-    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50">
     <div class="relative p-4 w-full max-w-md max-h-full">
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -149,20 +149,53 @@
         </form>
       </div>
     </div>
+    <div class="flex flex-col absolute bottom-0 m-4">
+        <AlertsModal class=""
+          v-if="sessionStore.getShowSuccessAlert()"
+          :message="sessionStore.getDataSuccesfull()"
+          :typeAlert="'succesfull'"
+          @closeAlert="sessionStore.hidenSusccessAlertModal()"
+        />
 
-    <AlertsModal class="absolute bottom-0"
-      v-if="showSuccesfullAlertModal"
-      :message="dataSuccesfull"
-      :typeAlert="'succesfull'"
-      @closeAlert="sessionStore.hidenSusccessAlertModal()"
-    />
+        <AlertsModal class=""
+          v-if="invitacionStore.getShowSuccessAlert()"
+          :message="invitacionStore.getDataSuccesfull()"
+          :typeAlert="'succesfull'"
+          @closeAlert="invitacionStore.hidenSusccessAlertModal()"
+        />
 
-    <AlertsModal class="absolute bottom-0"
-      v-if="showErrorAlertModal"
-      :message="dataError"
-      :typeAlert="'error'"
-      @closeAlert="sessionStore.hidenErrorAlertModal()"
-`   />
+        <AlertsModal class=""
+          v-if="actasStore.getShowSuccessAlert()"
+          :message="actasStore.getDataSuccesfull()"
+          :typeAlert="'succesfull'"
+          @closeAlert="actasStore.hidenSusccessAlertModal()"
+        />
+
+        <AlertsModal class=""
+          v-if="sessionStore.getShowErrorAlert()"
+          :message="sessionStore.getDateError()"
+          :typeAlert="'error'"
+          @closeAlert="sessionStore.hidenErrorAlertModal()"
+          
+      />
+
+      <AlertsModal class=""
+          v-if="invitacionStore.getShowErrorAlert()"
+          :message="invitacionStore.getDateError()"
+          :typeAlert="'error'"
+          @closeAlert="invitacionStore.hidenErrorAlertModal()"
+          
+      />
+
+      <AlertsModal class=""
+          v-if="actasStore.getShowErrorAlert()"
+          :message="actasStore.getDateError()"
+          :typeAlert="'error'"
+          @closeAlert="actasStore.hidenErrorAlertModal()"
+          
+      />
+
+    </div>
   </div>
 
 </template>
@@ -179,6 +212,7 @@ import { useInvitacionStore } from '@/stores/invitacion';
 import { useActaStore } from '@/stores/actas';
 import { computed, onMounted, ref } from 'vue';
 
+
 // Inicialización de los stores
 const sessionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
@@ -189,12 +223,6 @@ const members = computed(() => invitacionStore.usersWithOutStudents)
 const guests = computed(() => invitacionStore.guests)
 const onUpdateMode = computed(() => sessionStore.getOnUpdateMode())
 const dataSearched = computed(() => invitacionStore.searchGuest(search.value))
-
-const showErrorAlertModal = computed(() => sessionStore.getShowErrorAlert());
-const showSuccesfullAlertModal = computed(() => sessionStore.getShowSuccessAlert())
-
-const dataError = computed(() => sessionStore.getDateError());
-const dataSuccesfull = computed(() => sessionStore.getDataSuccesfull());
 
 // Variables reactivas
 const search = ref("");
@@ -217,8 +245,8 @@ onMounted(() => {
     dataSession.value.place = props.infoToUpdate.LUGAR
     dataSession.value.president = props.infoToUpdate.PRESIDENTE
     dataSession.value.secretary = props.infoToUpdate.SECRETARIO
-    dataSession.value.date = new Date(formatDateService.extractDate(props.infoToUpdate.FECHA))
-    dataSession.value.startHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_INICIO)
+    dataSession.value.date = formatDateService.extractDate(props.infoToUpdate.FECHA).toString()
+    dataSession.value.startHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_INICIO).toString()
     dataSession.value.endHour = formatDateService.extractHour(props.infoToUpdate.HORARIO_FINAL)
 
     formatDateService.getHourFromString(props.infoToUpdate.HORARIO_INICIO)
@@ -252,8 +280,8 @@ const createSession = async () => {
   
   if(responseSesionCreated.status >= 200){
     await sessionStore.fetchSessions()
-    await invitacionStore.sendInvitationMembers(responseSesionCreated.data.sesion.IDSESION)
-    await actasStore.createActa(responseSesionCreated.data.sesion.IDSESION)
+    await invitacionStore.sendInvitationMembers(responseSesionCreated.data.data.sesion.IDSESION)
+    await actasStore.createActa(responseSesionCreated.data.data.sesion.IDSESION)
   }
   
 }
