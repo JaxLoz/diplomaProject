@@ -60,7 +60,7 @@ import formatDateService from '@/service/formatDateService';
            </thead>
            <tbody>
    
-           <tr v-for="element in props.data" :key="element.IDSESION" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+           <tr v-for="element in props.sesionInf.data" :key="element.IDSESION" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                <td class="px-6 py-4">
                    {{ element.IDSESION}}
                </td>
@@ -137,7 +137,7 @@ import formatDateService from '@/service/formatDateService';
    const sessionStore = useSessionStore();
    
    const props = defineProps({
-    data: {type: Array, required: true, default: new Array()}
+    sesionInf: {type: Array, required: true, default: new Array()}
    })
 
    const emit = defineEmits(['updateSession', 'viewSession']);

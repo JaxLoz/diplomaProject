@@ -3,14 +3,15 @@
     <div class="flex flex-col gap-6 items-center">
       <div class="overflow-x-auto w-full">
       <sesionTabla 
-      :data="infoSession.data"
+      :sesionInf="infoSession"
       @updateSession="getInfoSessionForUpdate"
       @viewSession="console.log('view')"
       />
     </div>
     <div>
       <paginationBar
-      :links="infoSession.links"
+      :pages="infoSession"
+      @change-page="changePage"
       />
     </div>
     </div>
@@ -30,6 +31,7 @@
   import modalSession from '@/views/sesion/modalSession.vue'
   import modalResumeSession from './modalResumeSession.vue';
   import paginationBar from '@/components/util/paginationBar.vue';
+  import urlService from '@/service/urlService.js';
 
   import { useSessionStore } from '@/stores/session'
   import { computed, onMounted, ref } from 'vue';
@@ -42,10 +44,18 @@
   const onUpdateModeModal = computed(() => sessionStore.getOnUpdateMode())
 
   const infoSessionToUpdate = ref({})
+  const params = ref({})
 
 const getInfoSessionForUpdate = (sesionInf) => {
   console.log(sesionInf)
     infoSessionToUpdate.value = sesionInf
+}
+
+const changePage = (numPage) => {
+  params.value.page = numPage
+  const stringParams = urlService.getParamsFromUrl(params.value)
+  sessionStore.fetchSessions(stringParams)
+  console.log(stringParams)
 }
 
 onMounted(() => {

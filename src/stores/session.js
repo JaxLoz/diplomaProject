@@ -56,9 +56,9 @@ export const useSessionStore = defineStore("sesion", {
             return this.showSuccessAlert;
         },
 
-        async fetchSessions() {
+        async fetchSessions(params = '') {
             try {
-                const response = await axios.requestAxios('/sesion/all','GET');
+                const response = await axios.requestAxios('/sesion/all?'+params,'GET');
                 this.sessions = response.data.sesion;
                 console.log(this.sessions)
             } catch (error) {
