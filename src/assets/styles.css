@@ -157,6 +157,12 @@
   padding-left: 20px;
   padding-bottom: 0px;
  }
+ .createAction{
+  display: flex;
+  flex-direction: column;
+
+  
+ }
 
  /* Sesion  */
 
