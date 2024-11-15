@@ -22,8 +22,6 @@
 
       <tbody>
         <tr
-          v-for="(acta, index) in filteredActas"
-          :key="acta.id_acta"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
         >
           <th
@@ -50,15 +48,15 @@
   </div>
 </template>
 <script setup>
-import { useActaStore } from '@/stores/actas'
+//import { useActaStore } from '@/stores/actas'
+
 import { useSessionStore } from '@/stores/session'
-import { computed, onMounted, ref } from 'vue'
-// Instancia de los stores
-const ActaStore = useActaStore()
+import { computed } from 'vue'
+//const ActaStore = useActaStore()
+
 const sesionstore = useSessionStore()
 
-// Computed para acceder a los datos de los stores
-const infoActa = computed(() => ActaStore.actas)
+//const infoActa = computed(() => ActaStore.actas)
 const infosesion = computed(() => {
   const info = sesionstore.getInfoViewSesion
   console.log('info desde el store:', info) // Muestra el objeto completo

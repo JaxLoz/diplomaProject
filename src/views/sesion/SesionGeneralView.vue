@@ -28,13 +28,6 @@
 
     </div>
 </template>
-<script setup>
-import { useActaStore } from '@/stores/actas'
-import { computed, onMounted, ref } from 'vue';
-const ActaStore = useActaStore()
-
-const infoActa = computed(() => ActaStore.actas)
-</script>
 
 <script setup>
 import SesionEspecifico from '@/components/sesion/SesionVistaEspecifica/SesionEspecifico.vue';
@@ -47,11 +40,14 @@ import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/
 import { useRoute } from 'vue-router';
 import { computed, onMounted} from 'vue';
 import { useSessionStore } from '@/stores/session.js';
+//import { useActaStore } from '@/stores/actas.js';
 
 const route = useRoute();
 const sesionStore = useSessionStore();
+//const ActaStore = useActaStore()
 
 const infoSesion = computed(() => sesionStore.getInfoViewSesion())
+//const infoActa = computed(() => ActaStore.actas)
 
 onMounted( () => {
     sesionStore.fetchSessionById(route.params.idSesion);
