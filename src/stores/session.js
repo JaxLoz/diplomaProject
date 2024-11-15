@@ -4,6 +4,7 @@ import axios from "@/axios";
 export const useSessionStore = defineStore("sesion", {
     state: () => ({
         sessions: [],
+        infViewSesion: {},
         showModalSession: false,
         showResumenModalSession: false,
         onUpdateMode: false,
@@ -30,6 +31,10 @@ export const useSessionStore = defineStore("sesion", {
             this.dataSuccesfull = {...data}
         },
 
+        setInfoViewSesion(data){
+            this.infViewSesion = {...data}
+        },
+
         showErrorAlertModal(){
             this.showErrorAlert = true;
         },
@@ -54,6 +59,10 @@ export const useSessionStore = defineStore("sesion", {
 
         getShowSuccessAlert(){
             return this.showSuccessAlert;
+        },
+
+        getInfoViewSesion(){
+            return this.infViewSesion;
         },
 
         async fetchSessions(params = '') {
