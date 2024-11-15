@@ -3,6 +3,7 @@ import axios from "@/axios.js";
 
 export const useActaStore = defineStore("acta", {
     state: () => ({
+        estadoactas:[],
         showModalactas: false,
         showErrorAlert: false,
         showSuccessAlert: false,
@@ -76,5 +77,22 @@ export const useActaStore = defineStore("acta", {
                 this.showSuccessAlertModal();
             }
         },
+        async estado(actadata){
+            const id = actadata.ID_ACTA; 
+            const response = await axios.requestAxios(`/acta/estado/${id}`, 'PUT', {
+                ESTADO: sessionData.estado
+            });
+            if (response.error) {
+                console.error("Error en la respuesta de la API:", response.data);
+                this.showErrorAlertModal();
+                this.setDataError(response.data); // Mostrar la alerta de error
+            }else{
+                this.showSuccessAlertModal();
+                this.setDataSuccesfull(response.data);
+            }
+    
+            //console.log("Sesión actualizada:", response);
+            return response;
+            }
     }
 })
