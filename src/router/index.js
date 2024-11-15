@@ -32,7 +32,7 @@ const router = createRouter({
             component: () => import('@/views/sesion/sessions_actas.vue')
           },
           {
-            path: '/SesionView',
+            path: '/SesionView/:idSesion',
             name: 'SesionView',
             component: () => import('@/views/sesion/SesionGeneralView.vue')
 

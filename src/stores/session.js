@@ -74,6 +74,17 @@ export const useSessionStore = defineStore("sesion", {
                 console.error("Error fetching sessions:", error);
             }
         },
+        
+        async fetchSessionById(id) {
+            
+            const response = await axios.requestAxios('/sesion/'+id, 'GET');
+            if(response.error){
+                this.setDataError(response.data);
+                //this.showErrorAlertModal()
+            }else{
+                this.setInfoViewSesion(response.data.sesion);
+            }
+        },
 
         async getSessionById(id) {
             if (!id) {

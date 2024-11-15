@@ -5,7 +5,6 @@
         <sesionTabla 
         :sesionInf="infoSession"
         @updateSession="getInfoSessionForUpdate"
-        @viewSession="updatainfViewSession"
         />
       </div>
 
@@ -53,9 +52,6 @@ const getInfoSessionForUpdate = (sesionInf) => {
     infoSessionToUpdate.value = sesionInf
 }
 
-const updatainfViewSession = (infoSesion) => {
-   sessionStore.setInfoViewSesion(infoSesion)
-}
 
 const changePage = (numPage) => {
   params.value.page = numPage

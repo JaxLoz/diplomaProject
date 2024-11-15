@@ -36,25 +36,25 @@
         <tbody>
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    1
+                    {{ props.sesionInf.IDSESION }}
                 </th>
                 <td class="px-6 py-4">
-                    Juan
+                    {{ props.sesionInf.PRESIDENTE }}
                 </td>
                 <td class="px-6 py-4">
-                    Manuel
+                    {{ props.sesionInf.SECRETARIO }}
                 </td>
                 <td class="px-6 py-4">
-                    Monteria
+                    {{ props.sesionInf.LUGAR }}
                 </td>
                 <td class="px-6 py-4">
-                    2024-11-07
+                    {{ formatDateService.extractDate(props.sesionInf.FECHA) }}
                 </td>
                 <td class="px-6 py-4">
-                    14:24
+                    {{ formatDateService.extractHour(props.sesionInf.HORARIO_INICIO) }}
                 </td>
                 <td class="px-6 py-4">
-                    00:00
+                    {{ formatDateService.extractHour(props.sesionInf.HORARIO_FINAL) }}
                 </td>
                 
             </tr>
@@ -65,3 +65,10 @@
 <br>
 </div>
 </template>
+<script setup>
+import formatDateService from '@/service/formatDateService.js'
+const props = defineProps({
+    
+    sesionInf: {type: Object, required: true, default: new Object()}
+})
+</script>

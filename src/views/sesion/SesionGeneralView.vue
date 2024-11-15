@@ -1,11 +1,3 @@
-<script setup>
-import SesionEspecifico from '@/components/sesion/SesionVistaEspecifica/SesionEspecifico.vue';
-import AsistenteEspecifico from '@/components/sesion/SesionVistaEspecifica/AsistenteEspecifico.vue';
-import ActaEspecifico from '@/components/sesion/SesionVistaEspecifica/ActaEspecifico.vue';
-import TareaEspecifico from '@/components/sesion/SesionVistaEspecifica/TareaEspecifico.vue';
-import SolicitudesEspecifico from '@/components/sesion/SesionVistaEspecifica/SolicitudesEspecifico.vue';
-import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/ProposicionesEspecificos.vue';
-</script>
 <template>
 <!-- Contenedor de Breadcrumb -->
 <div class="title">   
@@ -18,11 +10,14 @@ import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/
 <!-- Contenedor secudario -->
 <div class="centro2">
 <!-- Tabla de sesión -->
-<SesionEspecifico />
+<SesionEspecifico 
+:sesionInf="infoSesion"
+/>
 <!-- Tabla de actas de la sesión  -->
 <ActaEspecifico />
 <!-- Tabla de asistentes de la sesión -->
-<AsistenteEspecifico />
+<AsistenteEspecifico
+ />
 <!-- Tabla de encargados de Tareas y Tareas  -->
 <TareaEspecifico />
 <!-- Tabla de solicitudes -->
@@ -33,5 +28,28 @@ import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/
 
     </div>
 </template>
+
+<script setup>
+import SesionEspecifico from '@/components/sesion/SesionVistaEspecifica/SesionEspecifico.vue';
+import AsistenteEspecifico from '@/components/sesion/SesionVistaEspecifica/AsistenteEspecifico.vue';
+import ActaEspecifico from '@/components/sesion/SesionVistaEspecifica/ActaEspecifico.vue';
+import TareaEspecifico from '@/components/sesion/SesionVistaEspecifica/TareaEspecifico.vue';
+import SolicitudesEspecifico from '@/components/sesion/SesionVistaEspecifica/SolicitudesEspecifico.vue';
+import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/ProposicionesEspecificos.vue';
+
+import { useRoute } from 'vue-router';
+import { computed, onMounted} from 'vue';
+import { useSessionStore } from '@/stores/session.js';
+
+const route = useRoute();
+const sesionStore = useSessionStore();
+
+const infoSesion = computed(() => sesionStore.getInfoViewSesion())
+
+onMounted( () => {
+    sesionStore.fetchSessionById(route.params.idSesion);
+})
+
+</script>
 
 
