@@ -9,59 +9,63 @@ const router = createRouter({
       name: 'home',
       component: () => import('@/layout/appLayout.vue'),
       children: [
-          {
-            path: '/dashboard',
-            name: 'dashboard',
-            component: () => import('@/components/util/barGrafic.vue')
-          },
+        {
+          path: '/dashboard',
+          name: 'dashboard',
+          component: () => import('@/components/util/barGrafic.vue')
+        },
 
-          {
-            path: '/table',
-            name: 'table',
-            component: () => import('@/views/ListadoTable.vue')
-          },
+        {
+          path: '/table',
+          name: 'table',
+          component: () => import('@/views/ListadoTable.vue')
+        },
 
-          {
-            path: '/graph',
-            name: 'graph',
-            component: () => import('@/views/GraficosPage.vue')
-          },
-          {
-            path: '/sesion',
-            name: 'sesion',
-            component: () => import('@/views/sesion/sessions_actas.vue')
-          },
-          {
-            path: '/SesionView',
-            name: 'SesionView',
-            component: () => import('@/views/sesion/SesionGeneralView.vue')
-
-          },
-          {
-            path: '/tareas',
-            name: 'tareas',
-            component: () => import('@/views/tareas/tareas_actas.vue')
-          },
-          {
-            path: '/invitacion',
-            name: 'invitacion',
-            component: () => import('@/views/invitacion/InvitationView.vue')
-          },
-          {
-            path: '/actas',
-            name: 'actas',
-            component: () => import('@/views/actas/actas.vue')
-          },
-          {
-            path: '/solicitudes',
-            name: 'solicitudes.index',
-            component: () => import('@/views/solicitudes/SolicitudesView.vue')
-          },
-          {
-            path: '/descripciones',
-            name: 'descripciones.index',
-            component: () => import('@/views/descripciones/DescripcionesView.vue')
-          }
+        {
+          path: '/graph',
+          name: 'graph',
+          component: () => import('@/views/GraficosPage.vue')
+        },
+        {
+          path: '/sesion',
+          name: 'sesion',
+          component: () => import('@/views/sesion/sessions_actas.vue')
+        },
+        {
+          path: '/SesionView',
+          name: 'SesionView',
+          component: () => import('@/views/sesion/SesionGeneralView.vue')
+        },
+        {
+          path: '/tareas',
+          name: 'tareas',
+          component: () => import('@/views/tareas/tareas_actas.vue')
+        },
+        {
+          path: '/invitacion',
+          name: 'invitacion',
+          component: () => import('@/views/invitacion/InvitationView.vue')
+        },
+        {
+          path: '/actas',
+          name: 'actas',
+          component: () => import('@/views/actas/actas.vue')
+        },
+        {
+          path: '/solicitudes',
+          name: 'solicitudes.index',
+          component: () => import('@/views/solicitudes/SolicitudesView.vue')
+        },
+        {
+          path: '/descripciones',
+          name: 'descripciones.index',
+          component: () => import('@/views/descripciones/DescripcionesView.vue')
+        },
+        {
+          path: '/proposiciones',
+          name: 'proposiciones',
+          component: () => import('@/views/proposiciones/proposicionesView.vue')
+        }
       ]
     },
 
@@ -82,10 +86,7 @@ const router = createRouter({
           component: () => import('@/views/auth/registerUser.vue')
         }
       ]
-        
-    },
-
-
+    }
   ]
 })
 
