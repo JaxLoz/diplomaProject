@@ -3,7 +3,7 @@ import axios from "@/axios.js";
 
 export const useActaStore = defineStore("acta", {
     state: () => ({
-        estadoactas:[],
+        actas:[],
         showModalactas: false,
         showErrorAlert: false,
         showSuccessAlert: false,
@@ -60,6 +60,15 @@ export const useActaStore = defineStore("acta", {
 
         getShowModelSession(){
             return this.showModalactas
+        },
+        async fetchacta(params = '') {
+            try {
+                const response = await axios.requestAxios('/acta/all?'+params,'GET');
+                this.actas = response.data.acta;
+                console.log(this.actas)
+            } catch (error) {
+                console.error("Error fetching actas:", error);
+            }
         },
 
         async createActa(idSesion){

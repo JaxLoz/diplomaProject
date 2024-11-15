@@ -91,18 +91,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-8 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    1
-                </th>
-                <td class="px-2 py-4">
+        <tr v-for="acta in infoActa" :key="acta.ID_ACTA" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-8 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ acta.ID_ACTA }}
+          </th>
+          <td class="px-2 py-4">
                     
-<form class="mx-auto">
-      <select id="acta" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    <option selected value="pediente">Pendiente</option>
-    <option value="aprobada">Aprobada</option>
-    <option value="rechazada">Rechazada</option>
-  </select>
+            <form class="mx-auto">
+              <select 
+                :value="acta.estado"
+                @change="ActaStore.estado({ ID_ACTA: acta.ID_ACTA, estado: $event.target.value })" 
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                
+                <option value="pendiente">Pendiente</option>
+                <option value="aprobada">Aprobada</option>
+                <option value="rechazada">Rechazada</option>
+              </select>
 </form>
 
                 </td>
@@ -1241,5 +1245,12 @@
 
     </div>
 </template>
+<script setup>
+import { useActaStore } from '@/stores/actas'
+import { computed, onMounted, ref } from 'vue';
+const ActaStore = useActaStore()
+
+const infoActa = computed(() => ActaStore.actas)
+</script>
 
 
