@@ -5,6 +5,7 @@ export const useInvitacionStore = defineStore('invitacion', {
     state: () => ({
         usersWithOutStudents: [],
         guests: [], // se almacenan los posibles invitados
+        attendanceRegister: [], // almacena las personas a las que se les envio la invitacion
         showErrorAlert: false,
         showSuccessAlert: false,
         dataError: {},
@@ -159,6 +160,10 @@ export const useInvitacionStore = defineStore('invitacion', {
         getGuestInvitation(){
             const invGuests = this.guests.filter(guest => Object.keys(guest).includes('id_invitado'))
             return invGuests;
+        },
+
+        getAttendanceRegister(){
+
         },
 
         
