@@ -28,6 +28,13 @@
 
     </div>
 </template>
+<script setup>
+import { useActaStore } from '@/stores/actas'
+import { computed, onMounted, ref } from 'vue';
+const ActaStore = useActaStore()
+
+const infoActa = computed(() => ActaStore.actas)
+</script>
 
 <script setup>
 import SesionEspecifico from '@/components/sesion/SesionVistaEspecifica/SesionEspecifico.vue';
