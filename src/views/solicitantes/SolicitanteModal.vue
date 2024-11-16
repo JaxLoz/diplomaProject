@@ -6,10 +6,11 @@
             <div class="relative p-4 w-full max-w-md max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    
                     <!-- Modal header -->
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Nueva descripción
+                            Nuevo solicitante
                         </h3>
                         <button type="button" @click="closeModal"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -21,71 +22,46 @@
                             <span class="sr-only">Cerrar modal</span>
                         </button>
                     </div>
+
                     <!-- Modal body -->
                     <form class="p-4 md:p-5" @submit.prevent="submitHandler">
                         <div class="grid gap-4 mb-4 grid-cols-2">
 
                             <div class="col-span-2">
                                 <fieldForm 
-                                    v-model="form.estudiantes"
+                                    v-model="form.nombre"
                                     fieldType="text" 
-                                    label="Estudiantes" 
+                                    label="Nombre" 
                                     :style="'field-model'"
-                                    placeholder="Escriba los nombres de los estudiantes implicados... " />
+                                    placeholder="Ingrese el nombre..." />
                             </div>
 
                             <div class="col-span-2">
                                 <fieldForm 
-                                    v-model="form.numero_estudiantes"
-                                    fieldType="number" 
-                                    label="Número de estudiantes implicados" 
-                                    :style="'field-model'"
-                                    placeholder="Escriba el número de estudiantes implicados" />
-                            </div>
-
-                            <div class="col-span-2">
-                                <fieldForm 
-                                    v-model="form.docentes"
+                                    v-model="form.email"
                                     fieldType="text" 
-                                    label="Docentes" 
+                                    label="Email" 
                                     :style="'field-model'"
-                                    placeholder="Escriba los nombres de los docentes implicados..." />
+                                    placeholder="Ingrese el email..." />
                             </div>
 
                             <div class="col-span-2">
                                 <fieldForm 
-                                    v-model="form.numero_docentes"
-                                    fieldType="number" 
-                                    label="Número de docentes implicados" 
-                                    :style="'field-model'"
-                                    placeholder="Escriba el número de docentes implicados" />
-                            </div>
-
-                            <div class="col-span-2">
-                                <fieldForm 
-                                    v-model="form.ciudad"
+                                    v-model="form.celular"
                                     fieldType="text" 
-                                    label="Ciudad" 
+                                    label="Celular" 
                                     :style="'field-model'"
-                                    placeholder="¿Escribe el nombre de la ciudad?" />
+                                    placeholder="Ingrese el celular..." />
                             </div>
+                            
 
                             <div class="col-span-2">
                                 <fieldForm 
-                                    v-model="form.pais"
+                                    v-model="form.tipo_solicitante"
                                     fieldType="text" 
-                                    label="Pais" 
+                                    label="Tipo solicitante" 
                                     :style="'field-model'"
-                                    placeholder="¿Escribe el nombre del pais?" />
-                            </div>
-
-                            <div class="col-span-2">
-                                <fieldForm 
-                                    v-model="form.evento"
-                                    fieldType="text" 
-                                    label="Evento" 
-                                    :style="'field-model'"
-                                    placeholder="Escribe el nombre del evento" />
+                                    placeholder="Ingrese el tipo de solicitante..." />
                             </div>
 
                         </div>
@@ -106,68 +82,67 @@
     </Teleport>
 </template>
 <script setup>
-import { ref } from 'vue';
-import useDescripcionStore from '@/stores/descripcion';
 import fieldForm from '@/components/util/fieldForm.vue'
+import useSolicitanteStore from '@/stores/solicitante';
+import { ref } from 'vue';
 
 const showModal = ref(false);
-
-const toggleModal = () => {
-    showModal.value = !showModal.value;
-}
 
 const closeModal = () => {
     resetForm();
     showModal.value = false;
 }
 
+const toggleModal = () => {
+    showModal.value = !showModal.value;
+}
+
+const {
+    createSolicitante,
+    updateSolicitante
+} = useSolicitanteStore();
 
 const form = ref({
-    id: -1,
-    estudiantes: '',
-    numero_estudiantes: '',
-    docentes: '',
-    numero_docentes: '',
-    ciudad: '',
-    pais: '',
-    evento: '',
+    nombre: '',
+    email: '',
+    celular: '',
+    tipo_solicitante: ''
 });
 
 const resetForm = () => {
-
     form.value = {
-    id: -1,
-    estudiantes: '',
-    numero_estudiantes: '',
-    docentes: '',
-    numero_docentes: '',
-    ciudad: '',
-    pais: '',
-    evento: '',
-}
+        nombre: '',
+        email: '',
+        celular: '',
+        tipo_solicitante: ''
+    }
 }
 
-
-const {
-    updateDescripcion
-} = useDescripcionStore();
-
-const setDescripcion = (descripcion) => {
-    form.value = descripcion;
+const setSolicitante = (solicitante) => {
+    form.value = solicitante;
 }
 
 const submitHandler = async () => {
-    
-    const response = await updateDescripcion(form.value, form.value.id);
 
-    if(response.status === 200) {
+    if(form.value.id) {
+        const response = await updateSolicitante(form.value, form.value.id);
+        if(response.status === 200) {
+            resetForm();
+            toggleModal();
+        }
+        return;
+    }
+
+    const response = await createSolicitante(form.value);
+
+    if(response.status === 201) {
+        resetForm();
         toggleModal();
     }
 }
 
-
 defineExpose({
-    setDescripcion,
-    toggleModal
+    toggleModal,
+    setSolicitante
 })
 </script>

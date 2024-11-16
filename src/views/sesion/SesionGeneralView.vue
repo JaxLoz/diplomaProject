@@ -17,7 +17,7 @@
       <!-- Tabla de actas de la sesión  -->
       <ActaEspecifico />
       <!-- Tabla de asistentes de la sesión -->
-      <AsistenteEspecifico />
+      <AsistenteEspecifico :invitedMemberInf="attendanceRegisterMembers" :invitedGuestInf="attendanceRegisterGuests" :sesionInf="infoSesion"/>
       <!-- Tabla de encargados de Tareas y Tareas  -->
       <TareaEspecifico />
       <!-- Tabla de solicitudes -->
@@ -39,14 +39,22 @@ import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/
 import { useRoute } from 'vue-router'
 import { computed, onMounted } from 'vue'
 import { useSessionStore } from '@/stores/session.js'
+import { useInvitacionStore } from '@/stores/invitacion'
+//import { useActaStore } from '@/stores/actas.js';
 
 const route = useRoute()
 const sesionStore = useSessionStore()
+const invitacionStore = useInvitacionStore()
+//const ActaStore = useActaStore()
 
 const infoSesion = computed(() => sesionStore.getInfoViewSesion())
+const attendanceRegisterMembers = computed(() =>invitacionStore.getAttendanceRegisterMembersState())
+const attendanceRegisterGuests = computed(() => invitacionStore.getAttendanceRegisterGuestsState())
+//const infoActa = computed(() => ActaStore.actas)
 
-onMounted(async () => {
-  await sesionStore.fetchSessionById(route.params.idSesion)
-  await actasStore.fetchacta(route.params.idSesion)
+onMounted(() => {
+  sesionStore.fetchSessionById(route.params.idSesion)
+  invitacionStore.getAttendanceRegisterMembers(route.params.idSesion)
+  invitacionStore.getAttendanceRegisterGuests(route.params.idSesion)
 })
 </script>

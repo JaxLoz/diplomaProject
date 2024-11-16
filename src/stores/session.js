@@ -32,7 +32,7 @@ export const useSessionStore = defineStore("sesion", {
         },
 
         setInfoViewSesion(data){
-            this.infViewSesion = {...data}
+            this.infViewSesion = data
         },
 
         showErrorAlertModal(){
