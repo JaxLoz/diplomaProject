@@ -43,12 +43,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="member in props.invitedMembers " :key="member.miembro_id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <tr v-for="member in props.invitedMemberInf.data" :key="member.invitado_id"  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="w-4 p-4">
-
+                     
                 </td>
                 <th scope="row" class="flex items-center px-1 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    <img class="w-10 h-10 rounded-full" src="@/assets/img/image12.jpg" alt="Jese image">
+                    <div class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                        <span class="font-medium text-gray-600 dark:text-gray-300">{{ stringFormat.getAcronymName(member.nombre) }}</span>
+                    </div>
                     <div class="ps-3">
                         <div class="text-base font-semibold">{{ member.nombre }}</div>
                         <div class="font-normal text-gray-500">{{ member.email }}</div>
@@ -110,10 +112,9 @@
 </div>
 </template>
 <script setup>
-
+import stringFormat from '@/service/stringFormat';
 const props = defineProps({
-    invitedMembers: {type: Array, required: true, default: new Array()}
+    invitedMemberInf: {type: Object, required: true, default: new Object()}
 })
-
 
 </script>

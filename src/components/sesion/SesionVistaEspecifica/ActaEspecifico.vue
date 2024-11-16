@@ -66,7 +66,7 @@ onMounted(async () => {
 // Method to handle the update of the acta state
 const updateActaState = async (acta) => {
   try {
-    const response = await actasStore.estado(acta) // Usando el método 'estado' del store
+    const response = await actasStore.estado(acta) // Using the 'estado' method from the store
     console.log('Estado de acta actualizado:', response)
   } catch (error) {
     console.error('Error al actualizar el estado de la acta:', error)
