@@ -60,7 +60,26 @@ export const useActaStore = defineStore('acta', {
     getShowModelSession() {
       return this.showModalactas
     },
-    async fetchacta(idSesion) {
+    async fetchActaOfSesionById(idSesion) {
+      try {
+        const response = await axios.requestAxios(`/actaOfSesion/${idSesion}`, 'GET')
+        console.log('Response from axios.requestAxios:', response) // Log the entire response
+
+        // Check if data exists and it's an array with items
+        if (response.data && response.data.data && response.data.data.length > 0) {
+          const actas = response.data.data // Get the array of actas
+          console.log('Actas data:', actas) // Log all the actas
+          return actas // Return the array of actas
+        } else {
+          console.log('No actas found')
+          return []
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        this.setDataError(error.message)
+      }
+    },
+    async fetchacta(params = '') {
       try {
         const response = await axios.requestAxios(`/acta/all?${params}`, 'GET')
         console.log('Datos obtenidos del backend:', response.data.acta)
@@ -85,11 +104,17 @@ export const useActaStore = defineStore('acta', {
         this.showSuccessAlertModal()
       }
     },
+
     async estado(actadata) {
       const id = actadata.ID_ACTA
+
+      // Verifica qué datos estás enviando al backend
+      console.log('Datos enviados al backend:', { estado: actadata.ESTADO })
+
       const response = await axios.requestAxios(`/acta/estado/${id}`, 'PUT', {
-        ESTADO: sessionData.estado
+        estado: actadata.ESTADO // Cambié 'ESTADO' a 'estado' (minúsculas)
       })
+
       if (response.error) {
         console.error('Error en la respuesta de la API:', response.data)
         this.showErrorAlertModal()
@@ -99,7 +124,6 @@ export const useActaStore = defineStore('acta', {
         this.setDataSuccesfull(response.data)
       }
 
-      //console.log("Sesión actualizada:", response);
       return response
     }
   }

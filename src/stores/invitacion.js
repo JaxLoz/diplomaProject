@@ -171,7 +171,7 @@ export const useInvitacionStore = defineStore('invitacion', {
             const response = await axios.requestAxios('guestInvitedToSesion/'+idSesion, 'GET');
 
             if(!response.error){
-                this.attendanceRegisterMembers = {...response.data.data}
+                this.attendanceRegisterMembers = response.data.data
             }
         },
 
