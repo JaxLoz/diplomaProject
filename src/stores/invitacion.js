@@ -61,6 +61,10 @@ export const useInvitacionStore = defineStore('invitacion', {
             return this.attendanceRegisterMembers;
         },
 
+        getAttendanceRegisterGuestsState(){
+            return this.attendanceRegisterGuests;
+        },
+
         //busca los invitados que no son estudiantes en la base de datos
         async getInvitadosWithAoutStudents(){
             const invitadosResponse = await axios.requestAxios('/invitado/InvitadosWithOutStudents', 'GET')
@@ -176,9 +180,32 @@ export const useInvitacionStore = defineStore('invitacion', {
             }
         },
 
+        // obtener los invitados que se les envio la invitacion
+        async getAttendanceRegisterGuests(idSesion, params = ''){
+            const response = await axios.requestAxios(`guestInvitedToSesion/${idSesion}?${params}`, 'GET');
+
+            if(!response.error){
+                this.attendanceRegisterGuests = response.data.data
+            }
+        },
+
         // Para actualizar el estdo de la asistencia de los miembros que se invitaron
         async updateAttendanceMembers(idSesion, idMiembro, status){
             const response = await axios.requestAxios(`asistenciaMiembros/update/${idSesion}/${idMiembro}`, 'PUT',
+                {estadoAsistencia: status}
+            );
+
+            this.setDataSuccesfull(response.data)
+            this.showSuccessAlertModal()
+
+            if(response.error){
+                this.setDataError(response.data)
+                this.showErrorAlertModal()
+            }
+        },
+
+        async updateAttendanceGuests(idSesion, idInvitado, status){
+            const response = await axios.requestAxios(`asistenciaInvitados/update/${idSesion}/${idInvitado}`, 'PUT',
                 {estadoAsistencia: status}
             );
 
@@ -202,6 +229,17 @@ export const useInvitacionStore = defineStore('invitacion', {
                this.setDataError(response.data)
                this.showErrorAlertModal()
            }
+        },
+
+        async deleteAttendanceGuests(idSesion, idInvitado){
+            const response = await axios.requestAxios(`asistenciaInvitados/delete/${idSesion}/${idInvitado}`, 'DELETE');
+            this.setDataSuccesfull(response.data)
+            this.showSuccessAlertModal()
+
+            if(response.error){
+                this.setDataError(response.data)
+                this.showErrorAlertModal()
+            }
         },
 
         

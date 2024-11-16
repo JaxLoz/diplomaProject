@@ -17,7 +17,7 @@
       <!-- Tabla de actas de la sesión  -->
       <ActaEspecifico />
       <!-- Tabla de asistentes de la sesión -->
-      <AsistenteEspecifico :invitedMemberInf="attendanceRegisterMembers" :sesionInf="infoSesion"/>
+      <AsistenteEspecifico :invitedMemberInf="attendanceRegisterMembers" :invitedGuestInf="attendanceRegisterGuests" :sesionInf="infoSesion"/>
       <!-- Tabla de encargados de Tareas y Tareas  -->
       <TareaEspecifico />
       <!-- Tabla de solicitudes -->
@@ -48,13 +48,13 @@ const invitacionStore = useInvitacionStore()
 //const ActaStore = useActaStore()
 
 const infoSesion = computed(() => sesionStore.getInfoViewSesion())
-const attendanceRegisterMembers = computed(() =>
-  invitacionStore.getAttendanceRegisterMembersState()
-)
+const attendanceRegisterMembers = computed(() =>invitacionStore.getAttendanceRegisterMembersState())
+const attendanceRegisterGuests = computed(() => invitacionStore.getAttendanceRegisterGuestsState())
 //const infoActa = computed(() => ActaStore.actas)
 
 onMounted(() => {
   sesionStore.fetchSessionById(route.params.idSesion)
   invitacionStore.getAttendanceRegisterMembers(route.params.idSesion)
+  invitacionStore.getAttendanceRegisterGuests(route.params.idSesion)
 })
 </script>
