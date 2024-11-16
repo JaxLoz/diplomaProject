@@ -4,6 +4,9 @@
             <div
                 class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
                 <div>
+                    <button @click="openCreateSolicitudModal(1)" >nueva solicitud</button>
+
+                    <!-- Dropdown menu 
                     <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                         type="button">
@@ -15,11 +18,10 @@
                                 d="m1 1 4 4 4-4" />
                         </svg>
                     </button>
-                    <!-- Dropdown menu -->
                     <div id="dropdownAction"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownActionButton">
+                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownActionButton">
                             <li>
                                 <button @click="solicitudModal.toggleModal()"
                                     class="flex flex-row items-center gap-x-2 px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
@@ -35,6 +37,7 @@
                             </li>
                         </ul>
                     </div>
+                    -->
                 </div>
                 <label for="table-search" class="sr-only">Search </label>
                 <div class="relative">
@@ -45,11 +48,13 @@
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
-                    <input type="text" id="table-search-users"
+                    <input v-model="asunto" @input="searchSolicitudes" type="text" id="table-search-users"
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Buscar acta">
+                        placeholder="Buscar solicitud por asunto">
                 </div>
             </div>
+
+        
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -82,10 +87,6 @@
                         </th>
 
                         <th scope="col" class="px-6 py-3">
-                            DESCRIPCIÓN
-                        </th>
-
-                        <th scope="col" class="px-6 py-3">
 
                         </th>
 
@@ -100,30 +101,30 @@
                         </td>
 
                         <td class="px-6 py-4">
-                            {{ solicitud.estudiantes }}
+                            {{ solicitud.dependencia }}
                         </td>
                         
                         <td class="px-6 py-4">
-                            {{ solicitud.numero_estudiantes }}
+                            {{ solicitud.asunto }}
                         </td>
                         
                         <td class="px-6 py-4">
-                            {{ solicitud.docentes }}
+                            {{ solicitud.desicion }}
                         </td>
                         
                         <td class="px-6 py-4">
-                            {{ solicitud.numero_docentes }}
+                            {{ formatDateService.extractDate(solicitud.fecha_solicitud) }}
                         </td>
 
                         <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="flex items-center">
                                 <div
                                     class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                                    <span class="font-medium text-gray-600 dark:text-gray-300">JL</span>
+                                    <span class="font-medium text-gray-600 dark:text-gray-300">{{getAcronymName.getAcronymName(solicitud.solicitante.nombre)}}</span>
                                 </div>
                                 <div class="ps-3">
-                                    <div class="text-base font-semibold">Javier Eduardo Montes Delgado</div>
-                                    <div class="font-normal text-gray-500">javviemontesdelgado200@gmail.com</div>
+                                    <div class="text-base font-semibold">{{ solicitud.solicitante.nombre }}</div>
+                                    <div class="font-normal text-gray-500">{{ solicitud.solicitante.email }}</div>
                                 </div>
                             </div>
                         </td>
@@ -131,21 +132,18 @@
                         <td scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="flex items-center">
                                 <div class="ps-3">
-                                    <div class="text-base font-semibold">Taller de Finanzas</div>
-                                    <div class="font-normal text-sm text-gray-500">2024/10/10</div>
-                                    <div class="font-normal text-sm text-gray-500">11:00am - 1:00pm</div>
+                                    <div class="text-base font-semibold">{{solicitud.sesion.lugar}}</div>
+                                    <div class="font-normal text-sm text-gray-500"> {{ formatDateService.extractDate(solicitud.sesion.fecha) }}</div>
+                                    <div class="font-normal text-sm text-gray-500"> {{ formatDateService.extractHour(solicitud.sesion.hora_inicio) }}</div>
                                 </div>
                             </div>
                         </td>
 
-                        <td class="px-6 py-4">
-                            Solicitud de revisión del informe del tercer trimestre.
-                        </td>
 
                         <td class="px-6 py-4">
                             <div class="flex flex-row justify-between items-center">
                                 <div>
-                                    <button @click="openUpdateSolicitudModal" >
+                                    <button @click="openUpdateSolicitudModal(solicitud.id)" >
                                         <svg class="w-[18px] h-[18px] icon-button" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                                             viewBox="0 0 24 24">
@@ -161,16 +159,11 @@
                                 
 
                                 <div>
-                                    <svg class="w-[18px] h-[18px] icon-button" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd"
-                                            d="M7 9v6a4 4 0 0 0 4 4h4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1v2Z"
-                                            clip-rule="evenodd" />
-                                        <path fill-rule="evenodd"
-                                            d="M13 3.054V7H9.2a2 2 0 0 1 .281-.432l2.46-2.87A2 2 0 0 1 13 3.054ZM15 3v4a2 2 0 0 1-2 2H9v6a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
+                                    <button @click="deleteSolicitud(solicitud.id)" >
+                                        <svg class="w-[18px] h-[18px] text-gray-800 dark:text-gray-400 dark:hover:text-red-600 transition-colors duration-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
 
@@ -189,14 +182,17 @@
 </template>
 <script setup>  
 import SolicitudModal from './SolicitudModal.vue';
+import  getAcronymName  from '@/service/stringFormat';
+import formatDateService from '@/service/formatDateService';
 import { initFlowbite } from 'flowbite';
-import { useTemplateRef, onMounted } from 'vue';
+import { useTemplateRef, ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import debounce from '@/utils/debounce';
 import useSolicitudStore from '@/stores/solicitud';
-
 
 const solicitudModal = useTemplateRef('solicitudModal')
 
+const asunto = ref('');
 const solicitudStore = useSolicitudStore();
 
 const {
@@ -204,13 +200,23 @@ const {
 } = storeToRefs(solicitudStore);
 
 const {
-    fetchSolicitudes
+    fetchSolicitudes,
+    deleteSolicitud
 } = solicitudStore;
 
-const openUpdateSolicitudModal = () => {
-    //solicitudModal.value.set
+const openCreateSolicitudModal = (id) => {
+    solicitudModal.value.setSesionId(id);
     solicitudModal.value.toggleModal();
 }
+
+const openUpdateSolicitudModal = (id) => {
+    solicitudModal.value.loadInfoBySesionId(id);
+    solicitudModal.value.toggleModal();
+}
+
+const searchSolicitudes = debounce(async () => {
+    await fetchSolicitudes(`filter[asunto]=${asunto.value}`);
+}, 500);
 
 onMounted(() => {
     initFlowbite();

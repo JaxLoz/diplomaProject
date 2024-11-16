@@ -12,7 +12,7 @@
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Nueva Solicitud
                         </h3>
-                        <button type="button" @click="toggleModal"
+                        <button type="button" @click="closeModal"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
@@ -28,11 +28,17 @@
                     
                         <div class="flex flex-wrap">
 
-                            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4" >
+                            <h2 class="w-full text-lg font-semibold text-gray-900 dark:text-white mb-4" >
                                 Solicitante
                             </h2>
 
-                            <div class="mb-5 relative w-full">
+                            <div v-if="solicitante.nombre" >
+                                 <div class="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  >
+                                        {{ solicitante.nombre }} <button @click="resetSolicitante" class=" px-2 py-1 rounded-xl dark:text-white dark:bg-gray-800 text-black" type="button"> x </button>
+                                 </div>
+                            </div>
+
+                            <div v-else class="mb-5 relative w-full">
                                 <label for="search-solicitante" class="block mb-2 text-sborderm font-medium text-gray-900 dark:text-white">Buscar por nombre</label>
                                 <input v-model="nombreSolicitante"  @input="searchSolicitante"  type="text" id="search-solicitante" placeholder="Ingrese el nombre del solicitante..."  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <ul v-if="solicitantes && nombreSolicitante.length > 1" class="absolute bg-gray-700  w-full p-2" >
@@ -42,7 +48,7 @@
                                             <span class="text-sm text-gray-500 dark:text-gray-400">{{ solicitante.email }}</span>
                                         </div>
                                         <div>
-                                            <button @click="setSolicitante(solicitante)"
+                                            <button @click="setSolicitante(solicitante)" type="button"
                                                 class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 Seleccionar
                                             </button>
@@ -168,7 +174,6 @@
                                     placeholder="¿Cual es la decisión?" />
                                 </div>
                                 
-                                
                            
                                 <div class="mb-5 col-span-2">
                       <label for="base-input" class="form-label">Fecha</label>
@@ -254,6 +259,11 @@ const toggleModal = () => {
     showModal.value = !showModal.value;
 }
 
+const closeModal = () => {
+    showModal.value = false;
+    resetForm();
+}
+
 
 
 /* 
@@ -284,14 +294,22 @@ const searchSolicitante = debounce(async () => {
     functions, forms and properties for creating and updating applications
 */
 
+const solicitante = ref({
+    nombre: '',
+    email: '',
+    celular: '',
+    tipo_solicitante: ''
+})
+
+
 const descripcionForm = ref({
-    estudiantes: 'pedro perez',
-    numero_estudiantes: '1',
-    docentes: 'juan gonzales',
-    numero_docentes: '1',
-    ciudad: 'monteria',
-    pais: 'colombia',
-    evento: 'conferencia',
+    estudiantes: '',
+    numero_estudiantes: '',
+    docentes: '',
+    numero_docentes: '',
+    ciudad: '',
+    pais: '',
+    evento: '',
 });
 
 const solicitudForm = ref({
@@ -301,25 +319,80 @@ const solicitudForm = ref({
     sesion_id: 1,
     descripcion_id: '',
     solicitante_id: '',
-})
+});
 
-const setSesionId = (id) => {
-    solicitudForm.value.sesion_id = id;
+const resetForm = () => {
+    descripcionForm.value = {
+        estudiantes: '',
+        numero_estudiantes: '',
+        docentes: '',
+        numero_docentes: '',
+        ciudad: '',
+        pais: '',
+        evento: '',
+    };
+
+    solicitudForm.value = {
+        desicion: '',
+        dependencia: '',
+        fecha_solicitud: '',
+        sesion_id: 1,
+        descripcion_id: '',
+        solicitante_id: '',
+    };
+
+    resetSolicitante();
 }
 
-const setSolicitante = (solicitante) => {
-    solicitudForm.value.solicitante_id = solicitante.id;
+const resetSolicitante = () => {
+    solicitante.value = {
+    nombre: '',
+    email: '',
+    celular: '',
+    tipo_solicitante: ''
+}
 }
 
 const {
-    createDescripcion
+    createDescripcion,
+    updateDescripcion
 } = useDescripcionStore();
 
 const {
-    createSolicitud
+    fetchSolicitud,
+    createSolicitud,
+    updateSolicitud,
 } = useSolicitudStore();
 
+const setSesionId = async (id) => {
+    solicitudForm.value.sesion_id = id;
+}
+
+const loadInfoBySesionId = async (id) => {
+
+    const response = await fetchSolicitud(id);
+
+    solicitudForm.value = response.data.data;
+
+    descripcionForm.value = response.data.data.descripcion;
+
+    solicitante.value = response.data.data.solicitante;
+}
+
+const setSolicitante = (solicitanteData) => {
+    solicitante.value = solicitanteData;
+    solicitudForm.value.solicitante_id = solicitanteData.id;
+}
+
 const submitHandler = async () => {
+
+    if(solicitudForm.value.id) {
+        await updateDescripcion(descripcionForm.value, descripcionForm.value.id);
+        await updateSolicitud(solicitudForm.value, solicitudForm.value.id);
+        resetForm();
+        toggleModal();
+        return;
+    }
     
     const descripcionResponse = await createDescripcion(descripcionForm.value);
 
@@ -330,6 +403,7 @@ const submitHandler = async () => {
     const solicitudResponse = await createSolicitud(solicitudForm.value);
 
     if(solicitudResponse.status === 201) {
+        resetForm();
         toggleModal();
     }
 
@@ -338,8 +412,27 @@ const submitHandler = async () => {
 
 
 
+/*  
+    setSesionId:
+        Este método se encarga de cargar el ID de la sesión en el formulario de solicitud 
+        al crear nuevas solicitudes.
+
+        - Primero, debes llamar a setSesionId para asignar el ID de la sesión al formulario.
+        - Después de esto, puedes ejecutar toggleModal para abrir el modal donde se completará el proceso de creación de la solicitud.
+
+    loadInfoBySesionId: 
+        Este método realiza las peticiones necesarias para cargar toda la información relacionada 
+        con la solicitud, utilizando el ID de la sesión. Esto permite pre-poblar los campos del 
+        formulario con la información correspondiente antes de que el usuario complete la solicitud.
+
+        - Al igual que con setSesionId, primero debes llamar a loadInfoBySesionId para cargar los datos necesarios.
+        - Una vez que la información esté cargada, puedes ejecutar toggleModal para abrir el modal y permitir que el usuario interactúe con el formulario.
+*/
+
+
 defineExpose({
-    setSesionId,
+    setSesionId, 
+    loadInfoBySesionId,
     toggleModal
 })
 </script>

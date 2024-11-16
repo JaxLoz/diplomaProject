@@ -18,10 +18,17 @@ const useDescripcionStore = defineStore('descripcion', () => {
         return response;
     }
 
+    const updateDescripcion = async (payload, id) => {
+        const response = await axios.axiosInstance.put(`descripciones/${id}`, payload);
+        //descripciones.value.push(response.data.data); 
+        return response;
+    }
+
     return {
         descripciones,
         fetchDescripciones,
-        createDescripcion
+        createDescripcion,
+        updateDescripcion
     }
 });
 
