@@ -173,7 +173,6 @@ const {
 const nombreSolicitante = ref('');
 
 const searchSolicitante = debounce(async () => {
-    if(!nombreSolicitante.value) return;
     await fetchSolicitantes(`filter[nombre]=${nombreSolicitante.value}`);
 }, 500);
 
