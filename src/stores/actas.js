@@ -107,7 +107,10 @@ export const useActaStore = defineStore('acta', {
 
     async estado(actadata) {
       const id = actadata.ID_ACTA
+
+      // Verifica qué datos estás enviando al backend
       console.log('Datos enviados al backend:', { estado: actadata.ESTADO })
+
       const response = await axios.requestAxios(`/acta/estado/${id}`, 'PUT', {
         estado: actadata.ESTADO // Cambié 'ESTADO' a 'estado' (minúsculas)
       })
