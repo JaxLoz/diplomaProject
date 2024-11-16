@@ -2,18 +2,19 @@
   <div class="content overflow-hidden">
     <div class="flex flex-col gap-6 items-center">
       <div class="overflow-x-auto w-full">
-      <sesionTabla 
-      :sesionInf="infoSession"
-      @updateSession="getInfoSessionForUpdate"
-      @viewSession="console.log('view')"
-      />
-    </div>
-    <div>
-      <paginationBar
-      :pages="infoSession"
-      @change-page="changePage"
-      />
-    </div>
+        <sesionTabla 
+        :sesionInf="infoSession"
+        @updateSession="getInfoSessionForUpdate"
+        />
+      </div>
+
+      <div>
+        <paginationBar
+        :pages="infoSession"
+        :size="'base'"
+        @change-page="changePage"
+        />
+      </div>
     </div>
     <modalSession
       v-if="showModal"  
@@ -50,6 +51,7 @@ const getInfoSessionForUpdate = (sesionInf) => {
   console.log(sesionInf)
     infoSessionToUpdate.value = sesionInf
 }
+
 
 const changePage = (numPage) => {
   params.value.page = numPage

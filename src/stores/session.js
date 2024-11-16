@@ -4,6 +4,7 @@ import axios from "@/axios";
 export const useSessionStore = defineStore("sesion", {
     state: () => ({
         sessions: [],
+        infViewSesion: {},
         showModalSession: false,
         showResumenModalSession: false,
         onUpdateMode: false,
@@ -28,6 +29,10 @@ export const useSessionStore = defineStore("sesion", {
 
         setDataSuccesfull(data){
             this.dataSuccesfull = {...data}
+        },
+
+        setInfoViewSesion(data){
+            this.infViewSesion = {...data}
         },
 
         showErrorAlertModal(){
@@ -56,6 +61,10 @@ export const useSessionStore = defineStore("sesion", {
             return this.showSuccessAlert;
         },
 
+        getInfoViewSesion(){
+            return this.infViewSesion;
+        },
+
         async fetchSessions(params = '') {
             try {
                 const response = await axios.requestAxios('/sesion/all?'+params,'GET');
@@ -63,6 +72,17 @@ export const useSessionStore = defineStore("sesion", {
                 console.log(this.sessions)
             } catch (error) {
                 console.error("Error fetching sessions:", error);
+            }
+        },
+        
+        async fetchSessionById(id) {
+            
+            const response = await axios.requestAxios('/sesion/'+id, 'GET');
+            if(response.error){
+                this.setDataError(response.data);
+                //this.showErrorAlertModal()
+            }else{
+                this.setInfoViewSesion(response.data.sesion);
             }
         },
 

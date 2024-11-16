@@ -5,6 +5,8 @@ export const useInvitacionStore = defineStore('invitacion', {
     state: () => ({
         usersWithOutStudents: [],
         guests: [], // se almacenan los posibles invitados
+        attendanceRegisterMembers: {}, // almacena a los miembros que se les envio la invitacion
+        attendanceRegisterGuests: {}, // almacena a los invitados que se les envio la invitacion
         showErrorAlert: false,
         showSuccessAlert: false,
         dataError: {},
@@ -53,6 +55,10 @@ export const useInvitacionStore = defineStore('invitacion', {
 
         getShowSuccessAlert(){
             return this.showSuccessAlert;
+        },
+
+        getAttendanceRegisterMembersState(){
+            return this.attendanceRegisterMembers;
         },
 
         //busca los invitados que no son estudiantes en la base de datos
@@ -159,6 +165,14 @@ export const useInvitacionStore = defineStore('invitacion', {
         getGuestInvitation(){
             const invGuests = this.guests.filter(guest => Object.keys(guest).includes('id_invitado'))
             return invGuests;
+        },
+
+        async getAttendanceRegisterMembers(idSesion){
+            const response = await axios.requestAxios('guestInvitedToSesion/'+idSesion, 'GET');
+
+            if(!response.error){
+                this.attendanceRegisterMembers = {...response.data.data}
+            }
         },
 
         

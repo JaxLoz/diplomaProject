@@ -9,17 +9,17 @@ const router = createRouter({
       name: 'home',
       component: () => import('@/layout/appLayout.vue'),
       children: [
-          {
-            path: '/dashboard',
-            name: 'dashboard',
-            component: () => import('@/components/util/barGrafic.vue')
-          },
+        {
+          path: '/dashboard',
+          name: 'dashboard',
+          component: () => import('@/components/util/barGrafic.vue')
+        },
 
-          {
-            path: '/table',
-            name: 'table',
-            component: () => import('@/views/ListadoTable.vue')
-          },
+        {
+          path: '/table',
+          name: 'table',
+          component: () => import('@/views/ListadoTable.vue')
+        },
 
           {
             path: '/graph',
@@ -32,7 +32,7 @@ const router = createRouter({
             component: () => import('@/views/sesion/sessions_actas.vue')
           },
           {
-            path: '/SesionView',
+            path: '/SesionView/:idSesion',
             name: 'SesionView',
             component: () => import('@/views/sesion/SesionGeneralView.vue')
 
@@ -91,10 +91,7 @@ const router = createRouter({
           component: () => import('@/views/auth/registerUser.vue')
         }
       ]
-        
-    },
-
-
+    }
   ]
 })
 
