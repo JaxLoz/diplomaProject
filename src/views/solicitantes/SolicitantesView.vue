@@ -96,11 +96,11 @@
                         </td>
                         
                         <td class="px-6 py-4">
-                            {{ solicitante.tipo_solicitante }}
+                            {{ solicitante.celular }}
                         </td>
                         
                         <td class="px-6 py-4">
-                            {{ solicitante.celular }}
+                            {{ solicitante.tipo_solicitante }}
                         </td>
 
                         
