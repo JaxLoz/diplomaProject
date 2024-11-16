@@ -1,9 +1,5 @@
 <template>
   <div class="relative overflow-x-auto">
-<<<<<<< HEAD
-    <p></p>
-=======
->>>>>>> ecc702c181fb5b070e28426b0bf61afb428754ee
     <table
       class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden shadow-md"
     >
@@ -25,11 +21,7 @@
             scope="row"
             class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
           >
-<<<<<<< HEAD
-            
-=======
             1
->>>>>>> ecc702c181fb5b070e28426b0bf61afb428754ee
           </th>
           <td class="px-2 py-4">
             <form class="mx-auto">
@@ -49,14 +41,5 @@
   </div>
 </template>
 <script setup>
-<<<<<<< HEAD
-
-=======
-import { computed, onMounted } from 'vue'
-import { useSessionStore } from '@/stores/session.js'
-
-const sesionStore = useSessionStore()
-
-const infoSesion = computed(() => sesionStore.getInfoViewSesion())
->>>>>>> ecc702c181fb5b070e28426b0bf61afb428754ee
+git pu
 </script>
