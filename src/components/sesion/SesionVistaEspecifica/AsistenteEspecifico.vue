@@ -43,7 +43,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="member in props.invitedMemberInf.data" :key="member.invitado_id"  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <tr v-for="member in props.invitedMemberInf.data" :key="member.miembro_id"  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <td class="w-4 p-4">
                      
                 </td>
@@ -62,14 +62,17 @@
                 <td class="px-2 py-4">
                     
                     <form class="mx-auto">
-                          <select id="acta" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="pediente">Pendiente</option>
-                        <option value="assitió">Asistió</option>
-                        <option value="no asistió">No asistió</option>
+                          <select v-model="member.asistencia"
+                          @change="updateStatus(props.sesionInf.IDSESION, member.miembro_id, member.asistencia)" 
+                          id="asistenciaMiembros" 
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Asitio">Asistió</option>
+                            <option value="No asistio">No asistió</option>
                       </select>
                     </form>
                     
-                                    </td>
+                </td>
                 <td class="px-6 py-4">
                     <!-- Modal toggle -->
                     <div class="centroAction">                    
@@ -113,8 +116,16 @@
 </template>
 <script setup>
 import stringFormat from '@/service/stringFormat';
+import { useInvitacionStore } from '@/stores/invitacion';
+
+const invitacionStore = useInvitacionStore()
 const props = defineProps({
-    invitedMemberInf: {type: Object, required: true, default: new Object()}
+    invitedMemberInf: {type: Object, required: true, default: new Object()},
+    sesionInf: {type: Object, required: true, default: new Object()}
 })
+
+const updateStatus = async (idSesion, idMiembro, status) => {
+    await invitacionStore.updateAttendanceMembers(idSesion, idMiembro, status)
+}
 
 </script>

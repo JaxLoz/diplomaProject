@@ -167,11 +167,27 @@ export const useInvitacionStore = defineStore('invitacion', {
             return invGuests;
         },
 
+        // obtener los miembros que se les envio la invitacion
         async getAttendanceRegisterMembers(idSesion){
-            const response = await axios.requestAxios('guestInvitedToSesion/'+idSesion, 'GET');
+            const response = await axios.requestAxios('memberInvitedToSesion/'+idSesion, 'GET');
 
             if(!response.error){
                 this.attendanceRegisterMembers = response.data.data
+            }
+        },
+
+        // Para actualizar el estdo de la asistencia de los miembros que se invitaron
+        async updateAttendanceMembers(idSesion, idMiembro, status){
+            const response = await axios.requestAxios(`asistenciaMiembros/update/${idSesion}/${idMiembro}`, 'PUT',
+                {estadoAsistencia: status}
+            );
+
+            this.setDataSuccesfull(response.data)
+            this.showSuccessAlertModal()
+
+            if(response.error){
+                this.setDataError(response.data)
+                this.showErrorAlertModal()
             }
         },
 

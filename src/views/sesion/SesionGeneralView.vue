@@ -17,7 +17,7 @@
       <!-- Tabla de actas de la sesión  -->
       <ActaEspecifico />
       <!-- Tabla de asistentes de la sesión -->
-      <AsistenteEspecifico :invitedMemberInf="attendanceRegisterMembers" />
+      <AsistenteEspecifico :invitedMemberInf="attendanceRegisterMembers" :sesionInf="infoSesion"/>
       <!-- Tabla de encargados de Tareas y Tareas  -->
       <TareaEspecifico />
       <!-- Tabla de solicitudes -->

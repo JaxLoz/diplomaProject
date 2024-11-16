@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="(acta, index) in actas"
+          v-for="(acta) in actas"
           :key="acta.ID_ACTA"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
         >
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useActaStore } from '@/stores/actas.js'
 
