@@ -47,6 +47,5 @@ const infoSesion = computed(() => sesionStore.getInfoViewSesion())
 
 onMounted(async () => {
   await sesionStore.fetchSessionById(route.params.idSesion)
-  await actasStore.fetchacta(route.params.idSesion)
 })
 </script>
