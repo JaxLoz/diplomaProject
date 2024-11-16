@@ -61,7 +61,16 @@ const router = createRouter({
             path: '/descripciones',
             name: 'descripciones.index',
             component: () => import('@/views/descripciones/DescripcionesView.vue')
-          }
+          },
+
+
+          /* SOLICITANTES */
+          {
+            path: '/solicitantes',
+            name: 'solicitantes.index',
+            component: () => import('@/views/solicitantes/SolicitantesView.vue')
+          },
+         
       ]
     },
 

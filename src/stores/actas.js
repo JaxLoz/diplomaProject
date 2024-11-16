@@ -60,7 +60,7 @@ export const useActaStore = defineStore('acta', {
     getShowModelSession() {
       return this.showModalactas
     },
-    async fetchacta(params = '') {
+    async fetchacta(idSesion) {
       try {
         const response = await axios.requestAxios(`/acta/all?${params}`, 'GET')
         console.log('Datos obtenidos del backend:', response.data.acta)
