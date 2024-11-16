@@ -1,6 +1,6 @@
 <template>
   <div class="relative overflow-x-auto">
-    <p>IDSESION: {{ infosesion?.IDSESION }}</p>
+    <p></p>
     <table
       class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden shadow-md"
     >
@@ -28,7 +28,7 @@
             scope="row"
             class="px-8 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
           >
-            {{ acta.id_acta }}
+            
           </th>
           <td class="px-2 py-4">
             <form class="mx-auto">
@@ -48,19 +48,5 @@
   </div>
 </template>
 <script setup>
-//import { useActaStore } from '@/stores/actas'
 
-import { useSessionStore } from '@/stores/session'
-import { computed } from 'vue'
-//const ActaStore = useActaStore()
-
-const sesionstore = useSessionStore()
-
-//const infoActa = computed(() => ActaStore.actas)
-const infosesion = computed(() => {
-  const info = sesionstore.getInfoViewSesion
-  console.log('info desde el store:', info) // Muestra el objeto completo
-  console.log('IDSESION:', info?.IDSESION) // Muestra solo el IDSESION
-  return info
-})
 </script>

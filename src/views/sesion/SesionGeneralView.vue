@@ -11,12 +11,13 @@
 <div class="centro2">
 <!-- Tabla de sesión -->
 <SesionEspecifico 
-:sesionInf="infoSesion"
+    :sesionInf="infoSesion"
 />
 <!-- Tabla de actas de la sesión  -->
 <ActaEspecifico />
 <!-- Tabla de asistentes de la sesión -->
 <AsistenteEspecifico
+    :invitedMemberInf="attendanceRegisterMembers"
  />
 <!-- Tabla de encargados de Tareas y Tareas  -->
 <TareaEspecifico />
@@ -40,17 +41,21 @@ import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/
 import { useRoute } from 'vue-router';
 import { computed, onMounted} from 'vue';
 import { useSessionStore } from '@/stores/session.js';
+import { useInvitacionStore } from '@/stores/invitacion';
 //import { useActaStore } from '@/stores/actas.js';
 
 const route = useRoute();
 const sesionStore = useSessionStore();
+const invitacionStore = useInvitacionStore();
 //const ActaStore = useActaStore()
 
 const infoSesion = computed(() => sesionStore.getInfoViewSesion())
+const attendanceRegisterMembers = computed(() => invitacionStore.getAttendanceRegisterMembersState())
 //const infoActa = computed(() => ActaStore.actas)
 
 onMounted( () => {
-    sesionStore.fetchSessionById(route.params.idSesion);
+     sesionStore.fetchSessionById(route.params.idSesion);
+     invitacionStore.getAttendanceRegisterMembers(route.params.idSesion);
 })
 
 </script>
