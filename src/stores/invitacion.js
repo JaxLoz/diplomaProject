@@ -168,8 +168,8 @@ export const useInvitacionStore = defineStore('invitacion', {
         },
 
         // obtener los miembros que se les envio la invitacion
-        async getAttendanceRegisterMembers(idSesion){
-            const response = await axios.requestAxios('memberInvitedToSesion/'+idSesion, 'GET');
+        async getAttendanceRegisterMembers(idSesion, params = ''){
+            const response = await axios.requestAxios(`memberInvitedToSesion/${idSesion}?${params}` , 'GET');
 
             if(!response.error){
                 this.attendanceRegisterMembers = response.data.data
@@ -189,6 +189,19 @@ export const useInvitacionStore = defineStore('invitacion', {
                 this.setDataError(response.data)
                 this.showErrorAlertModal()
             }
+        },
+
+        // para eliminar la invitacion a los miembros que se invitaron
+
+        async deleteAttendanceMembers(idSesion, idMiembro){
+           const response = await axios.requestAxios(`asistenciaMiembros/delete/${idSesion}/${idMiembro}`, 'DELETE');
+           this.setDataSuccesfull(response.data)
+           this.showSuccessAlertModal()
+
+           if(response.error){
+               this.setDataError(response.data)
+               this.showErrorAlertModal()
+           }
         },
 
         
