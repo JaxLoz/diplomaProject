@@ -11,7 +11,7 @@
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                             Nueva descripción
                         </h3>
-                        <button type="button" @click="toggleModal"
+                        <button type="button" @click="closeModal"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
@@ -97,7 +97,7 @@
                                     d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            Crear solicitud
+                            Guardar
                         </button>
                     </form>
                 </div>
@@ -116,32 +116,58 @@ const toggleModal = () => {
     showModal.value = !showModal.value;
 }
 
+const closeModal = () => {
+    resetForm();
+    showModal.value = false;
+}
+
 
 const form = ref({
-    'estudiantes': 'pedro perez',
-    'numero_estudiantes': '1',
-    'docentes': 'juan gonzales',
-    'numero_docentes': '1',
-    'ciudad': 'monteria',
-    'pais': 'colombia',
-    'evento': 'conferencia',
+    id: -1,
+    estudiantes: '',
+    numero_estudiantes: '',
+    docentes: '',
+    numero_docentes: '',
+    ciudad: '',
+    pais: '',
+    evento: '',
 });
 
+const resetForm = () => {
+
+    form.value = {
+    id: -1,
+    estudiantes: '',
+    numero_estudiantes: '',
+    docentes: '',
+    numero_docentes: '',
+    ciudad: '',
+    pais: '',
+    evento: '',
+}
+}
+
+
 const {
-    createDescripcion
+    updateDescripcion
 } = useDescripcionStore();
+
+const setDescripcion = (descripcion) => {
+    form.value = descripcion;
+}
 
 const submitHandler = async () => {
     
-    const response = await createDescripcion(form.value);
+    const response = await updateDescripcion(form.value, form.value.id);
 
-    if(response.status === 201) {
+    if(response.status === 200) {
         toggleModal();
     }
 }
 
 
 defineExpose({
+    setDescripcion,
     toggleModal
 })
 </script>

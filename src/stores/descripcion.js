@@ -6,8 +6,8 @@ const useDescripcionStore = defineStore('descripcion', () => {
     
     const descripciones = ref([]);
 
-    const fetchDescripciones = async () => {
-        const response = await axios.axiosInstance.get('descripciones');
+    const fetchDescripciones = async (params = '') => {
+        const response = await axios.axiosInstance.get(`descripciones?${params}`);
         descripciones.value = response.data.data;
         return response;
     }
