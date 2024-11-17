@@ -23,7 +23,7 @@
     const styleList = props.size == 'base' ? 'inline-flex -space-x-px text-base h-10' : props.size == 'small' ? 'inline-flex -space-x-px text-sm' : '';
     
     const cleanLabelName = (label) => {
-      console.log(label)  
+      //console.log(label)  
       switch(label){
           case '&laquo; Previous':
             return 'Anterior'

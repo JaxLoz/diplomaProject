@@ -13,11 +13,20 @@
     <!-- Contenedor secudario -->
     <div class="centro2">
       <!-- Tabla de sesión -->
-      <SesionEspecifico :sesionInf="infoSesion" />
+      <SesionEspecifico 
+      :sesionInf="infoSesion" 
+      />
       <!-- Tabla de actas de la sesión  -->
-      <ActaEspecifico />
+      <ActaEspecifico 
+      @updateStateOfActa="actionsWhereActStatusChange"
+      />
       <!-- Tabla de asistentes de la sesión -->
-      <AsistenteEspecifico :invitedMemberInf="attendanceRegisterMembers" :invitedGuestInf="attendanceRegisterGuests" :sesionInf="infoSesion"/>
+      <AsistenteEspecifico 
+      :invitedMemberInf="attendanceRegisterMembers" 
+      :invitedGuestInf="attendanceRegisterGuests" 
+      :sesionInf="infoSesion"
+      :actStatus="statusActa"
+      />
       <!-- Tabla de encargados de Tareas y Tareas  -->
       <TareaEspecifico />
       <!-- Tabla de solicitudes -->
@@ -35,22 +44,36 @@ import ActaEspecifico from '@/components/sesion/SesionVistaEspecifica/ActaEspeci
 import TareaEspecifico from '@/components/sesion/SesionVistaEspecifica/TareaEspecifico.vue'
 import SolicitudesEspecifico from '@/components/sesion/SesionVistaEspecifica/SolicitudesEspecifico.vue'
 import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/ProposicionesEspecificos.vue'
+import formatDateService from '@/service/formatDateService'
 
 import { useRoute } from 'vue-router'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useSessionStore } from '@/stores/session.js'
 import { useInvitacionStore } from '@/stores/invitacion'
-//import { useActaStore } from '@/stores/actas.js';
 
 const route = useRoute()
 const sesionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
-//const ActaStore = useActaStore()
+
+const statusActa = ref('')
 
 const infoSesion = computed(() => sesionStore.getInfoViewSesion())
 const attendanceRegisterMembers = computed(() =>invitacionStore.getAttendanceRegisterMembersState())
 const attendanceRegisterGuests = computed(() => invitacionStore.getAttendanceRegisterGuestsState())
-//const infoActa = computed(() => ActaStore.actas)
+
+const actionsWhereActStatusChange = (actaStatus) => {
+
+  statusActa.value = actaStatus
+  if (actaStatus === 'aprobada' || actaStatus === 'rechazada') { 
+  
+    // Acciones que competen a la sesion segun el estado del acta
+    const currenHour = formatDateService.getCurrentHour();
+    sesionStore.updateHourEndSession(infoSesion.value, currenHour)
+    sesionStore.fetchSessionById(route.params.idSesion)
+
+    
+  } 
+}
 
 onMounted(() => {
   sesionStore.fetchSessionById(route.params.idSesion)

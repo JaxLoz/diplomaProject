@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "@/axios";
+import formatDateService from "@/service/formatDateService";
 
 export const useSessionStore = defineStore("sesion", {
     state: () => ({
@@ -152,6 +153,34 @@ export const useSessionStore = defineStore("sesion", {
                 //console.log("Sesión actualizada:", response);
                 return response;
         
+        },
+
+        async updateHourEndSession(sessionData, horaFinal) {
+            const id = sessionData.IDSESION;  // Asegúrate de que el ID esté aquí
+        
+            const response = await axios.requestAxios(`/sesion/update/${id}`, 'PUT', {
+                LUGAR: sessionData.LUGAR,
+                FECHA: sessionData.FECHA,
+                HORARIO_INICIO: formatDateService.extractHour(sessionData.HORARIO_INICIO),
+                HORARIO_FINAL: horaFinal,
+                PRESIDENTE: sessionData.PRESIDENTE,
+                SECRETARIO: sessionData.SECRETARIO
+            });
+    
+            
+
+            if (response.error) {
+                console.error("Error en la respuesta de la API:", response.data);
+                this.showErrorAlertModal();
+                this.setDataError(response.data); // Mostrar la alerta de error
+            }else{
+                this.showSuccessAlertModal();
+                this.setDataSuccesfull(response.data);
+            }
+    
+            //console.log("Sesión actualizada:", response);
+            return response;
+    
         },
 
         async deleteSession(id) {

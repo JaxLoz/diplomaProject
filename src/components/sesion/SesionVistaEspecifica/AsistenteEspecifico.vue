@@ -30,7 +30,7 @@
                 <th scope="col" class="px-6 py-3">
                     Asistencia
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" scope="col" class="px-6 py-3">
                     Acción
                 </th>
             </tr>
@@ -54,7 +54,11 @@
                 </td>
                 <td class="px-2 py-4">
                     
-                    <form class="mx-auto">
+                    <div v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'" class="flex items-center">
+                        <div :class="member.asistencia == 'Asitio' ? 'bg-green-500 h-2.5 w-2.5 rounded-full me-2' : 'bg-red-500 h-2.5 w-2.5 rounded-full me-2'"></div> <span>{{member.asistencia != 'Pendiente' ? member.asistencia : 'No asistio'}}</span>
+                    </div>
+
+                    <form v-else-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="mx-auto">
                           <select v-model="member.asistencia"
                           @change="updateStatusMember(props.sesionInf.IDSESION, member.miembro_id, member.asistencia)" 
                           id="asistenciaMiembros" 
@@ -66,7 +70,7 @@
                     </form>
                     
                 </td>
-                <td class="px-6 py-4">
+                <td v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-6 py-4">
                     <!-- Modal toggle -->
                     <div class="centroAction">                    
                         <button @click="deleteMemberInvited(props.sesionInf.IDSESION, member.miembro_id)" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Borrar</button>
@@ -118,7 +122,7 @@
                 <th scope="col" class="px-6 py-3">
                     Asistencia
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" scope="col" class="px-6 py-3">
                     Acción
                 </th>
             </tr>
@@ -141,8 +145,12 @@
                     {{ guest.cargo }}
                 </td>
                 <td class="px-2 py-4">
+
+                    <div v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'" class="flex items-center">
+                        <div :class="guest.asistencia == 'Asitio' ? 'bg-green-500 h-2.5 w-2.5 rounded-full me-2' : 'bg-red-500 h-2.5 w-2.5 rounded-full me-2'"></div> <span>{{guest.asistencia != 'Pendiente' ? guest.asistencia : 'No asistio'}}</span>
+                    </div>
                     
-                    <form class="mx-auto">
+                    <form v-else-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="mx-auto">
                           <select v-model="guest.asistencia"
                           @change="updateStatusGuest(props.sesionInf.IDSESION, guest.invitado_id, guest.asistencia)" 
                           id="asistenciaMiembros" 
@@ -154,7 +162,7 @@
                     </form>
                     
                 </td>
-                <td class="px-6 py-4">
+                <td v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-6 py-4">
                     <!-- Modal toggle -->
                     <div class="centroAction">                    
                         <button @click="deleteGuestInvited(props.sesionInf.IDSESION, guest.invitado_id)" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Borrar</button>
@@ -180,12 +188,26 @@ import stringFormat from '@/service/stringFormat';
 import paginationBar from '@/components/util/paginationBar.vue';
 import urlService from '@/service/urlService';
 import { useInvitacionStore } from '@/stores/invitacion';
+import { watch } from 'vue';
 
 const invitacionStore = useInvitacionStore()
 const props = defineProps({
     invitedMemberInf: {type: Object, required: true, default: new Object()},
     invitedGuestInf: {type: Object, required: true, default: new Object()},
-    sesionInf: {type: Object, required: true, default: new Object()}
+    sesionInf: {type: Object, required: true, default: new Object()},
+    actStatus: {type: String, required: true, default: ''}
+})
+
+watch(() => props.actStatus, (newValueStatusAct) => {
+    if(newValueStatusAct == 'aprobada' || newValueStatusAct == 'rechazada'){
+        props.invitedGuestInf.data.map((guest) => {
+            updateStatusGuest(props.sesionInf.IDSESION, guest.invitado_id, guest.asistencia != 'Pendiente' ? guest.asistencia : 'No asistio')
+        })
+
+        props.invitedMemberInf.data.map((member) => {
+            updateStatusMember(props.sesionInf.IDSESION, member.miembro_id, member.asistencia != 'Pendiente' ? member.asistencia : 'No asistio' )
+        })
+    }
 })
 
 // Metodos para la seccion de asistencia de miembros

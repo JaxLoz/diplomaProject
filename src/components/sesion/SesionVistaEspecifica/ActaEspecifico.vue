@@ -53,6 +53,7 @@ import { useActaStore } from '@/stores/actas.js'
 
 const route = useRoute()
 const actasStore = useActaStore()
+const emits = defineEmits(['updateStateOfActa'])
 
 // Local variable to store fetched actas
 const actas = ref([])
@@ -67,6 +68,7 @@ onMounted(async () => {
 const updateActaState = async (acta) => {
   try {
     const response = await actasStore.estado(acta) // Using the 'estado' method from the store
+    emits('updateStateOfActa', acta.ESTADO) 
     console.log('Estado de acta actualizado:', response)
   } catch (error) {
     console.error('Error al actualizar el estado de la acta:', error)

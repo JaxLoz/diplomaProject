@@ -279,9 +279,9 @@ const createSession = async () => {
   const responseSesionCreated = await sessionStore.createSession(dataSession.value)
   
   if(responseSesionCreated.status >= 200){
-    await sessionStore.fetchSessions()
     await invitacionStore.sendInvitationMembers(responseSesionCreated.data.data.sesion.IDSESION)
     await actasStore.createActa(responseSesionCreated.data.data.sesion.IDSESION)
+    await sessionStore.fetchSessions()
   }
   
 }

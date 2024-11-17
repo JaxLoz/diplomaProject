@@ -9,10 +9,9 @@ function extractDate(date) {
 }
 
 function extractHour(hora) {
-    const localHour = new Date(hora).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bogota', hour12: true});
+    const localHour = new Date(hora).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bogota', hour12: false});
     return localHour
 }
-
 
 
 function getHourFromString (stringHour){
@@ -24,7 +23,10 @@ function getHourFromString (stringHour){
     console.log(date.getTime());
 }
 
+function getCurrentHour () {
+    const currentHour = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bogota', hour12: false});
+    return currentHour
+}
 
 
-
-export default { extractDate, extractHour, getHourFromString };
+export default { extractDate, extractHour, getHourFromString, getCurrentHour };
