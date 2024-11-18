@@ -72,6 +72,7 @@
 </template>
 
 <script setup>
+<<<<<<< Updated upstream
 import { ref, computed, onMounted } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import { useTareaStore } from '@/stores/tarea';
@@ -107,5 +108,8 @@ onMounted(()=> {
 })
 
 
+=======
+import fieldForm from '@/components/util/fieldForm.vue'
+>>>>>>> Stashed changes
 
 </script>
