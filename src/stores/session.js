@@ -14,6 +14,7 @@ export const useSessionStore = defineStore("sesion", {
         dataError: {},
         dataSuccesfull: {}
     }),
+    
     actions: {
         
         getDataSuccesfull(){

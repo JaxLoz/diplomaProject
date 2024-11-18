@@ -15,6 +15,7 @@
       <!-- Tabla de sesión -->
       <SesionEspecifico 
       :sesionInf="infoSesion" 
+      :actStatusTarea="statusActa"
       />
       <!-- Tabla de actas de la sesión  -->
       <ActaEspecifico 
@@ -28,7 +29,8 @@
       :actStatus="statusActa"
       />
       <!-- Tabla de encargados de Tareas y Tareas  -->
-      <TareaEspecifico />
+      <TareaEspecifico
+      :tareaInf="infoTarea"/> <!-- Prompt para la tarea  -->
       <!-- Tabla de solicitudes -->
       <SolicitudesEspecifico />
       <!-- Tabla de proposiciones  -->
@@ -38,6 +40,8 @@
 </template>
 
 <script setup>
+
+// Importaciones 
 import SesionEspecifico from '@/components/sesion/SesionVistaEspecifica/SesionEspecifico.vue'
 import AsistenteEspecifico from '@/components/sesion/SesionVistaEspecifica/AsistenteEspecifico.vue'
 import ActaEspecifico from '@/components/sesion/SesionVistaEspecifica/ActaEspecifico.vue'
@@ -46,20 +50,31 @@ import SolicitudesEspecifico from '@/components/sesion/SesionVistaEspecifica/Sol
 import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/ProposicionesEspecificos.vue'
 import formatDateService from '@/service/formatDateService'
 
-import { useRoute } from 'vue-router'
+//Acta Estado
+
+import { useActaStore } from '@/stores/actas'
 import { computed, onMounted, ref } from 'vue'
+const ActaStore = useActaStore()
+
+import { useRoute } from 'vue-router'
 import { useSessionStore } from '@/stores/session.js'
 import { useInvitacionStore } from '@/stores/invitacion'
+import { useTareaStore } from '@/stores/tarea'
 
 const route = useRoute()
 const sesionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
+const tareaStore = useTareaStore();
 
 const statusActa = ref('')
 
 const infoSesion = computed(() => sesionStore.getInfoViewSesion())
 const attendanceRegisterMembers = computed(() =>invitacionStore.getAttendanceRegisterMembersState())
 const attendanceRegisterGuests = computed(() => invitacionStore.getAttendanceRegisterGuestsState())
+
+//Para tarea
+
+const infoTarea = computed(() => tareaStore.getInfoViewTarea())
 
 const actionsWhereActStatusChange = (actaStatus) => {
 
