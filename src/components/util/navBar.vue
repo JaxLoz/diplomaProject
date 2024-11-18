@@ -1,7 +1,7 @@
 <template>
   <header class="antialiased">
     
-<nav class="fixed top-0 left-0 w-full bg-white border-gray-200 dark:bg-gray-900 z-50">
+<nav class="fixed top-0 left-0 w-full bg-white border-gray-200 dark:bg-gray-900">
 <div class="max-w-full flex flex-wrap items-center justify-between mx-auto py-4 px-8 border-b dark:border-b-gray-800">
 <a href="@/assets/img/icon.png" class="flex items-center space-x-3 rtl:space-x-reverse pt-0">
     <img src="@/assets/img/icon.png" class="h-8" alt="Flowbite Logo" />

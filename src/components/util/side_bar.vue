@@ -21,13 +21,13 @@
   <div class="sideBar">
     <aside
       id="sidebar-multi-level-sidebar"
-      class="fixed top-16 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+      class="fixed top-20 left-0 w-64 h-screen transition-transform translate-x-full sm:translate-x-0"
       aria-label="Sidebar"
     >
       <!-- Contenido del sidebar -->
 
       <div
-        class="h-full px-3 py-6 overflow-y-auto bg-white border-r border-t dark:bg-gray-900 dark:border-r-gray-800"
+        class="h-full px-3 py-6 overflow-y-auto bg-white border-r  dark:bg-gray-900 dark:border-r-gray-800"
       >
         <ul class="space-y-2 font-medium">
           <li>

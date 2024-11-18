@@ -5,6 +5,7 @@
         <sesionTabla 
         :sesionInf="infoSession"
         @updateSession="getInfoSessionForUpdate"
+        @deleteSesionSelected="deleteSesion"
         />
       </div>
 
@@ -16,6 +17,14 @@
         />
       </div>
     </div>
+
+    <modalDeleteAlert 
+    ref="deleteModal"
+    :infSesionToRemove="removeSesionInf"
+    @confirmAction="confirmDeleteSesion"
+    @cancelAction="closemodalDeleteAlert"
+    />
+    
     <modalSession
       v-if="showModal"  
     :title="!onUpdateModeModal ? 'Nueva sesion' : 'Actualizar sesion'"
@@ -31,11 +40,13 @@
   import sesionTabla from '@/components/sesion/sesionTabla.vue'
   import modalSession from '@/views/sesion/modalSession.vue'
   import modalResumeSession from './modalResumeSession.vue';
+  import modalDeleteAlert from './modalDeleteAlert.vue';
   import paginationBar from '@/components/util/paginationBar.vue';
   import urlService from '@/service/urlService.js';
 
+  import { Modal } from 'flowbite';
   import { useSessionStore } from '@/stores/session'
-  import { computed, onMounted, ref } from 'vue';
+  import { computed, onMounted, ref, useTemplateRef} from 'vue';
 
   const sessionStore = useSessionStore()
 
@@ -46,6 +57,16 @@
 
   const infoSessionToUpdate = ref({})
   const params = ref({})
+  const removeSesionInf = ref({}) 
+  const modalInstance = ref(null)
+  const targetElement = useTemplateRef('deleteModal');
+  
+  const optionsModal = {
+      placement: 'center',
+      backdrop: 'static',
+      backdropClasses: 'bg-gray-900 bg-opacity-50 fixed inset-0 z-40 backdrop-blur-sm',
+      closable: false
+  }
 
 const getInfoSessionForUpdate = (sesionInf) => {
   console.log(sesionInf)
@@ -60,7 +81,22 @@ const changePage = (numPage) => {
   console.log(stringParams)
 }
 
+const closemodalDeleteAlert = () => {
+  modalInstance.value.hide()
+}
+
+const confirmDeleteSesion = () => {
+  modalInstance.value.hide()
+}
+
+const deleteSesion = (infoSesion) => {
+  removeSesionInf.value = infoSesion
+  modalInstance.value.show()
+
+}
+
 onMounted(() => {
+  modalInstance.value = new Modal(targetElement.value.target, optionsModal);
   sessionStore.fetchSessions();
 })
 

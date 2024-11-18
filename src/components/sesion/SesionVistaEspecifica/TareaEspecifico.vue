@@ -203,4 +203,6 @@ import ModalCreateTareaEspecifico from './ModalCreateTareaEspecifico.vue';
 <br>
 </div>
 
+
+
 </template>
