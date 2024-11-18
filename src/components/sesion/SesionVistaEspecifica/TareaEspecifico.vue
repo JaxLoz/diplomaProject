@@ -200,28 +200,6 @@
 <br>
 </div>
 
+
 </template>
-
-<script setup>
-import ModalEditTareaEspecifico from './ModalEditTareaEspecifico.vue';
-import ModalCreateTareaEspecifico from './ModalCreateTareaEspecifico.vue';
-import stringFormat from '@/service/stringFormat';
-import paginationBar from '@/components/util/paginationBar.vue';
-import urlService from '@/service/urlService';
-import { useTareaStore } from '@/stores/tarea';
-import { watch } from 'vue';
-
-const tareaStore = useTareaStore();
-
-const props = defineProps({
-    tareaInf: {type: Object, required: true, default: new Object()},
-    actStatusTarea: {type: String, required: true, default: ''}
-})
-
-watch(() => props.actStatusTarea, (newValueStatusActTarea) => {
-    if(newValueStatusActTarea == 'aprobada' || newValueStatusActTarea == 'rechazada'){
-        
-    }
-})
-</script>
 
