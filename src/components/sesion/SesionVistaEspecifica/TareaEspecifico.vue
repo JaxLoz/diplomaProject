@@ -1,7 +1,4 @@
-<script setup>
-import ModalEditTareaEspecifico from './ModalEditTareaEspecifico.vue';
-import ModalCreateTareaEspecifico from './ModalCreateTareaEspecifico.vue';
-</script>
+
 <template>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden shadow-md">
@@ -204,3 +201,27 @@ import ModalCreateTareaEspecifico from './ModalCreateTareaEspecifico.vue';
 </div>
 
 </template>
+
+<script setup>
+import ModalEditTareaEspecifico from './ModalEditTareaEspecifico.vue';
+import ModalCreateTareaEspecifico from './ModalCreateTareaEspecifico.vue';
+import stringFormat from '@/service/stringFormat';
+import paginationBar from '@/components/util/paginationBar.vue';
+import urlService from '@/service/urlService';
+import { useTareaStore } from '@/stores/tarea';
+import { watch } from 'vue';
+
+const tareaStore = useTareaStore();
+
+const props = defineProps({
+    tareaInf: {type: Object, required: true, default: new Object()},
+    actStatusTarea: {type: String, required: true, default: ''}
+})
+
+watch(() => props.actStatusTarea, (newValueStatusActTarea) => {
+    if(newValueStatusActTarea == 'aprobada' || newValueStatusActTarea == 'rechazada'){
+        
+    }
+})
+</script>
+
