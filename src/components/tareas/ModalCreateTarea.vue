@@ -22,9 +22,10 @@
                         <searchFieldIdSesion
                         v-if="!onUpdateMode"
                         v-model="search"
-                        :searchInfo="id_sesion"
-                        :label="'Buscar Sesión'"
-                        :placeholder="'Buscar ID de la sesión'"
+                        :searchInfo="membersEncargado"
+                        :listItems="dataSearched"
+                        :label="'Buscar encargado'"
+                        :placeholder="'Buscar nombre de encargado'"
                         :style="'field-model'"
                         @itemSelected="handleItemSelected"
                         />
@@ -33,13 +34,9 @@
                         <ListIdSesion
                       :label="''"
                       :style="'field-model'"
-                      :elements="id_sesion"
+                      :elements="idmiembro"
                       @deleteItem="handleDelete"
                       />
-                    </div>
-                    <div class="col-span-2">
-                        <label for="encargado" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Encargado de Tarea</label>
-                        <input type="encargado" name="encargado" id="encargado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Encargado de tarea" >
                     </div>
                     <div class="col-span-2">
                         <label for="fechaTarea" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de entrega</label>
@@ -72,12 +69,12 @@
 </template>
 
 <script setup>
-<<<<<<< Updated upstream
+
 import { ref, computed, onMounted } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import { useTareaStore } from '@/stores/tarea';
-import ListIdSesion from '../util/listIdSesion.vue';
-import searchFieldIdSesion from '../util/searchFieldIdSesion.vue';
+import ListIdSesion from '../util/listMember.vue';
+import searchFieldIdSesion from '../util/searchFieldMember.vue';
 
 
 //Inicialización de los stores
@@ -94,13 +91,24 @@ const props = defineProps({
 //variables computadas
 const id_sesion = computed(() => sessionStore.sessions)
 const onUpdateMode = computed(()=> tareaStore.getOnUpdateMode())
+const membersEncargado = computed(() => tareaStore.encargadotarea()) 
+const dataSearched = computed(()=> tareaStore.searchMember());
 
 //variables reactivas
 
 const search = ref("");
 const dataTarea = ref({
-    ID_SESION: "",
+    ID: null,
+    descripcion: "",
+    dateEntrega:"",
 
+
+
+})
+
+const dataEncargado = ref({
+    encargado: "",
+    miembro:"",
 
 })
 onMounted(()=> {
@@ -108,8 +116,6 @@ onMounted(()=> {
 })
 
 
-=======
-import fieldForm from '@/components/util/fieldForm.vue'
->>>>>>> Stashed changes
+import fieldForm from '@/components/util/fieldForm.vue';
 
 </script>

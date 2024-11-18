@@ -224,5 +224,4 @@ watch(() => props.actStatusTarea, (newValueStatusActTarea) => {
 })
 </script>
 
-</template>
 
