@@ -219,7 +219,7 @@ const props = defineProps({
 
 watch(() => props.actStatusTarea, (newValueStatusActTarea) => {
     if(newValueStatusActTarea == 'aprobada' || newValueStatusActTarea == 'rechazada'){
-        
+        return 
     }
 })
 </script>

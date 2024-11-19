@@ -21,7 +21,7 @@
   <div class="sideBar">
     <aside
       id="sidebar-multi-level-sidebar"
-      class="fixed top-20 left-0 w-64 h-screen transition-transform translate-x-full sm:translate-x-0"
+      class="z-20 fixed top-20 left-0 w-64 h-screen transition-transform translate-x-full sm:translate-x-0"
       aria-label="Sidebar"
     >
       <!-- Contenido del sidebar -->
