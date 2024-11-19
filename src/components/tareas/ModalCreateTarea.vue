@@ -91,7 +91,7 @@ const props = defineProps({
 //variables computadas
 const id_sesion = computed(() => sessionStore.sessions)
 const onUpdateMode = computed(()=> tareaStore.getOnUpdateMode())
-const membersEncargado = computed(() => tareaStore.encargadotarea()) 
+// const membersEncargado = computed(() => tareaStore.encargadotarea());
 const dataSearched = computed(()=> tareaStore.searchMember());
 
 //variables reactivas

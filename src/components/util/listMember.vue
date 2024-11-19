@@ -11,7 +11,6 @@
       >
         <div class="flex flex-col">
           <span class="font-medium">{{ member.NOMBRE }}</span>
-          <small class="text-gray-500 dark:text-gray-400">{{ member.CORREO }}</small>
         </div>
         <button
           type="button"
