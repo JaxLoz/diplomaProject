@@ -50,11 +50,7 @@ import SolicitudesEspecifico from '@/components/sesion/SesionVistaEspecifica/Sol
 import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/ProposicionesEspecificos.vue'
 import formatDateService from '@/service/formatDateService'
 
-//Acta Estado
-
-import { useActaStore } from '@/stores/actas'
 import { computed, onMounted, ref } from 'vue'
-const ActaStore = useActaStore()
 
 import { useRoute } from 'vue-router'
 import { useSessionStore } from '@/stores/session.js'

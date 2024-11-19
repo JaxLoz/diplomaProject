@@ -38,12 +38,13 @@
 </template>
 <script setup>
 import { useTemplateRef } from 'vue';
+import { useSessionStore } from '@/stores/session';
 
 const emit = defineEmits(['cancelAction', 'confirmAction']);
 const props = defineProps({
     infSesionToRemove: {type: Object, required: true, default: new Object()}
 })
-
+const sesionStore = useSessionStore()
 // obtengo la referencia del template
 const target = useTemplateRef('deleteModalAlert');
 // esto es para exponer la referecia del template pues no se puede acceder a ella directamente en el padre al usar script setup pues es un ambito privado
@@ -52,7 +53,8 @@ defineExpose({
 });
 
 const confirmAction = () => {
-    
+    sesionStore.deleteSession(props.infSesionToRemove)
+    sesionStore.fetchSessions()
     emit('confirmAction')
 }
 

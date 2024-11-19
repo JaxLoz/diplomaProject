@@ -184,13 +184,78 @@ export const useSessionStore = defineStore("sesion", {
     
         },
 
-        async deleteSession(id) {
-            try {
-                await axios.delete(`/sesion/delete/${id}`);
-                this.sessions = this.sessions.filter(session => session.IDSESION !== id);
-            } catch (error) {
-                console.error("Error deleting session:", error);
+        async deleteSession(infSesion) {
+            console.log(infSesion.solicituds.descripcion)
+            if(infSesion.actas.length > 0){
+                console.log('inicia eliminacion de acta')
+                infSesion.actas.forEach(acta => {
+                    const response = axios.requestAxios(`acta/delete/${acta.ID_ACTA}`, 'DELETE');
+                    console.log(response)
+                });
             }
+
+            if(infSesion.asistencia_invitados.length > 0){
+                console.log('inicia eliminacion de asistencia invitados')
+                infSesion.asistencia_invitados.forEach(asistenciaInvitado => {
+                    const response = axios.requestAxios(`asistenciaInvitados/delete/${asistenciaInvitado.SESION_IDSESION}/${asistenciaInvitado.INIVITADO_IDINVITADO}`, 'DELETE');
+                    console.log(response)
+                })
+            }
+
+            if(infSesion.asistencia_miembros.length > 0){
+                 console.log('inicia eliminacion de asistencia miembros')
+                 infSesion.asistencia_miembros.forEach(asistenciaMiembro => {
+                    const response = axios.requestAxios(`asistenciaMiembros/delete/${asistenciaMiembro.SESSION_IDSESION}/${asistenciaMiembro.MIEMBRO_IDMIEMBRO}`, 'DELETE');
+                    console.log(response)
+                })
+            }
+
+            if(infSesion.orden_sesions.length > 0){
+                console.log('inicia eliminacion de orden del dia')
+                infSesion.orden_sesions.forEach(ordenDia => {
+                    const response = axios.requestAxios(`orden_sesion/delete/${ordenDia.ID_ORDEN_SESION}`, 'DELETE');
+                    console.log(response)
+                })
+            }
+
+            if(infSesion.proposiciones.length > 0){
+                console.log('inicia eliminacion de proposiciones')
+                infSesion.proposiciones.forEach(proposicion => {
+                    const response = axios.requestAxios(`proposicion/delete/${proposicion.ID_PROPOSICIONES}`, 'DELETE');
+                    console.log(response)
+                })
+            }
+
+            
+            if(infSesion.solicituds.length > 0){
+                
+                    console.log('inicia eliminacion de solicitudes')
+                    
+                    infSesion.solicituds.forEach(solicitud => {
+                        
+                        if(Object.keys(solicitud.descripcion).length > 0){
+                            axios.requestAxios(`solicitudes/${solicitud.ID_SOLICITUD}`, 'DELETE');
+                            axios.requestAxios(`descripciones/${solicitud.descripcion.ID_SOLICITUD}`, 'DELETE');
+                        }
+                    });
+            }
+
+            if(infSesion.tareas.length > 0){
+                console.log('inicia eliminacion de encargado de tareas')
+                infSesion.tareas.forEach(tarea => {
+                    if(tarea.encargados_tareas.length > 0){
+                        tarea.encargados_tareas.forEach(encargado => {
+                            axios.requestAxios(`encargados_tarea/delete/${encargado.MIEMBROS_IDMIEMBROS}/${encargado.TAREAS_IDTAREAS}`, 'DELETE');
+                        })
+
+                    }
+                    axios.requestAxios(`tarea/delete/${tarea.IDTAREAS}`, 'DELETE');
+                })
+            }
+
+            const response = axios.requestAxios(`/sesion/delete/${infSesion.IDSESION}`, 'DELETE');
+            console.log(response)
+
         },
 
         addNewSession(session) {
