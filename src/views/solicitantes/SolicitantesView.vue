@@ -226,6 +226,11 @@ const searchSolicitante = debounce(async () => {
   await fetchSolicitantes(`filter[${filterType}]=${searchValue.value}`)
 }, 500)
 
+const openUpdateSolicitanteModal = (solicitante) => {
+  solicitanteModal.value.setSolicitante(solicitante)
+  solicitanteModal.value.toggleModal()
+}
+
 onMounted(() => {
   initFlowbite()
 
