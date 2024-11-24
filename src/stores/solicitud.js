@@ -8,7 +8,7 @@ const useSolicitudStore = defineStore('solicitud', () => {
 
     const fetchSolicitudes = async (params = '') => {
         const response = await axios.axiosInstance.get(`solicitudes?${params}`);
-        solicitudes.value = response.data.data;
+        solicitudes.value = response.data;
         return response;
     }
 
@@ -19,20 +19,18 @@ const useSolicitudStore = defineStore('solicitud', () => {
 
     const createSolicitud = async (payload) => {
         const response = await axios.axiosInstance.post('solicitudes', payload);
-        await fetchSolicitudes();
         return response;
     }
 
     const updateSolicitud = async (payload, id) => {
         const response = await axios.axiosInstance.put(`solicitudes/${id}`, payload);
         //solicitudes.value.push(response.data.data);
-        await fetchSolicitudes();
         return response;
     }
 
     const deleteSolicitud = async (id) => {
         const response = await axios.axiosInstance.delete(`solicitudes/${id}`);
-        solicitudes.value = solicitudes.value.filter((s) => s.id !== id);
+        solicitudes.value.data = solicitudes.value.data.filter((s) => s.id !== id);
         return response;
     }
 
