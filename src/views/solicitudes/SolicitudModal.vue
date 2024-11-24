@@ -165,13 +165,14 @@
                                     placeholder="¿Cual es el asunto?" />
                                 </div>
                                 
-                                <div class="col-span-2">
-                                    <fieldForm 
-                                    v-model="solicitudForm.desicion"
-                                    fieldType="text" 
-                                    label="Decisión" 
-                                    :style="'field-model'"
-                                    placeholder="¿Cual es la decisión?" />
+                                <div class="  col-span-2">
+                                    <label  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desicion</label>
+                                    <select id="desicion"     v-model="solicitudForm.desicion"
+                                    class="bg-gray-50 mb-5 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 custom-select">
+                                    <option value="pendiente" data-color="#facc15">Pendiente</option>
+                                    <option value="aprobada" data-color="#22c55e">Aprobada</option>
+                                    <option value="rechazada" data-color="#ef4444">Rechazada</option>
+                                </select>
                                 </div>
                                 
                            
@@ -230,7 +231,7 @@
                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                             clip-rule="evenodd"></path>
                         </svg>
-                            Crear solicitud
+                            Guardar
                         </button>
                     </div>
                     </form>
