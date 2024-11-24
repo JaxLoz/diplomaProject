@@ -292,7 +292,6 @@ const createSession = async () => {
   
   dataSession.value.date = formatDateService.extractDate(dataSession.value.date) // extracion de la fecha yyyy-mm-dd
   dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour)
-  console.log(dataSession.value.startHour)
   const responseSesionCreated = await sessionStore.createSession(dataSession.value)
   
   if(responseSesionCreated.status >= 200){

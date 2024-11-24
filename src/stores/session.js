@@ -67,6 +67,23 @@ export const useSessionStore = defineStore("sesion", {
             return this.infViewSesion;
         },
 
+        checkLastDate(dateNewSesion){
+            // DD/MM/YYYY formato en que llega la nueva fecha (este formato es problematico para el objeto Date)
+            
+            
+            const [day, month, year] = dateNewSesion.split('/');
+            const newDate = new Date(year, month - 1, day);
+
+            if(this.sessions.data.length > 0){
+                const lastSesion = this.sessions.data[0];
+                const lastSesionDate = new Date(lastSesion.FECHA);
+                
+                if(newDate.getDate() < lastSesionDate.getDate() + 8){
+                    console.log(`no puede crear una sesion antes de ${lastSesionDate.getDate() + 8}/${lastSesionDate.getMonth() + 1}/${lastSesionDate.getFullYear()}`)
+                }
+            }
+        },
+
         async fetchSessions(params = '') {
             try {
                 const response = await axios.requestAxios('/sesion/all?'+params,'GET');
@@ -103,7 +120,7 @@ export const useSessionStore = defineStore("sesion", {
         
         ,
         async createSession(sessionData) {
-           
+            this.checkLastDate(sessionData.date)
             const response = await axios.requestAxios('/sesion/save','POST', {
                 LUGAR: sessionData.place,
                 FECHA: sessionData.date,
