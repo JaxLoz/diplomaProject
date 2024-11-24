@@ -2,7 +2,7 @@
   <div class="flex flex-col min-h-screen overflow-x-hidden">
     <navBar class="w-full" />
     <div class="flex flex-1 overflow-hidden">
-      <Side_bar class="flex-shrink-0" />
+      <Side_bar/>
       <main class="flex-1 overflow-y-hidden p-4 dark:bg-gray-900 bg-white">
         <div class="max-w-full">
           <router-view />

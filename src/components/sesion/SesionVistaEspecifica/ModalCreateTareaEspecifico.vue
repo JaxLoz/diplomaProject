@@ -1,5 +1,5 @@
 <template>
-    <div id="CreateTarea" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div id="CreateTarea" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-opacity-50 inset-0 backdrop-blur-sm">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -47,8 +47,9 @@
         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
       </svg>
   </div>
-  <input id="datepicker-actions" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecciona una fecha">
+  <input id="datepicker-actions" datepicker datepicker-minDate="19-11-2024" datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecciona una fecha">
 </div>
+
 
                     </div>
                    
@@ -73,8 +74,9 @@
 import { ref, computed, onMounted } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import { useTareaStore } from '@/stores/tarea';
-import listMember from '@/util/listMember.vue'
-import searchFieldMember from '@/util/searchFieldMember.vue';
+import listMember from '@/components/util/listMember.vue'
+import searchFieldMember from '@/components/util/searchFieldMember.vue';
+
 
 
 //Inicialización de los stores
@@ -91,7 +93,7 @@ const props = defineProps({
 //variables computadas
 const id_sesion = computed(() => sessionStore.sessions)
 const onUpdateMode = computed(()=> tareaStore.getOnUpdateMode())
-const membersEncargado = computed(() => tareaStore.encargadotarea()) 
+const membersEncargado = computed(() => tareaStore.encargadotarea) 
 const dataSearched = computed(()=> tareaStore.searchMember());
 
 //variables reactivas

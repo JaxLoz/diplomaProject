@@ -1,6 +1,3 @@
-<script>
-import formatDateService from '@/service/formatDateService';
-</script>
 <template>
     <div class="titleSesion">
 <!-- Titutlo -->
@@ -128,6 +125,7 @@ import formatDateService from '@/service/formatDateService';
    </template>
    
    <script setup>
+   import formatDateService from '@/service/formatDateService';
    import {onMounted } from 'vue';
    import { initFlowbite } from 'flowbite';
    import { useSessionStore } from '@/stores/session';
@@ -136,7 +134,7 @@ import formatDateService from '@/service/formatDateService';
    const sessionStore = useSessionStore();
    
    const props = defineProps({
-    sesionInf: {type: Array, required: true, default: new Array()}
+    sesionInf: {type: Object, required: true, default: new Object()}
    })
 
    const emit = defineEmits(['updateSession', 'deleteSesionSelected']);

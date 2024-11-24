@@ -17,6 +17,13 @@
       :sesionInf="infoSesion" 
       :actStatusTarea="statusActa"
       />
+
+      <!-- Tabla de orden de la sesión -->
+       <OrdenSesionEspecifico
+       :orderSesionInf="orderSesionInf"
+       :sesionInf="infoSesion"
+       />
+
       <!-- Tabla de actas de la sesión  -->
       <ActaEspecifico 
       @updateStateOfActa="actionsWhereActStatusChange"
@@ -48,6 +55,7 @@ import ActaEspecifico from '@/components/sesion/SesionVistaEspecifica/ActaEspeci
 import TareaEspecifico from '@/components/sesion/SesionVistaEspecifica/TareaEspecifico.vue'
 import SolicitudesEspecifico from '@/components/sesion/SesionVistaEspecifica/SolicitudesEspecifico.vue'
 import ProposicionesEspecificos from '@/components/sesion/SesionVistaEspecifica/ProposicionesEspecificos.vue'
+import OrdenSesionEspecifico from '@/components/sesion/SesionVistaEspecifica/OrdenSesionEspecifico.vue'
 import formatDateService from '@/service/formatDateService'
 
 import { computed, onMounted, ref } from 'vue'
@@ -56,17 +64,20 @@ import { useRoute } from 'vue-router'
 import { useSessionStore } from '@/stores/session.js'
 import { useInvitacionStore } from '@/stores/invitacion'
 import { useTareaStore } from '@/stores/tarea'
+import { useOrderSesion } from '@/stores/orderSesion';
 
 const route = useRoute()
 const sesionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
 const tareaStore = useTareaStore();
+const orderSesionStore = useOrderSesion();
 
 const statusActa = ref('')
 
 const infoSesion = computed(() => sesionStore.getInfoViewSesion())
 const attendanceRegisterMembers = computed(() =>invitacionStore.getAttendanceRegisterMembersState())
 const attendanceRegisterGuests = computed(() => invitacionStore.getAttendanceRegisterGuestsState())
+const orderSesionInf = computed(() => orderSesionStore.getOrderSesion())
 
 //Para tarea
 
@@ -88,6 +99,7 @@ const actionsWhereActStatusChange = (actaStatus) => {
 
 onMounted(() => {
   sesionStore.fetchSessionById(route.params.idSesion)
+  orderSesionStore.getSesionOrderBySesion(route.params.idSesion)
   invitacionStore.getAttendanceRegisterMembers(route.params.idSesion)
   invitacionStore.getAttendanceRegisterGuests(route.params.idSesion)
 })

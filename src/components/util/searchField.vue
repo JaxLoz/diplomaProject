@@ -11,7 +11,7 @@
           >
         </div>
         
-        <ul v-if="searchInfo !== ''" class="absolute w-full text-base list-none bg-white divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
+        <ul v-if="searchField !== ''" class="absolute w-full text-base list-none bg-white divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
           <li 
             v-for="item in props.listItems" 
             :key="item.id" 
