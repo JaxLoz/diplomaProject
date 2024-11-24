@@ -19,7 +19,7 @@
             <form class="p-4 md:p-5" @submit.prevent="submitTask">
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
-                        <searchFieldIdSesion
+                        <searchFieldMember
                         v-if="!onUpdateMode"
                         v-model="search"
                         :searchInfo="membersEncargado"
@@ -31,7 +31,7 @@
                         />
                     </div>
                     <div class="col-span-2">
-                        <ListIdSesion
+                        <listMember
                       :label="''"
                       :style="'field-model'"
                       :elements="idmiembro"
@@ -74,9 +74,10 @@
 import { ref, computed, onMounted } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import { useTareaStore } from '@/stores/tarea';
-import listMember from '@/components/util/listMember.vue'
-import searchFieldMember from '@/components/util/searchFieldMember.vue';
+import fieldForm from '@/components/util/fieldForm.vue';
 
+import listMember from '@/components/util/listMember.vue';
+import searchFieldMember from '@/components/util/searchFieldMember.vue';
 
 
 //Inicialización de los stores
@@ -93,7 +94,7 @@ const props = defineProps({
 //variables computadas
 const id_sesion = computed(() => sessionStore.sessions)
 const onUpdateMode = computed(()=> tareaStore.getOnUpdateMode())
-const membersEncargado = computed(() => tareaStore.encargadotarea) 
+const membersEncargado = computed(() =>tareaStore.memberEncargado);
 const dataSearched = computed(()=> tareaStore.searchMember());
 
 //variables reactivas
@@ -117,7 +118,10 @@ onMounted(()=> {
     sessionStore.fetchSessions();
 })
 
+const handleItemSelected = (encargadotarea) => {
+    tareaStore.addNewEncargado(encargadotarea);
+}
 
-import fieldForm from '@/components/util/fieldForm.vue';
+
 
 </script>

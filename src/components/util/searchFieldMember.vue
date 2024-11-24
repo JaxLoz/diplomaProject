@@ -4,7 +4,7 @@
       <label for="search-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         {{ label }}
       </label>
-      <input
+    <input
         v-model="searchField"
         id="search-input"
         type="text"
