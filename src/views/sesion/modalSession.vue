@@ -311,19 +311,13 @@ const createSession = async () => {
 const updateSession = async () => {
   console.log("Actualizando sesion");
 
-  if (!dataSession.value || typeof dataSession.value !== 'object') {
-    console.error("Error: dataSession.value no está definido o no es un objeto.");
-    return;
-  }
-
-
-  dataSession.value.data = formatDateService.extractDate(dataSession.value.date);
+  dataSession.value.date = formatDateService.extractDate(dataSession.value.date);
   dataSession.value.startHour = formatDateService.extractHour(dataSession.value.startHour);
   
   sessionStore.setIsLoading(true)
   const responseSesionUpdated = await sessionStore.updateSession(dataSession.value);
 
-  if (responseSesionUpdated.status >= 200) {
+  if (responseSesionUpdated.isUpdated) {
     
     await sessionStore.fetchSessions();
     sessionStore.setIsLoading(false)

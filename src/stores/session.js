@@ -80,28 +80,54 @@ export const useSessionStore = defineStore("sesion", {
             const [day, month, year] = dateNewSesion.split('/');
             const newDate = new Date(year, month - 1, day);
             
+            if(!this.onUpdateMode){
+                if(this.sessions.data.length > 0){
+                    const lastSesion = this.sessions.data[0];
+                    const lastSesionDate = new Date(lastSesion.FECHA);
+                    
+                    if(newDate.getDate() < lastSesionDate.getDate() + 8){
+                        lastSesionDate.setDate(lastSesionDate.getDate() + 9);
+                        const referenceDate = formatDateService.extractDate(lastSesionDate);
 
-            if(this.sessions.data.length > 0){
-                const lastSesion = this.sessions.data[0];
-                const lastSesionDate = new Date(lastSesion.FECHA);
-                
-                if(newDate.getDate() < lastSesionDate.getDate() + 8){
-                    lastSesionDate.setDate(lastSesionDate.getDate() + 9);
-                    const referenceDate = formatDateService.extractDate(lastSesionDate);
-
-                    this.setDataError({
-                        message: `Seleccione una fecha posterior a la de la sesion anterior`,
-                        errors: {
-                            description: ["Seleccione una fecha a partir de: "+ referenceDate]
-                        }
-                    });
-                    this.showErrorAlertModal();
-                    return false;
+                        this.setDataError({
+                            message: `Seleccione una fecha posterior a la de la sesion anterior`,
+                            errors: {
+                                description: ["Seleccione una fecha a partir de: "+ referenceDate]
+                            }
+                        });
+                        this.showErrorAlertModal();
+                        return false;
+                    }else{
+                        return true;
+                    }
                 }else{
                     return true;
                 }
+
             }else{
-                return true;
+                console.log("else de checkLastDate cuando esta en modo update")
+                if(this.sessions.data.length > 1){
+                    const lastSesion = this.sessions.data[1];
+                    const lastSesionDate = new Date(lastSesion.FECHA);
+                    
+                    if(newDate.getDate() < lastSesionDate.getDate() + 8){
+                        lastSesionDate.setDate(lastSesionDate.getDate() + 9);
+                        const referenceDate = formatDateService.extractDate(lastSesionDate);
+    
+                        this.setDataError({
+                            message: `Seleccione una fecha posterior a la de la sesion anterior`,
+                            errors: {
+                                description: ["Seleccione una fecha a partir de: "+ referenceDate]
+                            }
+                        });
+                        this.showErrorAlertModal();
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else{
+                    return true;
+                }
             }
         },
 
@@ -141,6 +167,21 @@ export const useSessionStore = defineStore("sesion", {
         
         ,
         async createSession(sessionData) {
+            
+            if(this.sessions.data.length > 0 && (this.sessions.data[0].actas[0].ESTADO != "aprobada" || this.sessions.data[0].actas[0].ESTADO != "rechazada")){
+                this.setDataError({
+                    message: `El acta de la sesion anterior figura en "pendiente"`,
+                    errors: {
+                        description: ["El estado del acta de la sesion "+this.sessions.data[0].IDSESION + " es: "+this.sessions.data[0].actas[0].ESTADO]
+                    }
+                });
+                this.showErrorAlertModal();
+                return {
+                    isCreated: false
+                }
+            }
+            
+
             if(!this.checkLastDate(sessionData.date)){
                 console.log("else de checkLastDate")
                 return {
@@ -177,8 +218,15 @@ export const useSessionStore = defineStore("sesion", {
         
 
         async updateSession(sessionData) {
+
+            if(!this.checkLastDate(sessionData.date)){
+                console.log("else de checkLastDate")
+                return {
+                    isUpdated: false
+                }
+            }
                 const id = sessionData.IDSESION;  // Asegúrate de que el ID esté aquí
-            
+                console.log(sessionData)
                 const response = await axios.requestAxios(`/sesion/update/${id}`, 'PUT', {
                     LUGAR: sessionData.place,
                     FECHA: sessionData.date,
@@ -200,7 +248,10 @@ export const useSessionStore = defineStore("sesion", {
                 }
         
                 //console.log("Sesión actualizada:", response);
-                return response;
+                return {
+                    dataUpdated: response,
+                    isUpdated: true
+                }
         
         },
 
@@ -209,7 +260,7 @@ export const useSessionStore = defineStore("sesion", {
         
             const response = await axios.requestAxios(`/sesion/update/${id}`, 'PUT', {
                 LUGAR: sessionData.LUGAR,
-                FECHA: sessionData.FECHA,
+                FECHA: formatDateService.extractDate(sessionData.FECHA),
                 HORARIO_INICIO: formatDateService.extractHour(sessionData.HORARIO_INICIO),
                 HORARIO_FINAL: horaFinal,
                 PRESIDENTE: sessionData.PRESIDENTE,
