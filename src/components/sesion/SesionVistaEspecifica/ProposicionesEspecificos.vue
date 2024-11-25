@@ -1,14 +1,22 @@
 <template>
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden shadow-md">
-      <caption class="p-3 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800 rounded-t-lg">
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden shadow-md"
+    >
+      <caption
+        class="p-3 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800 rounded-t-lg"
+      >
         Proposiciones
-        <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Proposiciones de la Sesión #</p>
+        <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+          Proposiciones de la Sesión #
+        </p>
       </caption>
     </table>
 
     <div class="createAction">
-      <div class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
+      <div
+        class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900"
+      >
         <button
           type="button"
           class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
@@ -31,8 +39,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(proposiciones) in proposiciones" :key="proposiciones.ID_PROPOSICIONES" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <th scope="row" class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ proposiciones.ID_PROPOSICIONES }}</th>
+        <tr
+          v-for="proposiciones in proposiciones.data"
+          :key="selectedProposicionId"
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+        >
+          <th
+            scope="row"
+            class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ proposiciones.ID_PROPOSICIONES }}
+          </th>
           <td class="px-6 py-4">{{ proposiciones.DESCRIPCION }}</td>
           <td class="px-2 py-4">
             <form class="mx-auto">
@@ -48,33 +65,37 @@
             </form>
           </td>
           <td class="px-6 py-4">
-  <div class="flex items-center">
-    <div class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-      <span class="font-medium text-gray-600 dark:text-gray-300">{{ proposiciones.MIEMBRO_IDMIEMBRO }}</span>
-    </div>
-    <div class="ps-3">
-      <!-- Nombre del miembro -->
-      <div class="text-base font-semibold">{{ proposiciones.NOMBRE_MIEMBRO }}</div>
-      <!-- Correo del miembro -->
-      <div class="font-normal text-gray-500">{{ proposiciones.EMAIL_MIEMBRO }}</div>
-    </div>
-  </div>
-</td>
+            <div class="flex items-center">
+              <div
+                class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+              >
+                <span class="font-medium text-gray-600 dark:text-gray-300">{{
+                  proposiciones.MIEMBRO_IDMIEMBRO
+                }}</span>
+              </div>
+              <div class="ps-3">
+                <!-- Nombre del miembro -->
+                <div class="text-base font-semibold">{{ proposiciones.miembro.NOMBRE }}</div>
+                <!-- Correo del miembro -->
+                <div class="font-normal text-gray-500">{{ proposiciones.miembro.users.email }}</div>
+              </div>
+            </div>
+          </td>
           <td class="px-6 py-4">
             <div class="centroAction">
               <button
                 data-modal-target="EditProposicion"
                 data-modal-toggle="EditProposicion"
-                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900"
                 type="button"
-                @click="openEditModal(proposicion)"
+                @click="openEditModal(proposiciones)"
               >
                 Editar
               </button>
               <button
                 type="button"
                 class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                @click="deleteProposicion(proposicion.ID_PROPOSICIONES)"
+                @click="deleteProposicion(proposiciones)"
               >
                 Borrar
               </button>
@@ -84,18 +105,31 @@
       </tbody>
     </table>
 
+    <!-- Paginación -->
+    <div class="p-4">
+      <paginationBar :pages="proposiciones" :size="'small'" @change-page="changePage" />
+    </div>
+
     <!-- Modal for Edit Proposition -->
-    <ModalEditProposicionEspecifico />
+    <ModalEditProposicionEspecifico
+      :idProposicion="selectedProposicionId"
+      ref="editProposicionModal"
+    />
     <!-- Modal for Create Proposition -->
-    <ModalCreateProposicionEspecifico />
+    <ModalCreateProposicionEspecifico ref="createProposicionModal" />
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
-// Asegúrate de que esta línea sea solo una
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import urlService from '@/service/urlService';
+
+
+import ModalCreateProposicionEspecifico from './ModalCreateProposicionEspecifico.vue';
+import ModalEditProposicionEspecifico from './ModalEditProposicionEspecifico.vue';
 import { useProposicionStore } from '@/stores/proposiciones.js';
+import paginationBar from '@/components/util/paginationBar.vue';
 
 const route = useRoute()
 // Aquí solo debes usar useProposicionStore() para acceder al store
@@ -105,9 +139,17 @@ const emits = defineEmits(['updateDecision'])
 // Local variable to store fetched proposiciones
 const proposiciones = ref([])
 
+const changePage = (numPage) =>{
+ proposiciones.value = proposicionStore.fetchProposicionesOfSesion(route.params.idSesion, urlService.getParamsFromUrl({page:numPage}))
+
+}
+
+const selectedProposicionId = computed(() => proposicionStore.selectedProposicion?.ID_PROPOSICIONES)
 // Fetch proposiciones when the component is mounted
 onMounted(async () => {
-  const fetchedProposiciones = await proposicionStore.fetchProposicionesOfSesion(route.params.idSesion)
+  const fetchedProposiciones = await proposicionStore.fetchProposicionesOfSesion(
+    route.params.idSesion
+  )
   proposiciones.value = fetchedProposiciones // Store the fetched proposiciones in the local variable
 })
 
@@ -115,10 +157,41 @@ onMounted(async () => {
 const updateDecision = async (proposicion) => {
   try {
     const response = await proposicionStore.updateDecision(proposicion) // Using the 'updateDecision' method from the store
-    emits('updateDecision', proposicion.ESTADO) 
+    emits('updateDecision', proposicion.ESTADO)
     console.log('Decisión actualizada:', response)
   } catch (error) {
     console.error('Error al actualizar la decisión de la proposición:', error)
   }
+}
+
+const deleteProposicion = async (proposicion) => {
+  if (!proposicion || !proposicion.ID_PROPOSICIONES) {
+    console.log('Fetched proposiciones:', proposiciones.value)
+    console.error('Proposición no válida:', proposicion)
+    return
+  }
+  try {
+    const response = await proposicionStore.deleteProposicion(proposicion.ID_PROPOSICIONES)
+    if (response) {
+      // Remove deleted proposition from local data
+      proposiciones.value = proposiciones.value.filter(
+        (p) => p.ID_PROPOSICIONES !== proposicion.ID_PROPOSICIONES
+      )
+      console.log('Proposición eliminada')
+    }
+  } catch (error) {
+    console.error('Error al eliminar la proposición:', error)
+  }
+}
+
+const createProposicionModal = ref(null)
+
+const openCreateModal = () => {
+  createProposicionModal.value.openModal()
+}
+const editProposicionModal = ref(null)
+
+const openEditModal = (id) => {
+  editProposicionModal.value.openModal(id) // Llama al método y pasa el ID
 }
 </script>
