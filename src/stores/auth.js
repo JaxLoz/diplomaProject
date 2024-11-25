@@ -8,10 +8,15 @@ export const useAuthStore = defineStore("auth", {
         showErrorAlert: false,
         showSuccessAlert: false,
         dataError: {},
-        dataSuccesfull: {}
+        dataSuccesfull: {},
+        isLoading: false
     }),
 
     actions: {
+
+        getIsloading(){
+            return this.isLoading;
+        },
 
         getProfile(){
             return this.profile;
@@ -23,6 +28,10 @@ export const useAuthStore = defineStore("auth", {
 
         getDateError(){
             return this.dataError;
+        },
+
+        setIsLoading(loading){
+            this.isLoading = loading
         },
 
         setDataError(data){
@@ -62,27 +71,33 @@ export const useAuthStore = defineStore("auth", {
 
         async register(registerData){
 
+            this.setIsLoading(true)
             const response = await axios.requestAxios('/register', 'POST', registerData)   
 
             if(response.error){
                console.log(response.data)
                this.setDataError(response.data)
                this.showErrorAlertModal() 
+               this.setIsLoading(false)
             }else{
                 this.showSuccessAlertModal()
                 this.setDataSuccesfull(response.data)
+                this.setIsLoading(false)
             }
         },
 
         async login(credentials){
+            this.setIsLoading(true)
             const response = await axios.requestAxios('/login', 'POST', credentials)
 
             if(response.error){
                 this.setDataError(response.data)
                 this.showErrorAlertModal()
+                this.setIsLoading(false)
             } else{
                 sessionStorage.setItem('tk', JSON.stringify(response.data.token))
                 await this.getInfProfile()
+                this.setIsLoading(false)
             } 
         },
 

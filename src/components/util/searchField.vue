@@ -57,7 +57,6 @@ const emit = defineEmits(['itemSelected']);
 
 
 const props = defineProps({
-    searchInfo: {type: Array, Required: true, default: new Array()},
     listItems: {type: Array, Required: false, default: new Array()}, 
     label: {type: String, Required: true, default: "TextLabel"},
     placeholder: {type: String, Required: false, default: ""},

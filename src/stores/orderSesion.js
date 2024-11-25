@@ -8,10 +8,15 @@ export const useOrderSesion = defineStore('orderSesion', {
         showErrorAlert: false,
         showSuccessAlert: false,
         dataError: {},
-        dataSuccesfull: {}
+        dataSuccesfull: {},
+        isLoading: false
     }),
 
     actions: {
+
+        getIsloading(){
+            return this.isLoading;
+        },
 
         getPreOrderSesion(){
             return this.preOrdenSesion;
@@ -31,6 +36,10 @@ export const useOrderSesion = defineStore('orderSesion', {
 
         getDateError(){
             return this.dataError;
+        },
+
+        setIsLoading(loading){
+            this.isLoading = loading
         },
 
         setPreOrderSesion(data){
@@ -197,7 +206,7 @@ export const useOrderSesion = defineStore('orderSesion', {
                     const newOrdenSesionItems = this.preOrdenSesion.filter(item => item.dataBaseOrigin == false);
                     
                     if(newOrdenSesionItems.length > 0){
-                        
+                        this.setIsLoading(true)
                         const Errors = []
                         
                         for(const item of newOrdenSesionItems){
@@ -210,9 +219,11 @@ export const useOrderSesion = defineStore('orderSesion', {
                         if(Errors.length > 0){
                             this.setDataError({message: 'Error al guardar los items de la orden'});
                             this.showErrorAlertModal();
+                            this.setIsLoading(false)
                         }else{
                             this.setDataSuccesfull({message: 'Items guardados correctamente'});
                             this.showSuccessAlertModal();
+                            this.setIsLoading(false)
                         }
 
                     }else{
@@ -229,6 +240,8 @@ export const useOrderSesion = defineStore('orderSesion', {
                     this.setDataError({message: 'No se puede agregar items con el mismo numero de orden'});
                     this.showErrorAlertModal();  
                 }else{
+                    console.log("se van a actualizar che")
+                    this.setIsLoading(true)
                     const errors = []
                     
                     for (const item of this.preOrdenSesion){
@@ -249,9 +262,11 @@ export const useOrderSesion = defineStore('orderSesion', {
                     if(errors.length > 0){
                         this.setDataError({message: 'Error al actualizar los items de la orden'});
                         this.showErrorAlertModal();
+                        this.setIsLoading(false)
                     }else{
                         this.setDataSuccesfull({message: 'Items actualizados correctamente'});
                         this.showSuccessAlertModal();
+                        this.setIsLoading(false)
                     }
                 }
             }

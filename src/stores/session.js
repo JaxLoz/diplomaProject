@@ -12,10 +12,14 @@ export const useSessionStore = defineStore("sesion", {
         showErrorAlert: false,
         showSuccessAlert: false,
         dataError: {},
-        dataSuccesfull: {}
+        dataSuccesfull: {},
+        isLoading: false
     }),
     
     actions: {
+        getIsloading(){
+            return this.isLoading;
+        },
         
         getDataSuccesfull(){
             return this.dataSuccesfull
@@ -23,6 +27,10 @@ export const useSessionStore = defineStore("sesion", {
 
         getDateError(){
             return this.dataError;
+        },
+
+        setIsLoading(loading){
+            this.isLoading = loading
         },
 
         setDataError(data){
@@ -69,18 +77,31 @@ export const useSessionStore = defineStore("sesion", {
 
         checkLastDate(dateNewSesion){
             // DD/MM/YYYY formato en que llega la nueva fecha (este formato es problematico para el objeto Date)
-            
-            
             const [day, month, year] = dateNewSesion.split('/');
             const newDate = new Date(year, month - 1, day);
+            
 
             if(this.sessions.data.length > 0){
                 const lastSesion = this.sessions.data[0];
                 const lastSesionDate = new Date(lastSesion.FECHA);
                 
                 if(newDate.getDate() < lastSesionDate.getDate() + 8){
-                    console.log(`no puede crear una sesion antes de ${lastSesionDate.getDate() + 8}/${lastSesionDate.getMonth() + 1}/${lastSesionDate.getFullYear()}`)
+                    lastSesionDate.setDate(lastSesionDate.getDate() + 9);
+                    const referenceDate = formatDateService.extractDate(lastSesionDate);
+
+                    this.setDataError({
+                        message: `Seleccione una fecha posterior a la de la sesion anterior`,
+                        errors: {
+                            description: ["Seleccione una fecha a partir de: "+ referenceDate]
+                        }
+                    });
+                    this.showErrorAlertModal();
+                    return false;
+                }else{
+                    return true;
                 }
+            }else{
+                return true;
             }
         },
 
@@ -120,7 +141,13 @@ export const useSessionStore = defineStore("sesion", {
         
         ,
         async createSession(sessionData) {
-            this.checkLastDate(sessionData.date)
+            if(!this.checkLastDate(sessionData.date)){
+                console.log("else de checkLastDate")
+                return {
+                    isCreated: false
+                }
+            }
+
             const response = await axios.requestAxios('/sesion/save','POST', {
                 LUGAR: sessionData.place,
                 FECHA: sessionData.date,
@@ -130,18 +157,22 @@ export const useSessionStore = defineStore("sesion", {
                 SECRETARIO: sessionData.secretary
             });
 
-            
-
-            if(response.error){
+            if(response.error){ 
                 this.setDataError(response.data);
                 this.showErrorAlertModal()
+                return {
+                    isCreated: false   
+                }
             }else{
+                
                 this.setDataSuccesfull(response.data);
                 this.showSuccessAlertModal();
+                return {
+                    dataCreated: response,
+                    isCreated: true
+                }
             }
-
-            return response;
-    
+                
         },
         
 

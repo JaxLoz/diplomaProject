@@ -17,4 +17,13 @@
 import navBar from '@/components/util/navBar.vue'
 import Side_bar from '@/components/util/side_bar.vue'
 import FooterN from '@/components/util/Footer-n.vue'
+import { onMounted } from 'vue';
+import router from '@/router';
+
+onMounted(() =>{
+  if(sessionStorage.getItem('tk') == null){
+    router.push({name: "login"})
+  }
+})
+
 </script>

@@ -100,6 +100,16 @@
                 </p>
             </div>
 
+            <div class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+                <button
+                    @click="openModal"
+                    type="button"
+                    class="inline-flex items-center justify-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-2 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                >
+                    Invitar
+                </button>
+            </div>
+
             <!-- Tabla Invitados -->
             <div class="overflow-x-auto flex flex-col items-center">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -173,13 +183,29 @@
             </div>
         </div>
     </div>
+    <ModalAsistenciaInviados
+        ref="asistenciaModalMain"
+         @closeModal="closeModal"
+    />
 </template>
 <script setup>
 import stringFormat from '@/service/stringFormat';
 import paginationBar from '@/components/util/paginationBar.vue';
 import urlService from '@/service/urlService';
+import ModalAsistenciaInviados from './ModalAsistenciaInviados.vue';
 import { useInvitacionStore } from '@/stores/invitacion';
-import { watch } from 'vue';
+import { Modal } from 'flowbite';
+import { ref, watch, onMounted, useTemplateRef } from 'vue';
+
+const targetModal = useTemplateRef('asistenciaModalMain');
+const modalIntance = ref(null);
+
+const optionsModal = {
+      placement: 'center',
+      backdrop: 'static',
+      backdropClasses: 'bg-gray-900 bg-opacity-50 fixed inset-0 z-40 backdrop-blur-sm',
+      closable: false
+  }
 
 const invitacionStore = useInvitacionStore()
 const props = defineProps({
@@ -232,5 +258,22 @@ const deleteGuestInvited = async (idSesion, idInvitado) => {
     await invitacionStore.deleteAttendanceGuests(idSesion, idInvitado)
     invitacionStore.getAttendanceRegisterGuests(idSesion)
 }
+
+const openModal = () => {
+    invitacionStore.getUserWithOutStudents();
+    modalIntance.value.show();
+}
+
+const closeModal = () => { 
+    modalIntance.value.hide();
+    invitacionStore.cleanGuestsList();
+    invitacionStore.hidenErrorAlertModal();
+    invitacionStore.hidenSusccessAlertModal();
+}
+
+onMounted (() => {
+    modalIntance.value = new Modal(targetModal.value.targetModal, optionsModal);
+    console.log(targetModal.value.targetModal)
+})
 
 </script>
