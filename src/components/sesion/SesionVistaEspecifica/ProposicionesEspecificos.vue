@@ -41,7 +41,7 @@
       <tbody>
         <tr
           v-for="proposiciones in proposiciones.data"
-          :key="selectedProposicionId"
+          :key="proposiciones.ID_PROPOSICIONES"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
         >
           <th
@@ -139,9 +139,9 @@ const emits = defineEmits(['updateDecision'])
 // Local variable to store fetched proposiciones
 const proposiciones = ref([])
 
-const changePage = (numPage) =>{
- proposiciones.value = proposicionStore.fetchProposicionesOfSesion(route.params.idSesion, urlService.getParamsFromUrl({page:numPage}))
-
+const changePage = async (numPage) =>{
+  const newPage = await proposicionStore.fetchProposicionesOfSesion(route.params.idSesion, urlService.getParamsFromUrl({page:numPage}))
+  proposiciones.value = newPage
 }
 
 const selectedProposicionId = computed(() => proposicionStore.selectedProposicion?.ID_PROPOSICIONES)

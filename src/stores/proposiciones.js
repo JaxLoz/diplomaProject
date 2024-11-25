@@ -9,7 +9,7 @@ export const useProposicionStore = defineStore('proposicion', {
     showErrorAlert: false,
     showSuccessAlert: false,
     dataError: {},
-    dataSuccesfull: {}
+    dataSuccesfull: {},
   }),
   actions: {
     getDataSuccesfull() {

@@ -144,7 +144,7 @@ const submitProposicion = async () => {
       MIEMBRO_IDMIEMBRO: dataproposicion.value.MIEMBRO_IDMIEMBRO,
     };
 
-    const response = await proposicionStore.createProposicionInSesion(proposicionData, idSesion.value);
+    await proposicionStore.createProposicionInSesion(proposicionData, idSesion.value);
 
     closeModal();
     proposicionStore.fetchProposicionesOfSesion(idSesion.value)
