@@ -92,11 +92,14 @@
 
  .title{
   display: flex;
+  justify-content: space-between;
   margin-left: 280px;
+  margin-right: 275px;
   margin-top: 60px;
-  flex-direction: column;
+  flex-direction: row;
   padding-top: 20px;
   padding-left: 20px;
+  padding-right: 20px;
   padding-bottom: 0px;
  }
 
@@ -129,6 +132,7 @@
  .centro2{
   display: flex;
   flex-direction: column;
+  gap: 20px;
   padding: 20px;
   padding-right: 100px;
   padding-left: 10px;
