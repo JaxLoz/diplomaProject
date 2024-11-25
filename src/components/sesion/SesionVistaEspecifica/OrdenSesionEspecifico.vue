@@ -13,7 +13,10 @@
             </div>
 
             <!-- Botón Crear -->
-            <div class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+            <div 
+            v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+            class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+            
                 <button
                     @click="openModalCreateMode"
                     type="button"
