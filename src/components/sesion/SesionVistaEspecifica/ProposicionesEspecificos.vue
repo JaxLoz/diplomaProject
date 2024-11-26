@@ -40,7 +40,7 @@
           :key="proposiciones.ID_PROPOSICIONES"
           :class="[
                 'bg-white dark:bg-gray-800',
-                index !== proposiciones.data.length - 1 ? 'border-b dark:border-gray-700' : ''
+                index !== proposiciones.length - 1 ? 'border-b dark:border-gray-700' : ''
               ]">
               <td class="w-4 p-4"></td>
               
@@ -180,6 +180,7 @@ const updateDecision = async (proposicion) => {
     const response = await proposicionStore.updateDecision(proposicion) // Using the 'updateDecision' method from the store
     emits('updateDecision', proposicion.ESTADO)
     console.log('Decisión actualizada:', response)
+
   } catch (error) {
     console.error('Error al actualizar la decisión de la proposición:', error)
   }

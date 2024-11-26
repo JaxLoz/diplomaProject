@@ -314,8 +314,119 @@
         <!-- Tabla de tareas -->
 
 
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <!-- Encabezado -->
+      <div class="p-4 border-b dark:border-gray-700">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+          Encargados de Tareas
+        </h2>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Encargados de Tareas de la Sesión #
+        </p>
+      </div>
+
+      <!-- Tabla -->
+      <div class="overflow-x-auto flex flex-col items-center rounded-lg mb-6">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="p-4"></th>
+              <th scope="col" class="px-4 py-3">ID Tarea</th>
+              <th scope="col" class="px-4 py-3">Encargado de la Tarea</th>
+              <th scope="col" class="px-4 py-3">Fecha de entrega</th>
+              <th scope="col" class="px-4 py-3">Descripción</th>
+              <th scope="col" class="px-4 py-3">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(task, index) in listTareas"
+              :key="task.tareas[index].IDTAREAS"
+              class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"
+            >
+              <td class="w-4 p-4"></td>
+              <td class="px-4 py-4">{{ task.tareas[index].IDTAREAS }}</td>
+              <th
+                scope="row"
+                class="flex items-center px-4 py-12 text-gray-900 whitespace-nowrap dark:text-white"
+              >
+                
+                <div class="ps-3">
+                  <div class="text-base font-semibold">{{ task.tareas[index].encargados_tareas[index].miembro.NOMBRE }}</div>
+                  <div class="font-normal text-gray-500">
+                    {{ task.tareas[index].encargados_tareas[index].miembro.users.email }}
+                  </div>
+                </div>
+              </th>
+              <td class="px-4 py-4">
+                {{ formatDateService.extractDate(task.tareas[index].FECHA_ENTREGA) }}
+              </td>
+              <td class="px-4 py-4">{{ task.tareas[index].DESCRIPCION }}</td>
+              <td class="px-4 py-4">
+                <!-- estado de la tarea cuando el acta no está pendiente  -->
+                {{ task.tareas[index].encargados_tareas[index].ESTADO }}        
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
         <!-- tabla de propocisiones -->
 
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <div class="p-4 border-b dark:border-gray-700">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        Proposiciones
+                    </h2>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        Proposiciones de la sesion
+                    </p>
+                </div>
+
+        <div class="overflow-x-auto flex flex-col items-center rounded-lg mb-6">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-6">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="p-4"></th>
+              <th scope="col" class="p-4">ID</th>
+              <th scope="col" class="px-4 py-3">Descripción</th>
+              <th scope="col" class="px-4 py-3">Decisión</th>
+              <th scope="col" class="px-4 py-3">Proponente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(proposicion, index) in listProposiciones"
+              :key="proposicion.ID_PROPOSICIONES"
+              :class="[
+                    'bg-white dark:bg-gray-800',
+                    index !== listProposiciones.length - 1 ? 'border-b dark:border-gray-700' : ''
+                  ]">
+                  <td class="w-4 p-4"></td>
+                  
+                  <td scope="row" class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ proposicion.ID_PROPOSICIONES }}
+                </td>
+              <td class="px-10 py-4">{{ proposicion.DESCRIPCION }}</td>
+              <td class="px-2 py-4">
+                {{ proposicion.DESICION }}
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center">
+                  
+                  <div class="ps-3">
+                    <!-- Nombre del miembro -->
+                    <div class="text-base font-semibold">{{ proposicion.miembro.NOMBRE }}</div>
+                    <!-- Correo del miembro -->
+                    <div class="font-normal text-gray-500">{{ proposicion.miembro.users.email }}</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
 
         <!-- Tabla de Solicitudes -->
 

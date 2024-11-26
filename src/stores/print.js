@@ -82,7 +82,7 @@ export const usePrintStore = defineStore("print", {
         },
 
         async fetchTaskNoPaginate(idSesion){
-            const response = await axios.axiosInstance.get(`tareas/TareasNotPaginate/${idSesion}`);
+            const response = await axios.axiosInstance.get(`encargadoTareaByIdSesion/${idSesion}`);
             this.setListTask(response.data.data);
         },
 

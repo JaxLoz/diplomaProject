@@ -85,7 +85,7 @@
   </div>
 </template>
 <script setup>
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref} from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useProposicionStore } from '@/stores/proposiciones.js'
