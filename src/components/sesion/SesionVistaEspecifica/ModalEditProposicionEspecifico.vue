@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="isModalVisible"
+    v-if="isModalVisible" 
     class="fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50"
   >
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -54,22 +54,7 @@
             </div>
 
             <!-- Decisión -->
-            <div class="col-span-2">
-              <label
-                for="DESICION"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Decisión</label
-              >
-              <select
-                v-model="dataproposicion.DESICION"
-                id="DESICION"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              >
-                <option value="pendiente">Pendiente</option>
-                <option value="aprobada">Aprobada</option>
-                <option value="rechazada">Rechazada</option>
-              </select>
-            </div>
+
 
             <!-- Miembro ID -->
             <div class="col-span-2">
@@ -100,16 +85,16 @@
   </div>
 </template>
 <script setup>
-import { onMounted, computed, ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useProposicionStore } from '@/stores/proposiciones.js'
+
 
 defineProps(['idProposicion'])
 
 const dataproposicion = ref({
   DESCRIPCION: '',
-  DESICION: '',
   MIEMBRO_IDMIEMBRO: ''
 })
 
@@ -128,44 +113,30 @@ const idSesion = computed(() => {
 })
 
 // Abrir el modal y cargar los datos
-const openModal = () => {
-  isModalVisible.value = true;
+const openModal = async (proposicionId) => {
+  dataproposicion.value = {
+    DESCRIPCION: proposicionId.DESCRIPCION || '',
+    MIEMBRO_IDMIEMBRO: proposicionId.MIEMBRO_IDMIEMBRO || '',
+  }
 
-};
+  idProposicion.value = proposicionId 
+  isModalVisible.value = true
+}
 
 // Cerrar el modal
 const closeModal = () => {
   isModalVisible.value = false
 }
 
-
-const loadProposicion = async () => {
-  const idProposicion = route.params.idProposicion;
-
-  if (idProposicion) {
-    try {
-      const proposicion = await proposicionStore.getProposicionById(idProposicion);
-
-      if (proposicion) {
-        dataproposicion.value.DESCRIPCION = proposicion.DESCRIPCION;
-        dataproposicion.value.DESICION = proposicion.DESICION;
-        dataproposicion.value.MIEMBRO_IDMIEMBRO = proposicion.MIEMBRO_IDMIEMBRO;
-      }
-    } catch (error) {
-      console.error('Error al cargar la proposición:', error);
-    }
-  }
-};
-
-
 const submitProposicion = async () => {
   try {
     const proposicionData = {
       ID_PROPOSICIONES: idProposicion.value.ID_PROPOSICIONES,
       DESCRIPCION: dataproposicion.value.DESCRIPCION,
-      DESICION: dataproposicion.value.DESICION,
+      DESICION: idProposicion.value.DESICION,
       MIEMBRO_IDMIEMBRO: dataproposicion.value.MIEMBRO_IDMIEMBRO
     }
+    console.log(proposicionData)
 
     const response = await proposicionStore.updateProposicion(proposicionData, idSesion.value)
 

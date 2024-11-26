@@ -214,6 +214,9 @@ async updateProposicion(proposicionData, idSesion) {
         this.setDataError(error.message) // Handle the error (e.g., show a notification or alert)
         return false // Return false in case of an error
       }
-    }
+    }, 
+
+
+
   }
 })

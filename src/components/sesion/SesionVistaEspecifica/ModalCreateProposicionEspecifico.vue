@@ -54,24 +54,6 @@
               ></textarea>
             </div>
 
-            <!-- Decisión -->
-            <div class="col-span-2">
-              <label
-                for="DESICION"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Decisión</label
-              >
-              <select
-                v-model="dataproposicion.DESICION"
-                id="DESICION"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              >
-                <option value="pendiente">Pendiente</option>
-                <option value="aprobada">Aprobada</option>
-                <option value="rechazada">Rechazada</option>
-              </select>
-            </div>
-
             <!-- Miembro ID -->
             <div class="col-span-2">
               <label
@@ -103,27 +85,30 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import listMember from '@/components/util/listMember.vue';
+import searchFieldMember from '@/components/util/searchFieldMember.vue';
+
+import { onMounted, computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useSessionStore } from '@/stores/session';
 import { useProposicionStore } from '@/stores/proposiciones.js'
 
-const dataproposicion = ref({
-  DESCRIPCION:'',  
-  DESICION:'',
-  MIEMBRO_IDMIEMBRO:''
-});
-
-const route = useRoute()
-// Store de proposiciones y sesión
+//inicializa los stores
+const sessionStore = useSessionStore();
 const proposicionStore = useProposicionStore()
 
+
 const isModalVisible = ref(false)
+const route = useRoute()
+
+
 
 const idSesion = computed(() => {
   const sessionId = route.params.idSesion // Obtener parámetro de la ruta
   return sessionId ? parseInt(sessionId, 10) : null
 })
 
+//constante para abrir y cerrar el modal
 const openModal = () => {
   isModalVisible.value = true
 }
@@ -132,22 +117,34 @@ const closeModal = () => {
   isModalVisible.value = false
 }
 
-defineExpose({
-  openModal
-})
+//variables computadas
+const id_sesion = computed(() => sessionStore.sessions)
+const infoSesion = computed(() => sessionStore.getInfoViewSesion());
 
+
+//variables reactivas
+const searchmiembro = ref("");
+const dataproposicion = ref({
+  DESCRIPCION:'',  
+  DESICION:'',
+  MIEMBRO_IDMIEMBRO:''
+});
+
+
+
+//metodo para subir los datos
 const submitProposicion = async () => {
   try {
     const proposicionData = {
       DESCRIPCION: dataproposicion.value.DESCRIPCION,
-      DESICION: dataproposicion.value.DESICION,
+      DESICION: "pendiente",
       MIEMBRO_IDMIEMBRO: dataproposicion.value.MIEMBRO_IDMIEMBRO,
     };
 
-    await proposicionStore.createProposicionInSesion(proposicionData, idSesion.value);
+    const response = await proposicionStore.createProposicionInSesion(proposicionData, idSesion.value);
 
     closeModal();
-    proposicionStore.fetchProposicionesOfSesion(idSesion.value)
+    proposicionStore.fetchProposicionesOfSesion(infoSesion.value)
   } catch (error) {
     // Mostrar detalles del error
     if (error.response) {
@@ -157,6 +154,8 @@ const submitProposicion = async () => {
 };
 
 
-
+defineExpose({
+  openModal
+})
 
 </script>
