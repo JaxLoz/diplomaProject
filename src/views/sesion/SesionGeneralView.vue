@@ -7,7 +7,7 @@
   </h2>
 
   <button 
-    @click.prevent="setUpOrdenSesion"
+    @click.prevent="toPringPage"
     type="submit" 
     class="w-10 h-10 flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
   >
@@ -78,6 +78,7 @@ import { useSessionStore } from '@/stores/session.js'
 import { useInvitacionStore } from '@/stores/invitacion'
 import { useTareaStore } from '@/stores/tarea'
 import { useOrderSesion } from '@/stores/orderSesion';
+import router from '@/router'
 
 const route = useRoute()
 const sesionStore = useSessionStore()
@@ -108,6 +109,10 @@ const actionsWhereActStatusChange = (actaStatus) => {
 
     
   } 
+}
+
+const toPringPage = () =>{
+  router.push({name: 'printPage', params: {idSesion: route.params.idSesion}})
 }
 
 onMounted(() => {
