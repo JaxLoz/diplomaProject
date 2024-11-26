@@ -10,10 +10,19 @@ export const useInvitacionStore = defineStore('invitacion', {
         showErrorAlert: false,
         showSuccessAlert: false,
         dataError: {},
-        dataSuccesfull: {}
+        dataSuccesfull: {},
+        isLoading: false
     }),
 
     actions: {
+
+        getIsloading(){
+            return this.isLoading;
+        },
+
+        getListGuest(){
+            return this.guests;
+        },
 
         getDataSuccesfull(){
             return this.dataSuccesfull
@@ -21,6 +30,10 @@ export const useInvitacionStore = defineStore('invitacion', {
 
         getDateError(){
             return this.dataError;
+        },
+
+        setIsLoading(loading){
+            this.isLoading = loading
         },
 
         setDataError(data){
@@ -81,10 +94,9 @@ export const useInvitacionStore = defineStore('invitacion', {
         },
 
         //registra las invitaciones para AsistenciaMiembros
-        async registerAsistenciaMiembros(idSesion, listMembers){
+        async registerAsistenciaMiembros(idSesion){
             const response = await axios.requestAxios('asistenciaMiembros/save', 'POST', {
                 idSesion: idSesion,
-                listMiembros: [...listMembers]
             })
 
             return response
@@ -103,9 +115,8 @@ export const useInvitacionStore = defineStore('invitacion', {
         // se crea un arreglo con la combinacion de los miembros e invitados que se recupareron de la base de datos
         async getUserWithOutStudents(){
             const InvitadosWithOutStudents = await this.getInvitadosWithAoutStudents();
-            const miembros = await this.getMiembros();
 
-            this.usersWithOutStudents = [...miembros, ...InvitadosWithOutStudents]
+            this.usersWithOutStudents = [...InvitadosWithOutStudents]
         },
 
         //envia la lista de miembros que seran invitados a su respectivo endpoint para registrarlos en la base de datos
@@ -113,50 +124,55 @@ export const useInvitacionStore = defineStore('invitacion', {
             const guestToInvite = this.getGuestInvitation(); // datos que van para AsistenciaInvitados
             const membersToInvite = this.getMemberInvitation(); // datos que van para AsistenciaMiembros
 
-            if(guestToInvite.length > 0 && membersToInvite.length > 0){
+            if(guestToInvite.length > 0){
                 const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
-                const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
+                
 
-                //tratamiento de errores para invitados
-                if(responseMembersInvited.error && responseMembersInvited.error){
-                    this.setDataError(responseMembersInvited.data.message = 'Error durante el registro de invitaciones de miembros e inivitados')
-                    this.showErrorAlertModal();
+                if(responseGuestInvited.error){
+                    this.setDataError(responseGuestInvited.data);
+                    this.showErrorAlertModal(); 
                 }else{
-                    this.setDataSuccesfull(responseGuestInvited.data.message = 'Invitaciones registradas con exito')
+                    this.setDataSuccesfull(responseGuestInvited.data)
                     this.showSuccessAlertModal();
                 }
-                console.log(responseGuestInvited)
-                console.log(responseMembersInvited)
 
-            }else if(guestToInvite.length > 0){
+                console.log(responseGuestInvited)
+            }
+
+            const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
+
+            if(responseMembersInvited.error){
+                this.setDataError(responseMembersInvited.data);
+                this.showErrorAlertModal();
+            }else{
+                this.setDataSuccesfull(responseMembersInvited.data)
+                this.showSuccessAlertModal();;
+            }
+  
+        },
+
+        async sentInvitationOnlyGuests(idSesion){
+            const guestToInvite = this.getGuestInvitation(); // datos que van para AsistenciaInvitados
+            
+            if(guestToInvite.length > 0){
+                this.setIsLoading(true);
                 const responseGuestInvited = await this.registerAsistenciaInvitados(idSesion, guestToInvite);
                 
 
                 if(responseGuestInvited.error){
                     this.setDataError(responseGuestInvited.data);
                     this.showErrorAlertModal();
+                    this.setIsLoading(false); 
                 }else{
-                    this.setDataSuccesfull(responseGuestInvited.data);
+                    this.setDataSuccesfull(responseGuestInvited.data)
                     this.showSuccessAlertModal();
+                    this.setIsLoading(false);
                 }
 
-                console.log(responseGuestInvited)
-            }else if(membersToInvite.length > 0){
-                const responseMembersInvited = await this.registerAsistenciaMiembros(idSesion, membersToInvite);
-
-                if(responseMembersInvited.error){
-                    this.setDataError(responseMembersInvited.data);
+            }else{
+                    this.setDataError({message: "No hay invitaciones para enviar"});
                     this.showErrorAlertModal();
-                }else{
-                    this.setDataSuccesfull(responseMembersInvited.data);
-                    this.showSuccessAlertModal();
-                }
-
-                console.log(responseMembersInvited)
             }
-
-            console.log(guestToInvite)
-            console.log(membersToInvite)
         },
          
         // esto extrae los miembros que se han seleccionado para la invitacion que estan en la variable guests
@@ -255,7 +271,6 @@ export const useInvitacionStore = defineStore('invitacion', {
 
         addGuest(guest){
                const guestExisted = this.guests.find(guestExist => guestExist.id == guest.id)
-               console.log(guestExisted)
                if(guestExisted === undefined){
                 this.guests = [...this.guests, guest]
                }

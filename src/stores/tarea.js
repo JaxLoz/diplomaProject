@@ -50,9 +50,7 @@ export const useTareaStore = defineStore("tarea", {
         getShowSuccessAlert(){
             return this.showErrorAlert;
         },
-        getShowSuccessAlert(){
-            return this.showSuccessAlert;
-        },
+        
         getInfoViewTarea(){
             return this.infViewTarea;
         },

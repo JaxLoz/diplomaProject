@@ -40,6 +40,7 @@
 import { useTemplateRef } from 'vue';
 import { useSessionStore } from '@/stores/session';
 
+
 const emit = defineEmits(['cancelAction', 'confirmAction']);
 const props = defineProps({
     infSesionToRemove: {type: Object, required: true, default: new Object()}
@@ -52,9 +53,9 @@ defineExpose({
     target, // aqui va la referencia del DOM de este elemento
 });
 
-const confirmAction = () => {
-    sesionStore.deleteSession(props.infSesionToRemove)
-    sesionStore.fetchSessions()
+const confirmAction = async () => {
+    await sesionStore.deleteSession(props.infSesionToRemove)
+    await sesionStore.fetchSessions()
     emit('confirmAction')
 }
 

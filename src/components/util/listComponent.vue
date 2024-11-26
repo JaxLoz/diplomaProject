@@ -42,4 +42,5 @@ import stringFormat from '@/service/stringFormat';
     const deleteItem = (element) => {
         emit('deleteItem', element)
     }
+
 </script>

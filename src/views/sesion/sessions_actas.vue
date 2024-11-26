@@ -92,7 +92,6 @@ const confirmDeleteSesion = () => {
 const deleteSesion = (infoSesion) => {
   removeSesionInf.value = infoSesion
   modalInstance.value.show()
-
 }
 
 onMounted(() => {

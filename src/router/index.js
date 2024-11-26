@@ -38,6 +38,11 @@ const router = createRouter({
 
           },
           {
+            path: '/printPage/:idSesion',
+            name: 'printPage',
+            component: () => import('@/views/sesion/pringPage.vue')
+          },
+          {
             path: '/tareas',
             name: 'tareas',
             component: () => import('@/views/tareas/tareas_actas.vue')
