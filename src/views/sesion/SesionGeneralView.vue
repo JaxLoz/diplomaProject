@@ -52,6 +52,7 @@
       <TareaEspecifico
       :tareaInf="infoTarea.data"
       :encargadoInf="infoEncargado.data " 
+       :sesionInf="infoSesion"
       />
       <!-- se le coloca .data esos de arriba para poder paginar -->
 

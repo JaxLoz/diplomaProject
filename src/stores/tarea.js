@@ -95,27 +95,26 @@ export const useTareaStore = defineStore("tarea", {
         // }
         async showTarea(idSesion = '', params = '') {
             try {
-                // Verificar el ID de sesión enviado
                 console.log("ID de sesión enviado:", idSesion);
         
-                // Construir la URL base
                 let endpoint = '/tareas';
-                
-                // Agregar el ID de sesión al endpoint si está disponible
+        
+                // Si se tiene un ID de sesión, agregarlo al endpoint
                 if (idSesion) {
-                    endpoint = `/tareas/sesion/${idSesion}?${params}`;
+                    endpoint = `/tareas/sesion/${idSesion}`;
                 }
         
-                // Agregar los parámetros adicionales a la URL
+                // Si hay parámetros adicionales, agregarlos a la URL
                 if (params) {
                     endpoint += `?${params}`;
                 }
         
+                console.log("Endpoint final de la solicitud:", endpoint);  // Depurar la URL final
+        
                 // Realizar la solicitud al backend
                 const response = await axios.requestAxios(endpoint, 'GET');
                 console.log("Respuesta de tareas con relaciones:", response.data);
-                
-                // Verificar la respuesta y manejar errores
+        
                 if (!response || response.error) {
                     console.error("Error al traer las tareas con relaciones", response?.data || "Unknown error");
                     return null;
@@ -124,25 +123,22 @@ export const useTareaStore = defineStore("tarea", {
                 // Asignar los datos obtenidos al estado
                 this.tarea = response.data || [];
                 console.log("Tareas asignadas:", this.tarea);
+        
                 if (response.data.data && response.data.data.length > 0) {
-                    const tarea = response.data.data[0]; // Obtener la primera tarea del arreglo
-                    
+                    const tarea = response.data.data[0];  // Obtener la primera tarea del arreglo
+        
                     // Acceder a propiedades específicas del objeto
                     console.log("Descripción de la tarea:", tarea.descripcion);
                     console.log("Email del miembro:", tarea.email_miembro);
-                  
-                    // Llamar al método con la tarea completa
-                    // this.infViewTarea(tarea);
-                  } else {
+                } else {
                     console.error("El arreglo de datos está vacío.");
-                  }
-                  
-                // this.setInfoViewTarea(response.data.data.tarea)
+                }
             } catch (error) {
                 console.error("Error al traer las tareas:", error);
                 return null;
             }
         }
+        
         
 
         
@@ -368,24 +364,31 @@ export const useTareaStore = defineStore("tarea", {
 
                 //Actualización de estado de entrega de tarea
 
-                async updateEstadoTarea(miembroId, tareaId, status) {
-
-                    
-                    console.log('Enviando actualización con', miembroId, tareaId, status); // Verifica los valores
-                    const response = await axios.requestAxios(
-                      `encargados_tarea/update/${miembroId}/${tareaId}`,
-                      'PUT',
-                      { estadoTarea: status }
-                    );
-                  
-                    this.setDataSuccesfull(response.data);
-                    this.showSucessAlertModal();
-                  
-                    if (response.error) {
-                      this.setDataError(response.data);
-                      this.ShowErrorAlertModal();
+                async updateEstadoTarea(tareaId, status) {
+                    console.log('Enviando actualización con', tareaId, status); // Verifica los valores
+                    try {
+                        const response = await axios.requestAxios(
+                            `http://127.0.0.1:8000/api/encargados_tarea/update/${tareaId}`,'PUT', 
+                            { estado: status }
+                        );
+                        console.log('Respuesta completa:', response); // Depura la respuesta completa
+                        if (response && response.data) {
+                            this.setDataSuccesfull(response.data);
+                            this.showSucessAlertModal();
+                            return response.data; // Devuelve los datos al frontend
+                        } else {
+                            console.error('Respuesta inesperada:', response);
+                            this.setDataError(response.data || 'Respuesta vacía');
+                            this.ShowErrorAlertModal();
+                            throw new Error('Respuesta vacía o inesperada de la API');
+                        }
+                    } catch (error) {
+                        console.error('Error al actualizar el estado:', error);
+                        throw error;
                     }
-                  }
+                }
+                
+                
                   ,
 
 
