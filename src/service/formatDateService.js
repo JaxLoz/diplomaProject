@@ -1,12 +1,15 @@
 function extractDate(date) {
+    console.log(date);
     if (!date) return 'Fecha no válida'; // Manejamos valores vacíos
     try {
-        return new Date(date).toLocaleDateString('es-CO', { timeZone: 'America/Bogota' });
+        console.log(new Date(date).toLocaleDateString('es-CO', { timeZone: 'America/Bogota', day: '2-digit', month: '2-digit', year: 'numeric' }));
+        return new Date(date).toLocaleDateString('es-CO', { timeZone: 'America/Bogota', day: '2-digit', month: '2-digit', year: 'numeric' });
     } catch (error) {
         console.error('Error al formatear la fecha:', error);
         return 'Fecha inválida';
     }
 }
+
 
 function extractHour(hora) {
     const localHour = new Date(hora).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bogota', hour12: false});

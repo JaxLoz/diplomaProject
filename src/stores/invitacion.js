@@ -244,6 +244,7 @@ export const useInvitacionStore = defineStore('invitacion', {
 
         
         searchGuest(searchInfo) {
+            
             if(searchInfo !== undefined && searchInfo !== '') {
                 const userGuest = this.usersWithOutStudents.filter(user => {
                     return user.NOMBRE.toLowerCase().includes(searchInfo.toLowerCase()) || user.email.includes(searchInfo)

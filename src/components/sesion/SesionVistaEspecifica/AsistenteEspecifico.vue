@@ -55,7 +55,7 @@
                 <td class="px-2 py-4">
                     
                     <div v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'" class="flex items-center">
-                        <div :class="member.asistencia == 'Asitio' ? 'bg-green-500 h-2.5 w-2.5 rounded-full me-2' : 'bg-red-500 h-2.5 w-2.5 rounded-full me-2'"></div> <span>{{member.asistencia != 'Pendiente' ? member.asistencia : 'No asistio'}}</span>
+                        <div :class="member.asistencia == 'Asistio' ? 'bg-green-500 h-2.5 w-2.5 rounded-full me-2' : 'bg-red-500 h-2.5 w-2.5 rounded-full me-2'"></div> <span>{{member.asistencia != 'Pendiente' ? member.asistencia : 'No asistio'}}</span>
                     </div>
 
                     <form v-else-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="mx-auto">
@@ -64,7 +64,7 @@
                           id="asistenciaMiembros" 
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="Pendiente">Pendiente</option>
-                            <option value="Asitio">Asistió</option>
+                            <option value="Asistio">Asistió</option>
                             <option value="No asistio">No asistió</option>
                       </select>
                     </form>
@@ -147,7 +147,7 @@
                 <td class="px-2 py-4">
 
                     <div v-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'" class="flex items-center">
-                        <div :class="guest.asistencia == 'Asitio' ? 'bg-green-500 h-2.5 w-2.5 rounded-full me-2' : 'bg-red-500 h-2.5 w-2.5 rounded-full me-2'"></div> <span>{{guest.asistencia != 'Pendiente' ? guest.asistencia : 'No asistio'}}</span>
+                        <div :class="guest.asistencia == 'Asistio' ? 'bg-green-500 h-2.5 w-2.5 rounded-full me-2' : 'bg-red-500 h-2.5 w-2.5 rounded-full me-2'"></div> <span>{{guest.asistencia != 'Pendiente' ? guest.asistencia : 'No asistio'}}</span>
                     </div>
                     
                     <form v-else-if="props.sesionInf.actas && props.sesionInf.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="mx-auto">
@@ -156,7 +156,7 @@
                           id="asistenciaMiembros" 
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="Pendiente">Pendiente</option>
-                            <option value="Asitio">Asistió</option>
+                            <option value="Asistio">Asistió</option>
                             <option value="No asistio">No asistió</option>
                       </select>
                     </form>

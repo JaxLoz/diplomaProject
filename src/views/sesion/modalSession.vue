@@ -240,7 +240,7 @@ const dataSession = ref({
 
 onMounted(() => {
   if (sessionStore.getOnUpdateMode()){
-    console.log(props.infoToUpdate)
+    console.log("guau",props.infoToUpdate)
     dataSession.value.IDSESION = props.infoToUpdate.IDSESION
     dataSession.value.place = props.infoToUpdate.LUGAR
     dataSession.value.president = props.infoToUpdate.PRESIDENTE
@@ -278,7 +278,7 @@ const createSession = async () => {
   console.log(dataSession.value.startHour)
   const responseSesionCreated = await sessionStore.createSession(dataSession.value)
   
-  if(responseSesionCreated.status >= 200){
+  if(responseSesionCreated.status>= 200){
     await invitacionStore.sendInvitationMembers(responseSesionCreated.data.data.sesion.IDSESION)
     await actasStore.createActa(responseSesionCreated.data.data.sesion.IDSESION)
     await sessionStore.fetchSessions()

@@ -103,7 +103,7 @@ export const useSessionStore = defineStore("sesion", {
         
         ,
         async createSession(sessionData) {
-           
+           console.log("datos recibidos de modal de creacion",{sessionData})
             const response = await axios.requestAxios('/sesion/save','POST', {
                 LUGAR: sessionData.place,
                 FECHA: sessionData.date,

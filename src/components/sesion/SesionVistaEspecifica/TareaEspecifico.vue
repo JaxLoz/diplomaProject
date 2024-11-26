@@ -50,178 +50,213 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <tr v-for="element in props.tareaInf" :key="element.ID" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="w-4 p-4">
-
+                    
                 </td>
                 <td class="px-6 py-4">
-                    1
+                    {{ element.tarea_id }}
                 </td>
-                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <th  scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <img class="w-10 h-10 rounded-full" src="@/assets/img/image12.jpg" alt="Jese image">
                     <div class="ps-3">
-                        <div class="text-base font-semibold">Neil Sims</div>
-                        <div class="font-normal text-gray-500">neil.sims@flowbite.com</div>
+                        <div class="text-base font-semibold">{{element.nombre}}</div>
+                        <div class="font-normal text-gray-500">{{element.email_miembro}}</div>
                     </div>  
                 </th>
                 
                  <td class="px-6 py-4">
-                    16/08/2023
+                    {{formatDateService.extractDate(element.fecha_entrega)}}
                 </td>
                 <td class="px-6 py-4">
-                    Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
+                    {{ element.descripcion}}
                 </td>
                 <td class="px-2 py-4">
                    <form class="mx-auto">
-             <select id="acta" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 custom-select">
-    <option value="sin comenzar" data-color="#facc15">Sin comenzar</option>
-    <option value="en proceso" data-color="#22c55e">En proceso</option>
-    <option value="finalizado" data-color="#ef4444">Finalizado</option>
-       </select>
+                    <select v-model="element.estadoTarea" @change="updateTareaState(element.miembro_id , element.tarea_id, element.estadoTarea)" id="estado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 custom-select">
+  <option value="sin comenzar" data-color="#facc15">Sin comenzar</option>
+  <option value="en proceso" data-color="#22c55e">En proceso</option>
+  <option value="finalizado" data-color="#ef4444">Finalizado</option>
+</select>
+
          </form>
                 </td>
                  <td class="px-6 py-4">
                     <div class="centroAction">
-                        <button data-modal-target="EditTarea" data-modal-toggle="EditTarea" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Editar</button>
-                        <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Borrar</button>
+                      <button @click="openModal(element)" type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Editar
+                      </button>
+
+                        <button @click="deleteTarea(element.tarea_id)" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Borrar</button>
                     </div>
                 </td>
             </tr>
 
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td class="w-4 p-4">
 
-                </td>
-                <td class="px-6 py-4">
-                    2
-                </td>
-                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    <img class="w-10 h-10 rounded-full" src="@/assets/img/image12.jpg" alt="Jese image">
-                    <div class="ps-3">
-                        <div class="text-base font-semibold">Neil Sims</div>
-                        <div class="font-normal text-gray-500">neil.sims@flowbite.com</div>
-                    </div>  
-                </th>
-                
-                 <td class="px-6 py-4">
-                    16/08/2023
-                </td>
-                <td class="px-6 py-4">
-                    Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
-                </td>
-                <td class="px-2 py-4">
-                   <form class="mx-auto">
-             <select id="acta" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 custom-select">
-    <option value="sin comenzar" data-color="#facc15">Sin comenzar</option>
-    <option value="en proceso" data-color="#22c55e">En proceso</option>
-    <option value="finalizado" data-color="#ef4444">Finalizado</option>
-       </select>
-         </form>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="centroAction">
-                        <button data-modal-target="EditTarea" data-modal-toggle="EditTarea" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Editar</button>
-                        <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Borrar</button>
-                    </div>
-                </td>
-            </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td class="w-4 p-4">
-
-                </td>
-                <td class="px-6 py-4">
-                    3
-                </td>
-                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    <img class="w-10 h-10 rounded-full" src="@/assets/img/image12.jpg" alt="Jese image">
-                    <div class="ps-3">
-                        <div class="text-base font-semibold">Neil Sims</div>
-                        <div class="font-normal text-gray-500">neil.sims@flowbite.com</div>
-                    </div>  
-                </th>
-                
-                 <td class="px-6 py-4">
-                    16/08/2023
-                </td>
-                <td class="px-6 py-4">
-                    Lorem ipsum odor amet, consectetuer adipiscing elit. Sapien rhoncus bibendum nisi lorem imperdiet tempus.
-                </td>
-                <td class="px-2 py-4">
-                   <form class="mx-auto">
-             <select id="acta" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 custom-select">
-    <option value="sin comenzar" data-color="#facc15">Sin comenzar</option>
-    <option value="en proceso" data-color="#22c55e">En proceso</option>
-    <option value="finalizado" data-color="#ef4444">Finalizado</option>
-       </select>
-         </form>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="centroAction">
-                        <button data-modal-target="EditTarea" data-modal-toggle="EditTarea" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Editar</button>
-                        <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Borrar</button>
-                    </div>
-                </td>
-            </tr>
         </tbody>
     </table>
-<!-- Modal del Edit de Tarea-->
-<ModalEditTareaEspecifico />
-<!-- Modal de creación de tarea-->
-<ModalCreateTareaEspecifico />
-<br>
-<center>
-    <!-- Paginacion de tabla encargados y tareas sesión -->
-<nav aria-label="Page navigation example">
-  <ul class="inline-flex -space-x-px text-sm">
-    <li>
-      <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-    </li>
-    <li>
-      <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-    </li>
-    <li>
-      <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-    </li>
-    <li>
-      <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-    </li>
-    <li>
-      <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-    </li>
-    <li>
-      <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-    </li>
-    <li>
-      <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-    </li>
-  </ul>
-</nav>
+
+ <!-- Paginacion     -->
+  <br>
+  <center>
+<paginationBar
+:pages="pageTareas"
+:size="'small'"
+@change-page="changePage"
+/>
+
 </center>
+
+<!-- Modal del Edit de Tarea-->
+<ModalEditTareaEspecifico
+  :isVisible="isModalVisible" 
+  @close="closeModal"
+  :infoToUpdate="infoUpdate"
+/>
+
+<!-- Modal de creación de tarea-->
+<ModalCreateTareaEspecifico
+:title="'Crear Tarea'"
+:tareaInf="infoTarea"
+:encargadoInf="infoEncargado" />
+<br>
+
 <br>
 </div>
 </template>
 
 <script setup>
+import urlService from '@/service/urlService';
+import paginationBar from '@/components/util/paginationBar.vue';
 import ModalEditTareaEspecifico from './ModalEditTareaEspecifico.vue';
 import ModalCreateTareaEspecifico from './ModalCreateTareaEspecifico.vue';
-import stringFormat from '@/service/stringFormat';
-import paginationBar from '@/components/util/paginationBar.vue';
-import urlService from '@/service/urlService';
 import { useTareaStore } from '@/stores/tarea';
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
+import formatDateService from '@/service/formatDateService';
+import {ref} from 'vue';
+import { useSessionStore } from '@/stores/session';
+
+
 
 const tareaStore = useTareaStore();
+const sesionStore = useSessionStore();
+
+const infoUpdate = ref({});
+
+
+
+
+const tareas = computed(() => tareaStore.tarea); //lista de tareas
+const infoSesion = computed(() => sesionStore.getInfoViewSesion());
+const pageTareas = computed(() => tareaStore.tarea);
 
 const props = defineProps({
-    tareaInf: {type: Object, required: true, default: new Object()},
-    actStatusTarea: {type: String, required: true, default: ''}
+    tareaInf: {type: Array, required: true, default: new Array()},
+    // actStatusTarea: {type: String, required: true, default: ''},
+    encargadoInf: {type: Array, required: true, default: new Array()}
+    
 })
 
-watch(() => props.actStatusTarea, (newValueStatusActTarea) => {
-    if(newValueStatusActTarea == 'aprobada' || newValueStatusActTarea == 'rechazada'){
-        return 
+
+//Método de cambio de página 
+
+const changePage = async (numPages) =>{
+   await tareaStore.showTarea(infoSesion.value.IDSESION,urlService.getParamsFromUrl({
+    page: numPages
+   }))
+} 
+
+const infoTarea = computed(() => tareaStore.tarea);
+const infoEncargado = computed(() => tareaStore.infoEncargadosTareasAmostrar);
+const removeTarea = ref({})
+const modalInstance = ref(null)
+
+
+// watch(() => props.actStatusTarea, (newValueStatusActTarea) => {
+//     if(newValueStatusActTarea == 'aprobada' || newValueStatusActTarea == 'rechazada'){
+//         return 
+//     }
+// })
+console.log("Datos de tarea:", props.tareaInf.data);
+
+//delete
+
+// Métodos
+async function deleteTarea(tareaID) {
+  const confirmDelete = confirm(
+    '¿Estás seguro de que deseas eliminar esta tarea y sus encargados?'
+  );
+  if (!confirmDelete) return;
+
+  const result = await tareaStore.deleteTareaAndEncargado(tareaID);
+
+  if (result) {
+    console.log('Tarea y encargados eliminados:', result);
+    await tareaStore.showTarea(infoSesion.value.IDSESION); // Actualizar lista
+  }
+}
+
+//update 
+const selectedTarea = ref(null);
+const isModalVisible = ref(false);
+
+const openModal = (element) => {
+  infoUpdate.value = element; // Pasamos el objeto completo al modal
+  console.log("Tarea seleccionada:", element.tarea_id); // Confirmación en consola
+  isModalVisible.value = true;
+};
+const closeModal = () => {
+  console.log('Modal cerrado');
+  isModalVisible.value = false;
+  selectedTarea.value = null;
+};
+
+// const setDataError = ref(null);
+// // Asegúrate de inicializar setDataError o asignarle una función adecuada
+// setDataError.value = (data) => {
+//   console.log("Error:", data);
+// };
+// const updateEstadoTarea = async (miembroId, tareaId, status) => {
+//     try {
+//         const response = await axios.requestAxios(
+//             `encargados_tarea/update/${miembroId}/${tareaId}`,
+//             'PUT',
+//             { estadoTarea: status }
+//         );
+        
+//         this.setDataSuccesfull(response.data); // Handle success
+//         this.showSucessAlertModal();
+//     } catch (error) {
+//         this.setDataError(error.response.data); // Handle error
+//         this.ShowErrorAlertModal();
+//     }
+// };
+
+
+//actualizar estado 
+const emits = defineEmits(['updateStateOfTarea'])
+
+
+
+const updateTareaState = async (miembroId, tareaId, status) => {
+  console.log('miembroId:', miembroId, 'tareaId:', tareaId, 'status:', status);  // Para depurar
+  try {
+    const response = await tareaStore.updateEstadoTarea(miembroId, tareaId, status);
+    if (response && response.data) {
+      emits('updateStateOfTarea', response.data); // Emite el estado actualizado
+      console.log('Estado de tarea actualizado:', response.data);
+    } else {
+      console.error('Respuesta inesperada de la API', response);
     }
-})
+  } catch (error) {
+    console.error('Error al actualizar el estado de la tarea:', error);
+  }
+};
+
+
+
+
+
 </script>
 
 

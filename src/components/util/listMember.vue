@@ -1,16 +1,17 @@
 <template>
-  <div v-if="members.length > 0" id="list-content" class="max-w-full">
+  <div v-if="props.elements.length > 0" id="list-content" class="max-w-full">
     <label for="list-label" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
       {{ label }}
     </label>
     <ul class="divide-y divide-gray-100 dark:divide-gray-600">
       <li
-        v-for="member in members"
-        :key="member.IDMIEMBRO"
+        v-for="member in props.elements"
+        :key="member.miembro_id"
         class="flex items-center justify-between p-3 rounded-md text-sm text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200"
       >
         <div class="flex flex-col">
-          <span class="font-medium">{{ member.NOMBRE }}</span>
+          <span class="font-medium">{{ member.nombre }}</span>
+          <span class="font-medium">{{ member.email}}</span>
         </div>
         <button
           type="button"
@@ -25,8 +26,10 @@
 </template>
 
 <script setup>
+import { elements } from 'chart.js';
+
 const props = defineProps({
-  members: { type: Array, required: true, default: () => [] }, // Lista de miembros
+  elements: { type: Array, required: true, default: () => [] }, // Lista de miembros
   label: { type: String, default: "Miembros seleccionados" },
 });
 
