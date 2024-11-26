@@ -5,6 +5,9 @@ export const usePrintStore = defineStore("print", {
     state: () => ({
         listMemberInvited: [],
         listGuestInvited: [],
+        listSolicitud: [],
+        listProposicion: [],
+        listTask: [],
         onPrintMode: false,
     }),
     actions: {
@@ -21,6 +24,18 @@ export const usePrintStore = defineStore("print", {
             this.listGuestInvited = value;
         },
 
+        setListSolicitud(value){
+            this.listSolicitud = value;
+        },
+
+        setListProposicion(value){
+            this.listProposicion = value;
+        },
+
+        setListTask(value){
+            this.listTask = value;
+        },
+
         getPrint() {
             return this.onPrintMode;
         },
@@ -33,6 +48,18 @@ export const usePrintStore = defineStore("print", {
             return this.listGuestInvited;
         },
 
+        getListSolicitud(){
+            return this.listSolicitud;
+        },
+
+        getListProposicion(){
+            return this.listProposicion;
+        },
+
+        getListTask(){
+            return this.listTask;
+        },
+
 
         async fetchListMemberInvited(idSesion){
             const response = await axios.requestAxios(`memberInvitedToSesionNoPaginate/${idSesion}`);
@@ -42,7 +69,22 @@ export const usePrintStore = defineStore("print", {
         async fetchListGuestInvited(idSesion){
             const response = await axios.requestAxios(`guestInvitedToSesionNoPaginate/${idSesion}`);
             this.setListGuestInvited(response.data.data)
-        }
+        },
+
+        async fetchSolicitudNoPaginate(idSesion){
+            const response = await axios.axiosInstance.get(`solicitudes/All/${idSesion}`);
+            this.setListSolicitud(response.data.data);
+        },
+
+        async fetchProposicionNoPaginate(idSesion){
+            const response = await axios.axiosInstance.get(`proposicionOfSesionNotPaginate/${idSesion}`);
+            this.setListProposicion(response.data.data);
+        },
+
+        async fetchTaskNoPaginate(idSesion){
+            const response = await axios.axiosInstance.get(`tareas/TareasNotPaginate/${idSesion}`);
+            this.setListTask(response.data.data);
+        },
 
     }
 

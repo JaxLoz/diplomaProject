@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-900">
+  <div class="min-h-screen flex flex-col mt-20 items-center justify-center p-6 bg-white dark:bg-gray-900">
     <div class="w-full max-w-4xl mx-auto print:m-0 relative">
       <!-- Contenedor de botones y título -->
-      <div class="flex items-center mb-8 print:mb-4">
+      <div class="flex items-center mb-8 print:mb-20">
         <!-- Botón de volver a la izquierda -->
         <button 
           @click="backLayout" 
-          class="mr-auto px-2 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 print:hidden"
+          class="mr-auto px-2 py-2 bg-gray-200 text-white rounded hover:bg-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 print:hidden"
         >
           <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
@@ -231,11 +231,6 @@
                             <td class="w-4 p-4"></td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 w-10 h-10 inline-flex items-center justify-center bg-gray-100 rounded-full dark:bg-gray-600">
-                                        <span class="font-medium text-gray-600 dark:text-gray-300">
-                                            {{ stringFormat.getAcronymName(member.nombre) }}
-                                        </span>
-                                    </div>
                                     <div>
                                         <div class="font-semibold text-gray-900 dark:text-white">
                                             {{ member.nombre }}
@@ -293,11 +288,6 @@
                             <td class="w-4 p-4"></td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 w-10 h-10 inline-flex items-center justify-center bg-gray-100 rounded-full dark:bg-gray-600">
-                                        <span class="font-medium text-gray-600 dark:text-gray-300">
-                                            {{ stringFormat.getAcronymName(guest.nombre) }}
-                                        </span>
-                                    </div>
                                     <div>
                                         <div class="font-semibold text-gray-900 dark:text-white">
                                             {{ guest.nombre }}
@@ -320,15 +310,87 @@
                 </table>
               </div>
         </div>
+
+        <!-- Tabla de tareas -->
+
+
+        <!-- tabla de propocisiones -->
+
+
+        <!-- Tabla de Solicitudes -->
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md print:w-full print:overflow-hidden">
+    <!-- Header Section -->
+          <div class="p-4 border-b dark:border-gray-700">
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+                  Solicitudes
+              </h2>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  Solicitudes pendientes a revisar en la sesión
+              </p>
+          </div>
+          <div class="overflow-x-auto mb-6 rounded-lg print:overflow-visible">
+              <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 print:table-fixed print:w-full">
+                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                          <th scope="col" class="px-2 py-3 print:p-1 print:text-xs">ID</th>
+                          <th scope="col" class="px-2 py-3 print:p-1 print:text-xs">Dependencia</th>
+                          <th scope="col" class="px-2 py-3 print:p-1 print:text-xs">Asunto</th>
+                          <th scope="col" class="px-2 py-3 print:p-1 print:text-xs">Decisión</th>
+                          <th scope="col" class="px-2 py-3 print:p-1 print:text-xs">Fecha</th>
+                          <th scope="col" class="px-2 py-3 print:p-1 print:text-xs">Solicitante</th>
+                          <th scope="col" class="px-2 py-3 print:p-1 print:text-xs">Descripción</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr v-for="(solicitud, index) in solicitudes" :key="solicitud.ID_SOLICITUD"
+                          :class="[
+                              'bg-white dark:bg-gray-800',
+                              index !== solicitudes.length - 1 ? 'border-b dark:border-gray-700' : ''
+                          ]"    
+                      >
+                          <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white print:p-1 print:text-xs print:break-words">
+                              {{ solicitud.ID_SOLICITUD }}
+                          </th>
+                          <td class="px-2 py-2 print:p-1 print:text-xs print:break-words">
+                              {{ solicitud.DEPENDENCIA }}
+                          </td>
+                          <td class="px-2 py-2 print:p-1 print:text-xs print:break-words">
+                              {{ solicitud.ASUNTO }}
+                          </td>
+                          <td class="px-2 py-2 print:p-1 print:text-xs print:break-words">
+                              {{ solicitud.DESICION }}
+                          </td>
+                          <td class="px-2 py-2 print:p-1 print:text-xs print:break-words">
+                              {{ formatDateService.extractDate(solicitud.FECHA_DE_SOLICITUD) }}
+                          </td>
+                          <td class="px-2 py-2 print:p-1 print:text-xs">
+                              <div class="flex items-center">
+                                  <div class="ps-1">
+                                      <div class="text-base font-semibold print:text-xs">{{ solicitud.solicitante.NOMBRE }}</div>
+                                      <div class="font-normal text-gray-500 print:text-xs print:break-words">{{ solicitud.solicitante.EMAIL }}</div>
+                                  </div>
+                              </div>
+                          </td>
+                          <td class="px-2 py-2 print:p-1 print:text-xs print:break-words">
+                              {{ solicitud.descripcion.EVENTO }}
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+        </div>
+
+
+
     </div>
   </div>
 </template>
 
 <script setup>
 import formatDateService from '@/service/formatDateService';
-import stringFormat from '@/service/stringFormat';
 import router from '@/router';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { useSessionStore } from '@/stores/session';
 import { useOrderSesion } from '@/stores/orderSesion';
@@ -342,6 +404,9 @@ const printStore = usePrintStore();
 const sesionInf = computed(() => sesionStore.getInfoViewSesion())
 const listMemberInvited = computed(() => printStore.getListMemberInvited())
 const listGuestInvited = computed(() => printStore.getListGuestInvited())
+const solicitudes = computed(() => printStore.getListSolicitud())
+const listProposiciones = computed(() => printStore.getListProposicion())
+const listTareas = computed(() => printStore.getListTask())
 
 const route = useRoute()
 
@@ -354,10 +419,14 @@ const backLayout = () => {
   router.push({ name: 'SesionView', params: { idSesion: route.params.idSesion }})
 }
 
-onMounted(() => {
+onMounted( async () => {
   sesionStore.fetchSessionById(route.params.idSesion)
   orderSesionStore.getSesionOrderBySesion(route.params.idSesion)
   printStore.fetchListMemberInvited(route.params.idSesion)
   printStore.fetchListGuestInvited(route.params.idSesion)
+  printStore.fetchTaskNoPaginate(route.params.idSesion)
+  printStore.fetchProposicionNoPaginate(route.params.idSesion)
+  printStore.fetchSolicitudNoPaginate(route.params.idSesion)
+  
 })
 </script>

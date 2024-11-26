@@ -4,11 +4,11 @@
     data-drawer-toggle="sidebar-multi-level-sidebar"
     aria-controls="sidebar-multi-level-sidebar"
     type="button"
-    class="inline-flex items-center p-2 mt-10 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+    class="print:hidden inline-flex items-center p-2 mt-10 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
   >
     <span class="sr-only">Open sidebar</span>
     <svg
-      class="w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+      class="print:hidden w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
     >
       <path
         clip-rule="evenodd"
@@ -18,7 +18,7 @@
     </svg>
   </button>
 
-  <div class="sideBar">
+  <div class="sideBar print:hidden">
     <aside
       id="sidebar-multi-level-sidebar"
       class="z-20 fixed top-20 left-0 w-64 h-screen transition-transform translate-x-full sm:translate-x-0"
