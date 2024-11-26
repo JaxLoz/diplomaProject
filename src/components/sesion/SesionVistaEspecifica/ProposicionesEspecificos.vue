@@ -1,56 +1,53 @@
 <template>
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table
-      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg overflow-hidden shadow-md"
-    >
-      <caption
-        class="p-3 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800 rounded-t-lg"
-      >
-        Proposiciones
-        <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-          Proposiciones de la Sesión #
-        </p>
-      </caption>
-    </table>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+    <div class="p-4 border-b dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Proposiciones
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Proposiciones de la sesion
+                </p>
+            </div>
 
-    <div class="createAction">
-      <div
-        class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900"
-      >
+    <div class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+
         <button
           type="button"
-          class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          class="inline-flex items-center justify-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-2 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
           @click="openCreateModal"
         >
           Crear Proposición
         </button>
-      </div>
+
     </div>
 
-    <!-- Tabla de Proposiciones -->
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <div class="overflow-x-auto flex flex-col items-center">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th scope="col" class="px-6 py-3">ID</th>
-          <th scope="col" class="px-6 py-3">Descripción</th>
-          <th scope="col" class="px-6 py-3">Decisión</th>
-          <th scope="col" class="px-6 py-3">Proponente</th>
-          <th scope="col" class="px-6 py-3"><span class="sr-only">Edit</span></th>
+          <th scope="col" class="p-4">ID</th>
+          <th scope="col" class="px-4 py-3">Descripción</th>
+          <th scope="col" class="px-4 py-3">Decisión</th>
+          <th scope="col" class="px-4 py-3">Proponente</th>
+          <th scope="col" class="px-4 py-3">Acción</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="proposiciones in proposiciones.data"
           :key="proposiciones.ID_PROPOSICIONES"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-        >
-          <th
-            scope="row"
-            class="px-6 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-          >
+          class="[
+                'bg-white dark:bg-gray-800',
+                index !== actas.length - 1 ? 'border-b dark:border-gray-700' : ''
+              ]">
+        <td scope="row"
+                class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              >
             {{ proposiciones.ID_PROPOSICIONES }}
-          </th>
-          <td class="px-6 py-4">{{ proposiciones.DESCRIPCION }}</td>
+
+          </td>
+          <td class="px-10 py-4">{{ proposiciones.DESCRIPCION }}</td>
           <td class="px-2 py-4">
             <form class="mx-auto">
               <select
@@ -67,11 +64,11 @@
           <td class="px-6 py-4">
             <div class="flex items-center">
               <div
-                class="inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+                class="flex-shrink-0 w-10 h-10 inline-flex items-center justify-center bg-gray-100 rounded-full dark:bg-gray-600"
               >
-                <span class="font-medium text-gray-600 dark:text-gray-300">{{
-                  proposiciones.MIEMBRO_IDMIEMBRO
-                }}</span>
+                <span class="font-medium text-gray-600 dark:text-gray-300">
+                  {{ stringFormat.getAcronymName(proposiciones.miembro.NOMBRE) }}
+                </span>
               </div>
               <div class="ps-3">
                 <!-- Nombre del miembro -->
@@ -109,6 +106,9 @@
     <div class="p-4">
       <paginationBar :pages="proposiciones" :size="'small'" @change-page="changePage" />
     </div>
+    </div>
+    </div>
+  </div>
 
     <!-- Modal for Edit Proposition -->
     <ModalEditProposicionEspecifico
@@ -117,30 +117,50 @@
     />
     <!-- Modal for Create Proposition -->
     <ModalCreateProposicionEspecifico ref="createProposicionModal" />
-  </div>
+
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import urlService from '@/service/urlService';
+import stringFormat from '@/service/stringFormat';
 
-
-import ModalCreateProposicionEspecifico from './ModalCreateProposicionEspecifico.vue';
-import ModalEditProposicionEspecifico from './ModalEditProposicionEspecifico.vue';
-import { useProposicionStore } from '@/stores/proposiciones.js';
-import paginationBar from '@/components/util/paginationBar.vue';
+import ModalCreateProposicionEspecifico from './ModalCreateProposicionEspecifico.vue'
+import { useSessionStore } from '@/stores/session';
+import ModalEditProposicionEspecifico from './ModalEditProposicionEspecifico.vue'
+import { useProposicionStore } from '@/stores/proposiciones.js'
+import paginationBar from '@/components/util/paginationBar.vue'
 
 const route = useRoute()
 // Aquí solo debes usar useProposicionStore() para acceder al store
-const proposicionStore = useProposicionStore() // Cambié el nombre a 'proposicionStore' para evitar el conflicto
+const proposicionStore = useProposicionStore() 
+const sessionStore = useSessionStore();
+
 const emits = defineEmits(['updateDecision'])
 
 // Local variable to store fetched proposiciones
 const proposiciones = ref([])
 
-const changePage = async (numPage) =>{
-  const newPage = await proposicionStore.fetchProposicionesOfSesion(route.params.idSesion, urlService.getParamsFromUrl({page:numPage}))
+const createProposicionModal = ref(null)
+
+const infoSesion = computed(() => sessionStore.getInfoViewSesion());
+
+const openCreateModal = () => {
+  createProposicionModal.value.openModal()
+}
+const editProposicionModal = ref(null)
+
+const openEditModal = (id) => {
+  editProposicionModal.value.openModal(id) // Llama al método y pasa el ID
+}
+
+
+const changePage = async (numPage) => {
+  const newPage = await proposicionStore.fetchProposicionesOfSesion(
+    route.params.idSesion,
+    urlService.getParamsFromUrl({ page: numPage })
+  )
   proposiciones.value = newPage
 }
 
@@ -174,9 +194,7 @@ const deleteProposicion = async (proposicion) => {
     const response = await proposicionStore.deleteProposicion(proposicion.ID_PROPOSICIONES)
     if (response) {
       // Remove deleted proposition from local data
-      proposiciones.value = proposiciones.value.filter(
-        (p) => p.ID_PROPOSICIONES !== proposicion.ID_PROPOSICIONES
-      )
+      proposicionStore.fetchProposicionesOfSesion(infoSesion.value.IDSESION)
       console.log('Proposición eliminada')
     }
   } catch (error) {
@@ -184,14 +202,5 @@ const deleteProposicion = async (proposicion) => {
   }
 }
 
-const createProposicionModal = ref(null)
 
-const openCreateModal = () => {
-  createProposicionModal.value.openModal()
-}
-const editProposicionModal = ref(null)
-
-const openEditModal = (id) => {
-  editProposicionModal.value.openModal(id) // Llama al método y pasa el ID
-}
 </script>
