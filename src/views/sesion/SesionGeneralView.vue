@@ -50,7 +50,13 @@
       />
       <!-- Tabla de encargados de Tareas y Tareas  -->
       <TareaEspecifico
-      :tareaInf="infoTarea"/> <!-- Prompt para la tarea  -->
+      :tareaInf="infoTarea.data"
+      :encargadoInf="infoEncargado.data " 
+       :sesionInf="infoSesion"
+      />
+      <!-- se le coloca .data esos de arriba para poder paginar -->
+
+      <!-- Prompt para la tarea  -->
       <!-- Tabla de solicitudes -->
       <SolicitudesEspecifico />
       <!-- Tabla de proposiciones  -->
@@ -95,7 +101,8 @@ const orderSesionInf = computed(() => orderSesionStore.getOrderSesion())
 
 //Para tarea
 
-const infoTarea = computed(() => tareaStore.getInfoViewTarea())
+const infoTarea = computed(() => tareaStore.tarea)
+const infoEncargado = computed(() => tareaStore.infoEncargadosTareasAmostrar)
 
 const actionsWhereActStatusChange = (actaStatus) => {
 
@@ -120,5 +127,7 @@ onMounted(() => {
   orderSesionStore.getSesionOrderBySesion(route.params.idSesion)
   invitacionStore.getAttendanceRegisterMembers(route.params.idSesion)
   invitacionStore.getAttendanceRegisterGuests(route.params.idSesion)
+  tareaStore.getMembersSesion(route.params.idSesion,"Asistio");
+  tareaStore.showTarea(route.params.idSesion); //tareas relacionadas con una sesión 
 })
 </script>

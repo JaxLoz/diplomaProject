@@ -5,8 +5,10 @@ export const useTareaStore = defineStore("tarea", {
     state: () => ({
         tarea: [], //para los datos de la tabla tarea
         encargadotarea: [], //para los datos de la tabla encargado
-        memberEncargado:[], //para almacenar los miembros encargados y su estado de la tarea
+        infoEncargadosTareasAmostrar: [], //Para los datos que se van amostrar
+        memberEncargado:[], //para almacenar los posibles miembros encargados 
         infViewTarea:{},
+        infViewEncargado:{},
         showModalTarea: false,
         ShowResumenModalTarea: false,
         onUpdateModal:false,
@@ -29,8 +31,8 @@ export const useTareaStore = defineStore("tarea", {
         setDataSuccesfull(data){
             this.dataSuccesfull = {...data}
         },
-        setInfoViewSession(data){
-            this.dataSuccesfull = {...data}
+        setInfoViewTarea(data){
+            this.infViewTarea = data;
         },
         ShowErrorAlertModal(){
             this.showSuccessAlert = true;
@@ -52,22 +54,119 @@ export const useTareaStore = defineStore("tarea", {
         getInfoViewTarea(){
             return this.infViewTarea;
         },
+        getInfoViewEncargado(){
+            return this.infViewEncargado;
+        },
+
+
+        // async showTarea(params = '') {
+        //     try {
+        //         // Solicitar tareas desde el endpoint correspondiente
+        //         const responseTarea = await axios.requestAxios('tarea/all?' + params, 'GET');
+        //         console.log("Respuesta de tareas:", responseTarea.data);
+        
+        //         if (!responseTarea || responseTarea.error) {
+        //             console.error("Error al traer las tareas", responseTarea?.data || "Unknown error");
+        //             return null;
+        //         }
+        
+        //         // Asignar las tareas directamente
+        //         this.tarea = responseTarea.data || [];
+        //         console.log("Tareas:", this.tarea);
+        
+        //         // Solicitar encargados desde el endpoint correspondiente
+        //         const responseEncargados = await axios.requestAxios('encargados_tarea/all', 'GET');
+        //         console.log("Respuesta de encargados:", responseEncargados.data);
+        
+        //         if (!responseEncargados || responseEncargados.error) {
+        //             console.error("Error al traer los encargados", responseEncargados?.data || "Unknown error");
+        //             return null;
+        //         }
+        
+        //         // Asignar encargados directamente
+        //         this.infoEncargadosTareasAmostrar = responseEncargados.data || [];
+        //         console.log("Encargados de tareas:", this.infoEncargadosTareasAmostrar);
+        
+                
+        //     } catch (error) {
+        //         console.error("Error al traer las tareas o encargados:", error);
+        //         return null;
+        //     }
+        // }
+        async showTarea(idSesion = '', params = '') {
+            try {
+                console.log("ID de sesión enviado:", idSesion);
+        
+                let endpoint = '/tareas';
+        
+                // Si se tiene un ID de sesión, agregarlo al endpoint
+                if (idSesion) {
+                    endpoint = `/tareas/sesion/${idSesion}`;
+                }
+        
+                // Si hay parámetros adicionales, agregarlos a la URL
+                if (params) {
+                    endpoint += `?${params}`;
+                }
+        
+                console.log("Endpoint final de la solicitud:", endpoint);  // Depurar la URL final
+        
+                // Realizar la solicitud al backend
+                const response = await axios.requestAxios(endpoint, 'GET');
+                console.log("Respuesta de tareas con relaciones:", response.data);
+        
+                if (!response || response.error) {
+                    console.error("Error al traer las tareas con relaciones", response?.data || "Unknown error");
+                    return null;
+                }
+        
+                // Asignar los datos obtenidos al estado
+                this.tarea = response.data || [];
+                console.log("Tareas asignadas:", this.tarea);
+        
+                if (response.data.data && response.data.data.length > 0) {
+                    const tarea = response.data.data[0];  // Obtener la primera tarea del arreglo
+        
+                    // Acceder a propiedades específicas del objeto
+                    console.log("Descripción de la tarea:", tarea.descripcion);
+                    console.log("Email del miembro:", tarea.email_miembro);
+                } else {
+                    console.error("El arreglo de datos está vacío.");
+                }
+            } catch (error) {
+                console.error("Error al traer las tareas:", error);
+                return null;
+            }
+        }
+        
+        
+
+        
+        
+        ,
+        
         async createTarea(tareaData, EncargadoData) {
+            // Reformatear la fecha a formato Y-m-d
+            const formattedDate = tareaData.dateEntrega.split('/').reverse().join('-');
+            console.log("Datos recibidos en createTarea:", { tareaData, EncargadoData });
             try {
                 // Crear la tarea
                 const tareaResponse = await axios.requestAxios('/tarea/save', 'POST', {
-                    DESCRIPCION: tareaData.description,
-                    FECHA_ENTREGA: tareaData.date,
+                    DESCRIPCION: tareaData.descripcion,
+                    FECHA_ENTREGA: formattedDate,
                     SESION_IDSESION: tareaData.sesionID,
                 });
-        
+                
+    
+                console.log("tarea response",tareaResponse)
                 if (tareaResponse.error) {
                     this.setDataError(tareaResponse.data);
                     this.ShowErrorAlertModal();
                     return null; // Indicar que hubo un error
                 }
+                
         
-                const tareaID = tareaResponse.data?.id || null;
+                const tareaID = tareaResponse.data?.ID || null;
                 if (!tareaID) {
                     this.setDataError("No se pudo obtener el ID de la tarea creada.");
                     this.ShowErrorAlertModal();
@@ -80,6 +179,8 @@ export const useTareaStore = defineStore("tarea", {
                     TAREAS_IDTAREAS: tareaID,
                     ESTADO: EncargadoData.state || 'sin comenzar',
                 });
+
+                console.log("Respuesta del encargado:", encargadoResponse);
         
                 if (encargadoResponse.error) {
                     this.setDataError(encargadoResponse.data);
@@ -92,21 +193,143 @@ export const useTareaStore = defineStore("tarea", {
                     tarea: tareaResponse.data, // Datos de la tarea
                     encargado: encargadoResponse.data, // Datos del encargado
                 };
+                
             } catch (error) {
                 console.error("Error al crear la tarea o el encargado:", error);
                 this.setDataError("Ocurrió un error inesperado.");
                 this.ShowErrorAlertModal();
                 return null; // Indicar que hubo un error
             }
+            
+            
+        },
+
+        async updateTarea(tareaData, encargadoData) {
+            const tareaID = tareaData.tarea_id;  // Asegúrate de que el ID esté aquí
+            console.log("Cual es :", tareaData);
+            console.log("Tarea ID", tareaID);
+            console.log("Encargado:", encargadoData.memberID);
+        
+            const formattedDate = tareaData.dateEntrega.split('/').reverse().join('-'); // Reformatear la fecha
+            
+            // Aquí puedes hacer un console.log() para verificar los datos que estás enviando
+            console.log("Datos para actualizar la tarea:", {
+                DESCRIPCION: tareaData.descripcion,
+                FECHA_ENTREGA: formattedDate,
+                SESION_IDSESION: tareaData.sesionID,
+            });
+        
+            try {
+                // Actualizar la tarea
+                const tareaResponse = await axios.requestAxios(`/tarea/update/${tareaID}`, 'PUT', {
+                    DESCRIPCION: tareaData.descripcion,
+                    FECHA_ENTREGA: formattedDate,
+                    SESION_IDSESION: tareaData.sesionID,
+                });
+        
+                if (tareaResponse.error) {
+                    console.error("Error en la respuesta de la API:", tareaResponse.data);
+                    // this.showErrorAlertModal();
+                    this.setDataError(tareaResponse.data); // Mostrar la alerta de error
+                    return null; // Indicar que hubo un error
+                }
+        
+                // Actualizar el encargado
+                console.log("Datos para actualizar el encargado:", {
+                    MIEMBROS_IDMIEMBROS: encargadoData.memberID, // ID del nuevo miembro si es que está cambiando
+                    TAREAS_IDTAREAS: tareaID,
+                    ESTADO: encargadoData.state,
+                });
+                console.log("Nuevo ID de miembro:", encargadoData.memberID);  // Verificar el valor de newMemberID
+                console.log("Encargado Data:", encargadoData);
+
+
+
+        
+                const encargadoResponse = await axios.requestAxios(`/encargados_tarea/update/${encargadoData.memberID}/${tareaID}`, 'PUT', {
+                    MIEMBROS_IDMIEMBROS: encargadoData.memberID,
+                    TAREAS_IDTAREAS: tareaID,
+                    ESTADO: encargadoData.state,
+                });
+        
+                if (encargadoResponse.error) {
+                    console.error("Error en la respuesta de la API:", encargadoResponse.data);
+                    // this.showErrorAlertModal();
+                    this.setDataError(encargadoResponse.data); // Mostrar la alerta de error
+                    return null; // Indicar que hubo un error
+                }
+        
+                // Mostrar éxito
+                this.showSuccessAlertModal();
+                this.setDataSuccesfull({
+                    tarea: tareaResponse.data,  // Datos de la tarea actualizada
+                    encargado: encargadoResponse.data,  // Datos del encargado actualizado
+                });
+        
+                return {
+                    tarea: tareaResponse.data,  // Datos de la tarea actualizada
+                    encargado: encargadoResponse.data,  // Datos del encargado actualizado
+                };
+            } catch (error) {
+                console.error("Error al actualizar la tarea o el encargado:", error);
+                this.setDataError("Ocurrió un error inesperado.");
+                // this.ShowErrorAlertModal();
+                return null; // Indicar que hubo un error
+            }
         }
+        
+        
         ,
+        async deleteTareaAndEncargado(tareaID, idSesion = '', params = '') {
+            try {
+                // Eliminar los encargados asociados a la tarea
+                const encargadoResponse = await axios.requestAxios(`/encargados_tarea/deleteByTarea/${tareaID}`, 'DELETE');
+                console.log("Respuesta al eliminar encargados:", encargadoResponse);
+        
+                if (encargadoResponse.error) {
+                    this.setDataError(encargadoResponse.data);
+                    // this.ShowErrorAlertModal();
+                    return null; // Indicar que hubo un error
+                }
+        
+                // Eliminar la tarea
+                const tareaResponse = await axios.requestAxios(`/tarea/delete/${tareaID}`, 'DELETE');
+                console.log("Respuesta al eliminar tarea:", tareaResponse);
+        
+                if (tareaResponse.error) {
+                    this.setDataError(tareaResponse.data);
+                    // this.ShowErrorAlertModal();
+                    return null; // Indicar que hubo un error
+                }
+        
+                // Mostrar mensaje de éxito
+                this.setDataSuccesfull("Tarea y encargados eliminados correctamente.");
+                this.showSuccessAlertModal();
+        
+                // Llamar a showTarea para obtener la lista actualizada con la paginación
+                await this.showTarea(idSesion, params); // Pasar idSesion y params para mantener la paginación
+        
+                return {
+                    encargado: encargadoResponse.data,
+                    tarea: tareaResponse.data,
+                };
+            } catch (error) {
+                console.error("Error al eliminar la tarea o los encargados:", error);
+                this.setDataError("Ocurrió un error inesperado.");
+                // this.ShowErrorAlertModal(); 
+                return null; // Indicar que hubo un error
+            }
+        }
+        
+        ,
+          
         // obtener los los miembros que hayan sidos invitados a una sesión y tengan el estado de asistido
                 async getMembersSesion(idSesion,estado, params = ''){
-                    const response = await axios.requestAxios(`/memberInvitedToSesionByStatus/${idSesion}/${estado}}?${params}` , 'GET');
+                    const response = await axios.requestAxios(`/memberInvitedToSesionByStatus/${idSesion}/${estado}?${params}` , 'GET');
                     
         
                     if(!response.error){
-                        this.memberEncargado = response.data.data
+                        this.memberEncargado = response.data
                     }
 
                     return response.data;
@@ -115,9 +338,10 @@ export const useTareaStore = defineStore("tarea", {
 
                 //Sirve para buscar el miembro por nombre o por correo según lo que se ingresé en searchinfo
                 searchMember(searchInfo) {
+                    
                     if(searchInfo !== undefined && searchInfo !== '') {
-                        const userMember = this.memberEncargado.filter(user => {
-                            return user.NOMBRE.toLowerCase().includes(searchInfo.toLowerCase()) || user.email.includes(searchInfo)
+                        const userMember = this.memberEncargado.filter(usermiembro => {
+                            return usermiembro.nombre.toLowerCase().includes(searchInfo.toLowerCase()) || usermiembro.email.includes(searchInfo)
                          })
                          return userMember
                     }
@@ -125,34 +349,47 @@ export const useTareaStore = defineStore("tarea", {
 
                 
                 //Arreglo con los posibles miembros encargados
-                async getMaybeEncargado(idSesion) {
-                    try {
-                        // Llama a getMembersSesion para obtener miembros con estado "asistió"
-                        const MaybeMiembro = await this.getMembersSesion(idSesion, "Asistió");
+                // async getMaybeEncargado(idSesion) {
+                //     try {
+                //         // Llama a getMembersSesion para obtener miembros con estado "asistió"
+                //         const MaybeMiembro = await this.getMembersSesion(idSesion, "Asistio");
                 
-                        // Almacena los datos obtenidos en memberEncargado
-                        this.memberEncargado = [...MaybeMiembro];
-                    } catch (error) {
-                        console.error("Error al obtener los miembros encargados:", error);
-                    }
-                }
-                ,
+                //         // Almacena los datos obtenidos en memberEncargado
+                //         this.memberEncargado = [...MaybeMiembro];
+                //     } catch (error) {
+                //         console.error("Error al obtener los miembros encargados:", error);
+                //     }
+                // }
+                
 
                 //Actualización de estado de entrega de tarea
 
-                async updateEstadoTarea(miembroId,tareaId,status){
-                    const response = await axios.requestAxios(`encargados_tarea/update/${miembroId}/${tareaId}`, 'PUT',
-                        {estadoTarea:status});
-
-                        this.setDataSuccesfull(response.data)
-                        this.showSucessAlertModal()
-
-                        if(response.error){
-                            this.setDataError(response.data)
-                            this.ShowErrorAlertModal()
+                async updateEstadoTarea(tareaId, status) {
+                    console.log('Enviando actualización con', tareaId, status); // Verifica los valores
+                    try {
+                        const response = await axios.requestAxios(
+                            `http://127.0.0.1:8000/api/encargados_tarea/update/${tareaId}`,'PUT', 
+                            { estado: status }
+                        );
+                        console.log('Respuesta completa:', response); // Depura la respuesta completa
+                        if (response && response.data) {
+                            this.setDataSuccesfull(response.data);
+                            this.showSucessAlertModal();
+                            return response.data; // Devuelve los datos al frontend
+                        } else {
+                            console.error('Respuesta inesperada:', response);
+                            this.setDataError(response.data || 'Respuesta vacía');
+                            this.ShowErrorAlertModal();
+                            throw new Error('Respuesta vacía o inesperada de la API');
                         }
-                    
-                },
+                    } catch (error) {
+                        console.error('Error al actualizar el estado:', error);
+                        throw error;
+                    }
+                }
+                
+                
+                  ,
 
 
 
@@ -161,6 +398,11 @@ export const useTareaStore = defineStore("tarea", {
         },
         addNewEncargado(encargadotarea){
             this.encargadotarea = [{...encargadotarea},...this.encargadotarea];
+        },
+        removeEncargado(EncargadoDelete){
+            const indexEncargadoDelete = this.encargadotarea.findIndex(encargadotarea => encargadotarea.id == EncargadoDelete.id)
+            console.log(indexEncargadoDelete)
+            this.encargadotarea.splice(indexEncargadoDelete,1)
         },
         setShowModalTarea(value){
             this.showModalTarea = value;
@@ -179,7 +421,11 @@ export const useTareaStore = defineStore("tarea", {
         },
         getOnUpdateMode(){
             return this.onUpdateModal;
-        }
+        },
+        showSuccessAlertModal() {
+            // Lógica para mostrar el modal de éxito
+            console.log("Modal de éxito mostrado");
+        },
 
     }
 })

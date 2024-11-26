@@ -10,6 +10,7 @@ function extractDate(date) {
     }
 }
 
+
 function extractHour(hora) {
     const localHour = new Date(hora).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bogota', hour12: false});
     return localHour

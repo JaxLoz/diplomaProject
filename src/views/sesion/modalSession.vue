@@ -256,7 +256,7 @@ const dataSession = ref({
 onMounted(() => {
 
   if (sessionStore.getOnUpdateMode()){
-    console.log(props.infoToUpdate)
+    console.log("guau",props.infoToUpdate)
     dataSession.value.IDSESION = props.infoToUpdate.IDSESION
     dataSession.value.place = props.infoToUpdate.LUGAR
     dataSession.value.president = props.infoToUpdate.PRESIDENTE
