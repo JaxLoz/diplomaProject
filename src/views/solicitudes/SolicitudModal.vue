@@ -42,7 +42,7 @@
                                 <label for="search-solicitante" class="block mb-2 text-sborderm font-medium text-gray-900 dark:text-white">Buscar por nombre</label>
                                 <input v-model="nombreSolicitante"  @input="searchSolicitante"  type="text" id="search-solicitante" placeholder="Ingrese el nombre del solicitante..."  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <ul v-if="solicitantes && nombreSolicitante.length > 1" class="absolute bg-gray-700  w-full p-2" >
-                                    <li v-for="solicitante in solicitantes" class="flex items-center justify-between" >
+                                    <li v-for="solicitante in solicitantes" class="flex items-center justify-between" :key="solicitante">
                                         <div class="flex flex-col justify-start items-start">
                                             <span class="text-gray-900 dark:text-white">{{ solicitante.nombre }}</span>
                                             <span class="text-sm text-gray-500 dark:text-gray-400">{{ solicitante.email }}</span>
@@ -290,7 +290,6 @@ const searchSolicitante = debounce(async () => {
 }, 500);
 
 
-
 /*  
     functions, forms and properties for creating and updating applications
 */
@@ -392,6 +391,7 @@ const submitHandler = async () => {
         await updateSolicitud(solicitudForm.value, solicitudForm.value.id);
         resetForm();
         toggleModal();
+        emits('submit');
         return;
     }
     
@@ -406,12 +406,13 @@ const submitHandler = async () => {
     if(solicitudResponse.status === 201) {
         resetForm();
         toggleModal();
+        emits('submit');
     }
 
 }
 
 
-
+const emits = defineEmits(['submit']);
 
 /*  
     setSesionId:

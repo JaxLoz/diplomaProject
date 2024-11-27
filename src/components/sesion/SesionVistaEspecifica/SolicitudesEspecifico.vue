@@ -148,7 +148,7 @@
 
 
 
-    <SolicitudModal ref="solicitudModal" />
+    <SolicitudModal ref="solicitudModal" @submit="searchSolicitudes"/>
 
 </template>
 <script setup>
