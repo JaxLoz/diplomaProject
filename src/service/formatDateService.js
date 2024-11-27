@@ -10,6 +10,18 @@ function extractDate(date) {
     }
 }
 
+function formatDate(date){
+    console.log(date);
+    if (!date) return 'Fecha no válida'; // Manejamos valores vacíos
+    try {
+        console.log(new Date(date).toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' }));
+        return new Date(date).toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    } catch (error) {
+        console.error('Error al formatear la fecha:', error);
+        return 'Fecha inválida';
+    }
+}
+
 
 function extractHour(hora) {
     const localHour = new Date(hora).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bogota', hour12: false});
@@ -32,4 +44,4 @@ function getCurrentHour () {
 }
 
 
-export default { extractDate, extractHour, getHourFromString, getCurrentHour };
+export default { extractDate, extractHour, getHourFromString, getCurrentHour, formatDate };

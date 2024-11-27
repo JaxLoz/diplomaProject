@@ -46,7 +46,7 @@
             <tr
               v-for="element in props.tareaInf"
               :key="element.ID"
-              class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"
+              class="bg-white dark:bg-gray-800"
             >
               <td class="w-4 p-4"></td>
               <td class="px-4 py-4">{{ element.tarea_id }}</td>
@@ -194,8 +194,10 @@ const selectedTarea = ref(null);
 const isModalVisible = ref(false);
 
 const openModal = (element) => {
-  infoUpdate.value = element; // Pasamos el objeto completo al modal
-  console.log("Tarea seleccionada:", element.tarea_id); // Confirmación en consola
+  console.log("Tarea seleccionada:", element); // Confirmación en consola
+  // Pasamos el objeto completo al modal
+  infoUpdate.value = element;
+  tareaStore.loadEncargadoTareaCurrentToUpdateMode(element.miembro_id) 
   isModalVisible.value = true;
 };
 
@@ -207,6 +209,7 @@ const closeModal = () => {
 };
 
 const openModalCreate = () => {
+  tareaStore.removeEncargado();
   instanceCreateModal.value.toggleModal();
   console.log('Modal de creación abierto');
 };

@@ -4,7 +4,7 @@ import axios from "@/axios";
 export const useTareaStore = defineStore("tarea", {
     state: () => ({
         tarea: [], //para los datos de la tabla tarea
-        encargadotarea: [], //para los datos de la tabla encargado
+        encargadotarea: {}, //para los datos de la tabla encargado
         infoEncargadosTareasAmostrar: [], //Para los datos que se van amostrar
         memberEncargado:[], //para almacenar los posibles miembros encargados 
         infViewTarea:{},
@@ -137,13 +137,7 @@ export const useTareaStore = defineStore("tarea", {
                 console.error("Error al traer las tareas:", error);
                 return null;
             }
-        }
-        
-        
-
-        
-        
-        ,
+        },
         
         async createTarea(tareaData, EncargadoData) {
             // Reformatear la fecha a formato Y-m-d
@@ -205,7 +199,7 @@ export const useTareaStore = defineStore("tarea", {
         },
 
         async updateTarea(tareaData, encargadoData) {
-            const tareaID = tareaData.tarea_id;  // Asegúrate de que el ID esté aquí
+            const tareaID = tareaData.ID;  // Asegúrate de que el ID esté aquí
             console.log("Cual es :", tareaData);
             console.log("Tarea ID", tareaID);
             console.log("Encargado:", encargadoData.memberID);
@@ -386,10 +380,7 @@ export const useTareaStore = defineStore("tarea", {
                         console.error('Error al actualizar el estado:', error);
                         throw error;
                     }
-                }
-                
-                
-                  ,
+                },
 
 
 
@@ -397,13 +388,22 @@ export const useTareaStore = defineStore("tarea", {
             this.tarea = [{...tarea},...this.tarea];
         },
         addNewEncargado(encargadotarea){
-            this.encargadotarea = [{...encargadotarea},...this.encargadotarea];
+            if(Object.keys(this.encargadotarea).length === 0){
+                this.encargadotarea = {...encargadotarea};
+            }else{
+                this.removeEncargado();
+                this.encargadotarea = {...encargadotarea};
+            }
         },
-        removeEncargado(EncargadoDelete){
-            const indexEncargadoDelete = this.encargadotarea.findIndex(encargadotarea => encargadotarea.id == EncargadoDelete.id)
-            console.log(indexEncargadoDelete)
-            this.encargadotarea.splice(indexEncargadoDelete,1)
+        removeEncargado(){
+            this.encargadotarea = {}
         },
+
+        loadEncargadoTareaCurrentToUpdateMode(idEncargado){
+            const encargadoCurrent = this.memberEncargado.find(encargado => idEncargado === encargado.miembro_id)
+            this.encargadotarea = {...encargadoCurrent};
+        },
+
         setShowModalTarea(value){
             this.showModalTarea = value;
         },

@@ -13,7 +13,7 @@
             </div>
 
             <!-- Botón Crear -->
-            <div class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+            <div  v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
                 <button @click="openCreateSolicitudModal" type="button"
                     class="inline-flex items-center justify-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-2 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                     Crear solicitud
@@ -56,7 +56,7 @@
                             Descripción
                         </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th  v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" scope="col" class="px-6 py-3">
                             <span class="sr-only">Edit</span>
                         </th>
                     </tr>
@@ -95,12 +95,15 @@
                         <td class="px-6 py-4">
                             {{ solicitud.descripcion.evento }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td  v-if="props.sesionInf?.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-6 py-4">
                             <div class="centroAction">
-                                <button type="button" @click="deleteSolicitud(solicitud.id)"
+                                <button 
+                                type="button" 
+                                @click="deleteSolicitud(solicitud.id)"
                                     class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Borrar</button>
 
-                                <button @click="openUpdateSolicitudModal(solicitud.id)"
+                                <button 
+                                    @click="openUpdateSolicitudModal(solicitud.id)"
                                     data-modal-target="EditSolicitud" data-modal-toggle="EditSolicitud"
                                     class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     type="button">Editar</button>
@@ -218,9 +221,12 @@ const changePage = async (page) => {
     await fetchSolicitudes(query);
 }
 
+const props = defineProps({
+    sesionInf: {type: Object, required: true, default: new Object()}
+})
+
 onMounted(() => {
     initFlowbite();
-
     searchSolicitudes();
 });
 </script>

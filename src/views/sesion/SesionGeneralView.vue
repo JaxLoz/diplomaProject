@@ -58,7 +58,9 @@
 
       <!-- Prompt para la tarea  -->
       <!-- Tabla de solicitudes -->
-      <SolicitudesEspecifico />
+      <SolicitudesEspecifico 
+      :sesionInf="infoSesion"
+      />
       <!-- Tabla de proposiciones  -->
       <ProposicionesEspecificos />
     </div>

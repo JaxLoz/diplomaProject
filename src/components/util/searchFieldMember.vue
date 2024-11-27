@@ -36,17 +36,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-
-import SearchField from "./searchField.vue";
-
-
 
 const props = defineProps({
   members: { type: Array, required: true, default: () => [] }, // Lista de miembros
   label: { type: String, default: "Buscar miembro" },
   placeholder: { type: String, default: "Escribe el nombre del miembro..." },
-  listmember:{type:Array, default: new Array(), required: true},
+  listmember:{type:Object, default: new Object(), required: true},
   
 });
 
@@ -54,14 +49,6 @@ const emit = defineEmits(["memberSelected"]); // Evento para seleccionar un miem
 
  const searchField = defineModel('modelValue'); // Campo de búsqueda
 
-
-
-// Filtrar miembros por nombre
-const filteredMembers = computed(() =>
-  props.members.filter((member) =>
-    member.nombre.toLowerCase().includes(searchField.value.toLowerCase())
-  )
-);
 
 // Emitir el miembro seleccionado
 const selectMember = (member) => {

@@ -195,11 +195,12 @@ const handleItemSelected = (encargadotarea) => {
     //dataTarea.value.sesionID = encargadotarea.sesion_id
 }
 
-const handleDelete = (encargadotarea) => {
-    tareaStore.removeEncargado(encargadotarea);
+const handleDelete = () => {
+    tareaStore.removeEncargado();
 }
 
 const CloseModal = () =>{
+    tareaStore.removeEncargado();
     toggleModal();
 }
 

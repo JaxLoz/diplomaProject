@@ -113,7 +113,6 @@ import { watch } from 'vue';
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
   infoToUpdate: { type: Object, required: true },
-  idTarea: {type: Object, required: true, default: () => ({}) }
 });
 
 defineEmits(["close"]);
@@ -144,7 +143,7 @@ defineEmits(["close"]);
   sesionID: null,
 });
 const dataEncargado = ref({
-    miembro:membersEncargado.value.miembro_id,
+    miembro:EncargadoMaybe.value.miembro_id,
     estado:null
 
 })
@@ -153,19 +152,15 @@ const dataEncargado = ref({
 watch(
   () => props.infoToUpdate,
   (newValue) => {
-    dataTarea.value = { ...newValue };
+    dataTarea.value.descripcion = newValue.descripcion;
+    dataTarea.value.dateEntrega = formatDateService.extractDate(newValue.fecha_entrega);
+    dataTarea.value.ID = newValue.tarea_id
+    dataTarea.value.sesionID = newValue.sesion_id;
+
     dataEncargado.value.estado = newValue.estado_encargado
   }
 );
 
-
-// // Actualizar `dataTarea` con la información recibida
-// if (infoToUpdate && infoToUpdate.tarea_id) {
-//   dataTarea.value.ID = infoToUpdate.tarea_id; // Asignar el ID de la tarea
-//   dataTarea.value.descripcion = infoToUpdate.descripcion || "";
-//   dataTarea.value.dateEntrega = infoToUpdate.fecha_entrega || "";
-//   dataTarea.value.sesionID = infoToUpdate.sesion_id || null;
-// }
 
   //botón de actualizar
   const buttonUpdate = () =>{
@@ -186,8 +181,8 @@ const handleItemSelected = (encargadotarea) => {
     
 }
 
-const handleDelete = (encargadotarea) => {
-    tareaStore.removeEncargado(encargadotarea);
+const handleDelete = () => {
+    tareaStore.removeEncargado();
 }
 
 
@@ -206,14 +201,14 @@ const handleDelete = (encargadotarea) => {
 
     console.log("Datos tarea enviados:", dataTarea.value);
     console.log("Datos encargado enviados:", {
-        memberID: dataEncargado.value.miembro,  // Aquí se debe enviar el miembro correcto
+        memberID: EncargadoMaybe.value.miembro_id,  // Aquí se debe enviar el miembro correcto
         state: dataEncargado.value.estado,
     });
 
     try {
         // Actualizar la tarea
         const resultTarea = await tareaStore.updateTarea(dataTarea.value, {
-            memberID: dataEncargado.value.miembro,  // Asegúrate de enviar el miembro correcto
+            memberID: EncargadoMaybe.value.miembro_id,  // Asegúrate de enviar el miembro correcto
             state: dataEncargado.value.estado,
         });
 
