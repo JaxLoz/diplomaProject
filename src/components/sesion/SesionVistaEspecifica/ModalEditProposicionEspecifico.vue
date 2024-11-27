@@ -141,7 +141,7 @@ const submitProposicion = async () => {
     const response = await proposicionStore.updateProposicion(proposicionData, idSesion.value)
 
     closeModal()
-    proposicionStore.fetchProposicionesOfSesion(idSesion.value.IDSESION)
+    emits('updated')
   } catch (error) {
     // Mostrar detalles del error
     if (error.response) {
@@ -149,6 +149,8 @@ const submitProposicion = async () => {
     }
   }
 }
+
+const emits = defineEmits(['updated'])
 
 const proposiciones = computed(() => proposicionStore.proposiciones)
 

@@ -144,7 +144,7 @@ const submitProposicion = async () => {
     const response = await proposicionStore.createProposicionInSesion(proposicionData, idSesion.value);
 
     closeModal();
-    proposicionStore.fetchProposicionesOfSesion(infoSesion.value)
+    emits('created')
   } catch (error) {
     // Mostrar detalles del error
     if (error.response) {
@@ -153,6 +153,7 @@ const submitProposicion = async () => {
   }
 };
 
+const emits = defineEmits(['created'])
 
 defineExpose({
   openModal

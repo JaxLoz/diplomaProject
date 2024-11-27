@@ -114,9 +114,14 @@
     <ModalEditProposicionEspecifico
       :idProposicion="selectedProposicionId"
       ref="editProposicionModal"
+      @updated="refreshProposiciones"
+
     />
     <!-- Modal for Create Proposition -->
-    <ModalCreateProposicionEspecifico ref="createProposicionModal" />
+    <ModalCreateProposicionEspecifico 
+    ref="createProposicionModal" 
+    @created="refreshProposiciones"
+    />
 
 </template>
 
@@ -127,7 +132,6 @@ import urlService from '@/service/urlService';
 import stringFormat from '@/service/stringFormat';
 
 import ModalCreateProposicionEspecifico from './ModalCreateProposicionEspecifico.vue'
-import { useSessionStore } from '@/stores/session';
 import ModalEditProposicionEspecifico from './ModalEditProposicionEspecifico.vue'
 import { useProposicionStore } from '@/stores/proposiciones.js'
 import paginationBar from '@/components/util/paginationBar.vue'
@@ -135,7 +139,6 @@ import paginationBar from '@/components/util/paginationBar.vue'
 const route = useRoute()
 // Aquí solo debes usar useProposicionStore() para acceder al store
 const proposicionStore = useProposicionStore() 
-const sessionStore = useSessionStore();
 
 const emits = defineEmits(['updateDecision'])
 
@@ -144,7 +147,6 @@ const proposiciones = ref([])
 
 const createProposicionModal = ref(null)
 
-const infoSesion = computed(() => sessionStore.getInfoViewSesion());
 
 const openCreateModal = () => {
   createProposicionModal.value.openModal()
@@ -168,11 +170,20 @@ const selectedProposicionId = computed(() => proposicionStore.selectedProposicio
 // Fetch proposiciones when the component is mounted
 onMounted(async () => {
   const fetchedProposiciones = await proposicionStore.fetchProposicionesOfSesion(
-    route.params.idSesion
-  )
+    route.params.idSesion)
+
   proposiciones.value = fetchedProposiciones // Store the fetched proposiciones in the local variable
   console.log(proposiciones.value)
 })
+
+const refreshProposiciones = async () => {
+
+  const fetchedProposiciones = await proposicionStore.fetchProposicionesOfSesion(
+    route.params.idSesion)
+
+  proposiciones.value = fetchedProposiciones
+
+}
 
 // Method to handle the update of the proposicion decision
 const updateDecision = async (proposicion) => {
@@ -195,7 +206,7 @@ const deleteProposicion = async (proposicion) => {
     const response = await proposicionStore.deleteProposicion(proposicion.ID_PROPOSICIONES)
     if (response) {
       // Remove deleted proposition from local data
-      proposicionStore.fetchProposicionesOfSesion(infoSesion.value.IDSESION)
+      refreshProposiciones()
       console.log('Proposición eliminada')
     }
   } catch (error) {
