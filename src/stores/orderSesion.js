@@ -196,7 +196,7 @@ export const useOrderSesion = defineStore('orderSesion', {
             }
         },
 
-        async createOrdenSesionItem(){
+        async createOrdenSesionItem(idSesion){
             if(this.preOrdenSesion.length > 0){
                 if(this.isDuplicateOrdenSesion()){
                     console.log('entra al if que ejecuta si hay duplicados')
@@ -211,6 +211,8 @@ export const useOrderSesion = defineStore('orderSesion', {
                         
                         for(const item of newOrdenSesionItems){
                             const response = await axios.requestAxios('orden_sesion/save', 'POST', item);
+                            console.log("guardado")
+                            this.getSesionOrderBySesion(idSesion)
                             if(response.error){
                                 Errors.push(response.data);
                             }
@@ -234,7 +236,7 @@ export const useOrderSesion = defineStore('orderSesion', {
             }
         },
 
-        async updateOrdenSesionItem(){
+        async updateOrdenSesionItem(idSesion){
             if(this.preOrdenSesion.length > 0){
                 if(this.isDuplicateOrdenSesion()){
                     this.setDataError({message: 'No se puede agregar items con el mismo numero de orden'});
@@ -252,7 +254,7 @@ export const useOrderSesion = defineStore('orderSesion', {
                                 DESCRIPCION: item.DESCRIPCION,
                                 SESION_IDSESION: item.SESION_IDSESION
                             });
-
+                            this.getSesionOrderBySesion(idSesion)
                             if(responseUpdated.error){
                                 errors.push(responseUpdated.data);
                             }
@@ -277,9 +279,6 @@ export const useOrderSesion = defineStore('orderSesion', {
             if(response.error){
                 this.setDataError(response.data);
                 this.showErrorAlertModal();
-            }else{
-                this.setDataSuccesfull({message: 'Item eliminado correctamente'});
-                this.showSuccessAlertModal();
             }
         },
     }

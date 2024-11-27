@@ -167,8 +167,8 @@ export const useSessionStore = defineStore("sesion", {
         
         ,
         async createSession(sessionData) {
-            
-            if(this.sessions.data.length > 0 && (this.sessions.data[0].actas[0].ESTADO != "aprobada" || this.sessions.data[0].actas[0].ESTADO != "rechazada")){
+            console.log(this.sessions)
+            if(this.sessions.data.length > 0 && (this.sessions.data[0].actas[0].ESTADO != "aprobada" && this.sessions.data[0].actas[0].ESTADO != "rechazada")){
                 this.setDataError({
                     message: `El acta de la sesion anterior figura en "pendiente"`,
                     errors: {

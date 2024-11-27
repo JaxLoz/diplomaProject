@@ -141,7 +141,7 @@ const submitProposicion = async () => {
     const response = await proposicionStore.updateProposicion(proposicionData, idSesion.value)
 
     closeModal()
-    proposicionStore.fetchProposicionesOfSesion(idSesion.value)
+    proposicionStore.fetchProposicionesOfSesion(idSesion.value.IDSESION)
   } catch (error) {
     // Mostrar detalles del error
     if (error.response) {

@@ -1,14 +1,15 @@
 <template>
-    <div id="CreateTarea" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-opacity-50 inset-0 backdrop-blur-sm">
+    <Teleport to="body">
+    <div v-if="isShowModal" id="CreateTarea" tabindex="-1" aria-hidden="true" class="overflow-y-auto fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-900 bg-opacity-50 backdrop-blur-sm">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ props.title }}
+                    Crear tarea
                 </h3>
-                <button type="button" @click="CloseModal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="CreateTarea">
+                <button type="button" @click="CloseModal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" >
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
@@ -93,12 +94,13 @@
         </div>
     </div>
 </div> 
+</Teleport>
 </template>
 
 <script setup>
 
 import DatePicker from 'primevue/datepicker';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed} from 'vue';
 import { useSessionStore } from '@/stores/session';
 import { useTareaStore } from '@/stores/tarea';
 
@@ -108,21 +110,18 @@ import listMember from '@/components/util/listMember.vue';
 import searchFieldMember from '@/components/util/searchFieldMember.vue';
 
 
-
 //Inicialización de los stores
 const sessionStore = useSessionStore();
 const tareaStore = useTareaStore();
 
 const infoSesion = computed(() => sessionStore.getInfoViewSesion());
+const isShowModal = ref(false);
 
 
-// Props, emits, models
-const props = defineProps({
-  title: { type: String, required: true, default: "Crear Tarea" },
-  infoToUpdate: { type: Object, required: false, default: () => ({}) }
-});
-
-//Métodos
+const toggleModal = () =>{
+    isShowModal.value = isShowModal.value ? false : true;
+    console.log(isShowModal.value)
+}
 
 const buttoncreate = () => {
     if (onUpdateMode.value) {
@@ -134,6 +133,7 @@ const buttoncreate = () => {
 
 
 const CreateTareaEncargado = async () => {
+    console.log(infoSesion.value.IDSESION);
     dataTarea.value.dateEntrega = formatDateService.extractDate(dataTarea.value.dateEntrega).toString()
     console.log("Datos tarea enviados:", dataTarea.value);
     console.log("Datos encargado enviados:", {
@@ -142,10 +142,10 @@ const CreateTareaEncargado = async () => {
     
     });
 
+    dataTarea.value.sesionID = infoSesion.value.IDSESION;
     const result = await tareaStore.createTarea(dataTarea.value, {
         memberID: dataEncargado.value.miembro,
         state: dataEncargado.value.estado,
-        
     });
 
     
@@ -155,7 +155,7 @@ const CreateTareaEncargado = async () => {
 
         //ignora esto
         // Resetear variables si la creación es exitosa
-        dataTarea.value = {ID: null, descripcion: "", dateEntrega: formatDateService.extractDate(dataTarea.value.dateEntrega), sesionID: props.sessionID || null };
+        dataTarea.value = {ID: null, descripcion: "", dateEntrega: formatDateService.extractDate(dataTarea.value.dateEntrega)};
         dataEncargado.value = { encargado: "", miembroID: null, estado: "sin comenzar" };
         console.log("Tarea creada exitosamente:", result); 
     }
@@ -164,11 +164,7 @@ const CreateTareaEncargado = async () => {
     
 };
 
-
-
-
 //variables computadas
-const id_sesion = computed(() => sessionStore.sessions)
 const onUpdateMode = computed(()=> tareaStore.getOnUpdateMode())
 const membersEncargado = computed(() =>tareaStore.memberEncargado);
 const listSearch = computed(() => tareaStore.searchMember(searchmiembro.value));
@@ -182,48 +178,33 @@ const dataTarea = ref({
     ID: "",
     descripcion: "",
     dateEntrega:"",
-    sesionID: props.sessionID || null
+    sesionID: null, // Asignar la sesión actual si está disponible
 
 })
 
 const dataEncargado = ref({
-    miembro:membersEncargado.miembro_id,
+    miembro:membersEncargado.value.miembro_id,
     estado: "sin comenzar", // Estado inicial del encargado
 
-})
-
-//Hooks de ciclo de vida
-
-onMounted(()=> {
-    if(tareaStore.getOnUpdateMode()){
-       
-        
-        dataTarea.value.ID = props.infoToUpdate.ID;
-        dataTarea.value.descripcion = props.infoToUpdate.DESCRIPCION;
-        dataTarea.value.dateEntrega = formatDateService.extractDate(props.infoToUpdate.FECHA_ENTREGA).toString();
-        dataTarea.value.sesionID = props.infoToUpdate.SESION_IDSESION;
-
-        //Datos del encargado 
-        dataEncargado.value.miembro = props.infoToUpdate.MIEMBROS_IDMIEMBROS ;
-        dataEncargado.value.estado = props.infoToUpdate.ESTADO_ENCARGADO ;
-
-    }else {
-        // Si no estamos en modo de actualización, inicializamos valores predeterminados
-        dataTarea.value.sesionID = props.sesionID; // Asignar la sesión actual si está disponible
-        }
 })
 
 const handleItemSelected = (encargadotarea) => {
     console.log(encargadotarea)
     tareaStore.addNewEncargado(encargadotarea);
     dataEncargado.value.miembro = encargadotarea.miembro_id
-    dataTarea.value.sesionID = encargadotarea.sesion_id
+    //dataTarea.value.sesionID = encargadotarea.sesion_id
 }
 
 const handleDelete = (encargadotarea) => {
     tareaStore.removeEncargado(encargadotarea);
 }
 
+const CloseModal = () =>{
+    toggleModal();
+}
 
+defineExpose({
+    toggleModal
+})
 
 </script>

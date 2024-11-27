@@ -1,7 +1,8 @@
 <template>
+<Teleport to="body">
 <div
     v-if="isVisible"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm"
   >      <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -93,13 +94,14 @@
         </div>
       </div>
     </div>
+  </Teleport>
   </template>
   
 
   <script setup>
   //importaciones
   import DatePicker from 'primevue/datepicker';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed} from 'vue';
 import { useSessionStore } from '@/stores/session';
 import { useTareaStore } from '@/stores/tarea';
 import formatDateService from '@/service/formatDateService';
@@ -125,8 +127,6 @@ defineEmits(["close"]);
 
   //variables computadas
   const infoSesion = computed(() => sesionStore.getInfoViewSesion());
-  const infotarea = computed(() => tareaStore.getInfoViewTarea());
-  const tarea = computed(() => tareaStore.tarea)
   
   const onUpdateMode = computed(()=> tareaStore.getOnUpdateMode());
   const membersEncargado = computed(() =>tareaStore.memberEncargado);
@@ -135,7 +135,6 @@ defineEmits(["close"]);
 
 
   //ref
-  const idTarea = ref(null)
   const searchMiembroActualizado = ref(""); 
 
   const dataTarea = ref({
@@ -145,7 +144,7 @@ defineEmits(["close"]);
   sesionID: null,
 });
 const dataEncargado = ref({
-    miembro:membersEncargado.miembro_id,
+    miembro:membersEncargado.value.miembro_id,
     estado:null
 
 })

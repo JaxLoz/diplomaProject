@@ -18,6 +18,7 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="p-4"></th>
+                            <th scope="col" class="p-4">ID</th>
                             <th scope="col" class="px-4 py-3">Asistente</th>
                             <th scope="col" class="px-4 py-3">Cargo</th>
                             <th scope="col" class="px-4 py-3">Asistencia</th>
@@ -30,6 +31,7 @@
                             :key="member.miembro_id"
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <td class="w-4 p-4"></td>
+                            <td class="w-4 p-4">{{member.miembro_id}}</td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-3">
                                     <div class="flex-shrink-0 w-10 h-10 inline-flex items-center justify-center bg-gray-100 rounded-full dark:bg-gray-600">
@@ -118,6 +120,7 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="p-4"></th>
+                            <th scope="col" class="px-4 py-3">ID</th>
                             <th scope="col" class="px-4 py-3">Asistente</th>
                             <th scope="col" class="px-4 py-3">Cargo</th>
                             <th scope="col" class="px-4 py-3">Asistencia</th>
@@ -130,6 +133,7 @@
                             :key="guest.invitado_id"
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
                             <td class="w-4 p-4"></td>
+                            <td class="w-4 p-4">{{ guest.invitado_id }}</td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-3">
                                     <div class="flex-shrink-0 w-10 h-10 inline-flex items-center justify-center bg-gray-100 rounded-full dark:bg-gray-600">

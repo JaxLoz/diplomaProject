@@ -186,12 +186,12 @@ const upLoadPreOrdenItem = (item) => {
 const setUpOrdenSesion = () => {
     // Si esta en modo creacion se crean los nuevos items en la base de datos
     if(!isUpdateMode.value){ 
-        orderSesionStore.createOrdenSesionItem();  
+        orderSesionStore.createOrdenSesionItem(infSesion.value.IDSESION);
+        
     }else{
         // Si esta en modo actualizacion se actualizan los items en la base de datos
-        orderSesionStore.updateOrdenSesionItem()
+        orderSesionStore.updateOrdenSesionItem(infSesion.value.IDSESION) 
     }
-    orderSesionStore.getSesionOrderBySesion(infSesion.value.IDSESION)
 }
 
 const cleanField = () => {

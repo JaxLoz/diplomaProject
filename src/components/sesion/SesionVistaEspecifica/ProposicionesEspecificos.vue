@@ -180,7 +180,6 @@ const updateDecision = async (proposicion) => {
     const response = await proposicionStore.updateDecision(proposicion) // Using the 'updateDecision' method from the store
     emits('updateDecision', proposicion.ESTADO)
     console.log('Decisión actualizada:', response)
-
   } catch (error) {
     console.error('Error al actualizar la decisión de la proposición:', error)
   }

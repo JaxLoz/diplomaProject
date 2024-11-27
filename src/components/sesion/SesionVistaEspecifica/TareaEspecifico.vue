@@ -16,10 +16,9 @@
       <!-- Botón de creación y barra de búsqueda -->
       <div class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
         <button v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" 
+          @click="openModalCreate"
           type="button"
           class="inline-flex items-center justify-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-2 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-          data-modal-target="CreateTarea"
-          data-modal-toggle="CreateTarea"
         >
           Crear Tarea
         </button>
@@ -78,15 +77,15 @@
                 <div v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'" class="flex items-center gap-2">
                   <div :class="[
                     'h-2.5 w-2.5 rounded-full',
-                    element.estadoTarea == 'finalizado' ? 'bg-green-500' : 'bg-red-500'
+                    element.estado_encargado == 'finalizado' ? 'bg-green-500' : 'bg-red-500'
                   ]"></div><span>
-                    {{ element.estadoTarea != 'sin comenzar' ? element.estadoTarea : 'en proceso' }}
+                    {{ element.estado_encargado != 'sin comenzar' ? element.estado_encargado : 'en proceso' }}
                   </span>
                 </div>
                 <!-- estado del selector cuando el acta está pendiente  -->
                 <select v-else-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
-                  v-model="element.estadoTarea"
-                  @change="updateTareaState(element.tarea_id, element.estadoTarea)"
+                  v-model="element.estado_encargado"
+                  @change="updateTareaState(element.tarea_id, element.estado_encargado)"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
                   <option value="sin comenzar">Sin comenzar</option>
@@ -128,9 +127,7 @@
       :infoToUpdate="infoUpdate"
     />
     <ModalCreateTareaEspecifico
-      :title="'Crear Tarea'"
-      :tareaInf="infoTarea"
-      :encargadoInf="infoEncargado"
+      ref="ModalCreateTarea"
     />
   </div>
 </template>
@@ -142,34 +139,28 @@ import urlService from '@/service/urlService';
 import paginationBar from '@/components/util/paginationBar.vue';
 import ModalEditTareaEspecifico from './ModalEditTareaEspecifico.vue';
 import ModalCreateTareaEspecifico from './ModalCreateTareaEspecifico.vue';
-import { useTareaStore } from '@/stores/tarea';
-import { computed, watch } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import formatDateService from '@/service/formatDateService';
-import {ref} from 'vue';
+import { useTareaStore } from '@/stores/tarea';
 import { useSessionStore } from '@/stores/session';
-
 
 
 const tareaStore = useTareaStore();
 const sesionStore = useSessionStore();
 
 const infoUpdate = ref({});
+const instanceCreateModal = useTemplateRef('ModalCreateTarea')
 
-
-
-
-const tareas = computed(() => tareaStore.tarea); //lista de tareas
+//const tareas = computed(() => tareaStore.tarea); //lista de tareas
 const infoSesion = computed(() => sesionStore.getInfoViewSesion());
 const pageTareas = computed(() => tareaStore.tarea);
 
 const props = defineProps({
     tareaInf: {type: Array, required: true, default: new Array()},
-    // actStatusTarea: {type: String, required: true, default: ''},
     encargadoInf: {type: Array, required: true, default: new Array()},
     sesionInf: {type: Object, required: true, default: new Object()}
     
 })
-
 
 //Método de cambio de página 
 
@@ -179,17 +170,6 @@ const changePage = async (numPages) =>{
    }))
 } 
 
-const infoTarea = computed(() => tareaStore.tarea);
-const infoEncargado = computed(() => tareaStore.infoEncargadosTareasAmostrar);
-const removeTarea = ref({})
-const modalInstance = ref(null)
-
-
-// watch(() => props.actStatusTarea, (newValueStatusActTarea) => {
-//     if(newValueStatusActTarea == 'aprobada' || newValueStatusActTarea == 'rechazada'){
-//         return 
-//     }
-// })
 console.log("Datos de tarea:", props.tareaInf.data);
 
 //delete
@@ -218,38 +198,21 @@ const openModal = (element) => {
   console.log("Tarea seleccionada:", element.tarea_id); // Confirmación en consola
   isModalVisible.value = true;
 };
+
+
 const closeModal = () => {
   console.log('Modal cerrado');
   isModalVisible.value = false;
   selectedTarea.value = null;
 };
 
-// const setDataError = ref(null);
-// // Asegúrate de inicializar setDataError o asignarle una función adecuada
-// setDataError.value = (data) => {
-//   console.log("Error:", data);
-// };
-// const updateEstadoTarea = async (miembroId, tareaId, status) => {
-//     try {
-//         const response = await axios.requestAxios(
-//             `encargados_tarea/update/${miembroId}/${tareaId}`,
-//             'PUT',
-//             { estadoTarea: status }
-//         );
-        
-//         this.setDataSuccesfull(response.data); // Handle success
-//         this.showSucessAlertModal();
-//     } catch (error) {
-//         this.setDataError(error.response.data); // Handle error
-//         this.ShowErrorAlertModal();
-//     }
-// };
-
+const openModalCreate = () => {
+  instanceCreateModal.value.toggleModal();
+  console.log('Modal de creación abierto');
+};
 
 //actualizar estado 
 const emits = defineEmits(['updateStateOfTarea'])
-
-
 
 const updateTareaState = async (tareaId, status) => {
     console.log('tareaId:', tareaId, 'status:', status); // Para depurar
@@ -265,11 +228,6 @@ const updateTareaState = async (tareaId, status) => {
         console.error('Error al actualizar el estado de la tarea:', error);
     }
 };
-
-
-
-
-
 
 </script>
 
