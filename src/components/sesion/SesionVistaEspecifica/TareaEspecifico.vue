@@ -1,6 +1,8 @@
 
 <template>
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
+  <div 
+  v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol =='invitado'" 
+  class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
     <!-- Contenedor principal -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <!-- Encabezado -->
@@ -14,7 +16,9 @@
       </div>
 
       <!-- Botón de creación y barra de búsqueda -->
-      <div class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+      <div 
+      v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario'"
+      class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
         <button v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" 
           @click="openModalCreate"
           type="button"
@@ -38,7 +42,7 @@
               <th scope="col" class="px-4 py-3">Fecha de entrega</th>
               <th scope="col" class="px-4 py-3">Descripción</th>
               <th scope="col" class="px-4 py-3">Estado</th>
-              <th v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+              <th v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                 scope="col" class="px-4 py-3">Acción</th>
             </tr>
           </thead>
@@ -74,16 +78,17 @@
               <td class="px-4 py-4">{{ element.descripcion }}</td>
               <td class="px-4 py-4">
                 <!-- estado de la tarea cuando el acta no está pendiente  -->
-                <div v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'" class="flex items-center gap-2">
+                <div v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol =='invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'" class="flex items-center gap-2">
                   <div :class="[
                     'h-2.5 w-2.5 rounded-full',
                     element.estado_encargado == 'finalizado' ? 'bg-green-500' : 'bg-red-500'
-                  ]"></div><span>
-                    {{ element.estado_encargado != 'sin comenzar' ? element.estado_encargado : 'en proceso' }}
+                  ]"></div>
+                  <span>
+                    {{ element.estado_encargado }}
                   </span>
                 </div>
                 <!-- estado del selector cuando el acta está pendiente  -->
-                <select v-else-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                <select v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                   v-model="element.estado_encargado"
                   @change="updateTareaState(element.tarea_id, element.estado_encargado)"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -93,7 +98,7 @@
                   <option value="finalizado">Finalizado</option>
                 </select>
               </td>
-              <td v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-4 py-4">
+              <td v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-4 py-4">
                 <button
                   @click="openModal(element)"
                   class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900"
@@ -158,7 +163,8 @@ const pageTareas = computed(() => tareaStore.tarea);
 const props = defineProps({
     tareaInf: {type: Array, required: true, default: new Array()},
     encargadoInf: {type: Array, required: true, default: new Array()},
-    sesionInf: {type: Object, required: true, default: new Object()}
+    sesionInf: {type: Object, required: true, default: new Object()},
+    profile: {type: Object, required: true, default: new Object()}
     
 })
 

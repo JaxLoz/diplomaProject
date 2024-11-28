@@ -1,5 +1,7 @@
 <template>
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
+  <div 
+  v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado'"
+  class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
     <div class="p-4 border-b dark:border-gray-700">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -10,7 +12,7 @@
                 </p>
             </div>
 
-    <div class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+    <div v-if=" (props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
 
         <button
           type="button"
@@ -31,7 +33,7 @@
           <th scope="col" class="px-4 py-3">Descripción</th>
           <th scope="col" class="px-4 py-3">Decisión</th>
           <th scope="col" class="px-4 py-3">Proponente</th>
-          <th scope="col" class="px-4 py-3">Acción</th>
+          <th v-if=" (props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" scope="col" class="px-4 py-3">Acción</th>
         </tr>
       </thead>
       <tbody>
@@ -49,7 +51,18 @@
             </td>
           <td class="px-10 py-4">{{ proposiciones.DESCRIPCION }}</td>
           <td class="px-2 py-4">
-            <form class="mx-auto">
+
+            <div v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol =='invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO !== 'pendiente'" 
+                    class="flex items-center gap-2">
+                    <div :class="[
+                          'h-2.5 w-2.5 rounded-full',
+                          proposiciones.DESICION == 'aprobada' ? 'bg-green-500' : 'bg-red-500']">
+                    </div>
+                        <span>{{proposiciones.DESICION}}</span>
+                </div>
+
+            <form 
+            v-if=" (props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="mx-auto">
               <select
                 v-model="proposiciones.DESICION"
                 @change="updateDecision(proposiciones)"
@@ -78,7 +91,7 @@
               </div>
             </div>
           </td>
-          <td class="px-6 py-4">
+          <td v-if=" (props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-6 py-4">
             <div class="centroAction">
               <button
                 data-modal-target="EditProposicion"
@@ -135,6 +148,11 @@ import ModalCreateProposicionEspecifico from './ModalCreateProposicionEspecifico
 import ModalEditProposicionEspecifico from './ModalEditProposicionEspecifico.vue'
 import { useProposicionStore } from '@/stores/proposiciones.js'
 import paginationBar from '@/components/util/paginationBar.vue'
+
+const props = defineProps({
+    sesionInf: {type: Object, required: true, default: new Object()},
+    profile: {type: Object, required: true, default: new Object()}
+})
 
 const route = useRoute()
 // Aquí solo debes usar useProposicionStore() para acceder al store

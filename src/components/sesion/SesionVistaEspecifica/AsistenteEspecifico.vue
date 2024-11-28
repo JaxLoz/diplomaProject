@@ -1,7 +1,9 @@
 <template>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
         <!-- Tabla de Miembros del Comité -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <div 
+        v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro'"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
             <!-- Header Section -->
             <div class="p-4 border-b dark:border-gray-700">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -22,7 +24,7 @@
                             <th scope="col" class="px-4 py-3">Asistente</th>
                             <th scope="col" class="px-4 py-3">Cargo</th>
                             <th scope="col" class="px-4 py-3">Asistencia</th>
-                            <th v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                            <th v-if="(props.profile?.rol == 'coordinador') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                                 scope="col" class="px-4 py-3">Acción</th>
                         </tr>
                     </thead>
@@ -50,7 +52,7 @@
                             <td class="px-4 py-3">{{ member.cargo }}</td>
                             <td class="px-4 py-3">
                                 <!-- Estado de asistencia cuando el acta no está pendiente -->
-                                <div v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'"
+                                <div v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'"
                                      class="flex items-center gap-2">
                                     <div :class="[
                                         'h-2.5 w-2.5 rounded-full',
@@ -59,7 +61,7 @@
                                     <span>{{member.asistencia != 'Pendiente' ? member.asistencia : 'No asistio'}}</span>
                                 </div>
                                 <!-- Selector de asistencia cuando el acta está pendiente -->
-                                <select v-else-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                                <select v-else-if="(profile?.rol == 'coordinador' || profile?.rol == 'secretario' || profile?.rol == 'miembro') &&props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                                         v-model="member.asistencia"
                                         @change="updateStatusMember(props.sesionInf.IDSESION, member.miembro_id, member.asistencia)"
                                         class="w-full max-w-[200px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -68,7 +70,7 @@
                                     <option value="No asistio">No asistió</option>
                                 </select>
                             </td>
-                            <td v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                            <td v-if="(props.profile?.rol == 'coordinador') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                                 class="px-4 py-3">
                                 <button @click="deleteMemberInvited(props.sesionInf.IDSESION, member.miembro_id)"
                                         class="text-white bg-red-700 hover:bg-red-800 focus:ring-2 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700">
@@ -91,7 +93,9 @@
         </div>
 
         <!-- Tabla de Invitados -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <div 
+       v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado'"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
             <!-- Header Section -->
             <div class="p-4 border-b dark:border-gray-700">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -103,7 +107,7 @@
             </div>
 
             <div 
-            v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+            v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
             class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
                 <button
                     @click="openModal"
@@ -124,7 +128,8 @@
                             <th scope="col" class="px-4 py-3">Asistente</th>
                             <th scope="col" class="px-4 py-3">Cargo</th>
                             <th scope="col" class="px-4 py-3">Asistencia</th>
-                            <th v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                            <th 
+                                v-if="(props.profile?.rol == 'coordinador') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                                 scope="col" class="px-4 py-3">Acción</th>
                         </tr>
                     </thead>
@@ -151,7 +156,7 @@
                             </td>
                             <td class="px-4 py-3">{{ guest.cargo }}</td>
                             <td class="px-4 py-3">
-                                <div v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'"
+                                <div v-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO != 'pendiente'"
                                      class="flex items-center gap-2">
                                     <div :class="[
                                         'h-2.5 w-2.5 rounded-full',
@@ -159,7 +164,7 @@
                                     ]"></div>
                                     <span>{{guest.asistencia != 'Pendiente' ? guest.asistencia : 'No asistio'}}</span>
                                 </div>
-                                <select v-else-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                                <select v-else-if="(props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                                         v-model="guest.asistencia"
                                         @change="updateStatusGuest(props.sesionInf.IDSESION, guest.invitado_id, guest.asistencia)"
                                         class="w-full max-w-[200px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -168,7 +173,7 @@
                                     <option value="No asistio">No asistió</option>
                                 </select>
                             </td>
-                            <td v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                            <td v-if="(props.profile?.rol == 'coordinador') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                                 class="px-4 py-3">
                                 <button @click="deleteGuestInvited(props.sesionInf.IDSESION, guest.invitado_id)"
                                         class="text-white bg-red-700 hover:bg-red-800 focus:ring-2 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700">
@@ -218,7 +223,8 @@ const props = defineProps({
     invitedMemberInf: {type: Object, required: true, default: new Object()},
     invitedGuestInf: {type: Object, required: true, default: new Object()},
     sesionInf: {type: Object, required: true, default: new Object()},
-    actStatus: {type: String, required: true, default: ''}
+    actStatus: {type: String, required: true, default: ''},
+    profile: {type: Object, required: true, default: new Object()}
 })
 
 watch(() => props.actStatus, (newValueStatusAct) => {

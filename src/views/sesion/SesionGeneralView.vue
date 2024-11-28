@@ -7,9 +7,10 @@
   </h2>
 
   <button 
+    :disabled="profile?.rol != 'coordinador' && profile?.rol != 'secretario' && profile?.rol != 'miembro'"
     @click.prevent="toPringPage"
     type="submit" 
-    class="w-10 h-10 flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    class="w-10 h-10 flex items-center justify-center text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-400 disabled:hover:cursor-not-allowed disabled:hover:opacity-50"
   >
     <svg v-if="isLoading" aria-hidden="true" role="status" class="w-4 h-4 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
@@ -28,17 +29,20 @@
       <SesionEspecifico 
       :sesionInf="infoSesion" 
       :actStatusTarea="statusActa"
+      :profile="profile"
       />
       
       <!-- Tabla de actas de la sesión  -->
       <ActaEspecifico 
       @updateStateOfActa="actionsWhereActStatusChange"
+      :profile="profile"
       />
       
       <!-- Tabla de orden de la sesión -->
        <OrdenSesionEspecifico
        :orderSesionInf="orderSesionInf"
        :sesionInf="infoSesion"
+       :profile="profile"
        />
 
       <!-- Tabla de asistentes de la sesión -->
@@ -47,22 +51,28 @@
       :invitedGuestInf="attendanceRegisterGuests" 
       :sesionInf="infoSesion"
       :actStatus="statusActa"
+      :profile="profile"
       />
       <!-- Tabla de encargados de Tareas y Tareas  -->
       <TareaEspecifico
       :tareaInf="infoTarea.data"
       :encargadoInf="infoEncargado.data " 
        :sesionInf="infoSesion"
+       :profile="profile"
       />
       <!-- se le coloca .data esos de arriba para poder paginar -->
 
       <!-- Prompt para la tarea  -->
       <!-- Tabla de solicitudes -->
       <SolicitudesEspecifico 
-      :sesionInf="infoSesion"
+        :sesionInf="infoSesion"
+        :profile="profile"
       />
       <!-- Tabla de proposiciones  -->
-      <ProposicionesEspecificos />
+      <ProposicionesEspecificos 
+        :sesionInf="infoSesion"
+        :profile="profile"
+      />
     </div>
   </div>
 </template>
@@ -86,6 +96,7 @@ import { useSessionStore } from '@/stores/session.js'
 import { useInvitacionStore } from '@/stores/invitacion'
 import { useTareaStore } from '@/stores/tarea'
 import { useOrderSesion } from '@/stores/orderSesion';
+import { useAuthStore } from '@/stores/auth';
 import router from '@/router'
 
 const route = useRoute()
@@ -93,6 +104,7 @@ const sesionStore = useSessionStore()
 const invitacionStore = useInvitacionStore()
 const tareaStore = useTareaStore();
 const orderSesionStore = useOrderSesion();
+const authStore = useAuthStore()
 
 const statusActa = ref('')
 
@@ -100,7 +112,7 @@ const infoSesion = computed(() => sesionStore.getInfoViewSesion())
 const attendanceRegisterMembers = computed(() =>invitacionStore.getAttendanceRegisterMembersState())
 const attendanceRegisterGuests = computed(() => invitacionStore.getAttendanceRegisterGuestsState())
 const orderSesionInf = computed(() => orderSesionStore.getOrderSesion())
-
+const profile = computed(() => authStore.getProfile())
 //Para tarea
 
 const infoTarea = computed(() => tareaStore.tarea)

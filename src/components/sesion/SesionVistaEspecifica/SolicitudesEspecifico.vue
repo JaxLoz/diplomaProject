@@ -1,5 +1,7 @@
 <template>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
+    <div 
+    v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado' || props.profile?.rol == 'estudiante'"
+    class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
         <!-- Sección de Encabezado -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
             <!-- Header Section -->
@@ -13,7 +15,7 @@
             </div>
 
             <!-- Botón Crear -->
-            <div  v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
+            <div  v-if=" (props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
                 <button @click="openCreateSolicitudModal" type="button"
                     class="inline-flex items-center justify-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-2 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                     Crear solicitud
@@ -56,7 +58,7 @@
                             Descripción
                         </th>
 
-                        <th  v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" scope="col" class="px-6 py-3">
+                        <th  v-if=" (props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" scope="col" class="px-6 py-3">
                             <span class="sr-only">Edit</span>
                         </th>
                     </tr>
@@ -95,7 +97,7 @@
                         <td class="px-6 py-4">
                             {{ solicitud.descripcion.evento }}
                         </td>
-                        <td  v-if="props.sesionInf?.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-6 py-4">
+                        <td  v-if=" (props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol == 'invitado') && props.sesionInf?.actas.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-6 py-4">
                             <div class="centroAction">
                                 <button 
                                 type="button" 
@@ -108,12 +110,9 @@
                                     class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     type="button">Editar</button>
 
-
-
                             </div>
                         </td>
                     </tr>
-
 
                 </tbody>
             </table>
@@ -142,11 +141,6 @@
         </div>
 
     </div>
-
-
-
-
-
 
     <SolicitudModal ref="solicitudModal" @submit="searchSolicitudes"/>
 
@@ -222,7 +216,8 @@ const changePage = async (page) => {
 }
 
 const props = defineProps({
-    sesionInf: {type: Object, required: true, default: new Object()}
+    sesionInf: {type: Object, required: true, default: new Object()},
+    profile: {type: Object, required: true, default: new Object()}
 })
 
 onMounted(() => {

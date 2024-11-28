@@ -1,5 +1,7 @@
 <template>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
+    <div 
+    v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol =='invitado' || props.profile?.rol =='estudiante'"
+    class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <!-- Header Section -->
             <div class="p-4 border-b dark:border-gray-700">
@@ -58,7 +60,7 @@
 <script setup>
 import formatDateService from '@/service/formatDateService.js'
 const props = defineProps({
-    
-    sesionInf: {type: Object, required: true, default: new Object()}
+    sesionInf: {type: Object, required: true, default: new Object()},
+    profile: {type: Object, required: true, default: new Object()}
 })
 </script>

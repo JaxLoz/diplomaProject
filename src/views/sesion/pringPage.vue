@@ -340,31 +340,31 @@
           </thead>
           <tbody>
             <tr
-              v-for="(task, index) in listTareas"
-              :key="task.tareas[index].IDTAREAS"
+              v-for="(task, index) in listTareas.tareas"
+              :key="task.IDTAREAS"
               class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               <td class="w-4 p-4"></td>
-              <td class="px-4 py-4">{{ task.tareas[index].IDTAREAS }}</td>
+              <td class="px-4 py-4">{{ task.IDTAREAS }}</td>
               <th
                 scope="row"
                 class="flex items-center px-4 py-12 text-gray-900 whitespace-nowrap dark:text-white"
               >
                 
                 <div class="ps-3">
-                  <div class="text-base font-semibold">{{ task.tareas[index].encargados_tareas[index].miembro.NOMBRE }}</div>
+                  <div class="text-base font-semibold">{{ task.encargados_tareas[0]?.miembro?.NOMBRE }}</div>
                   <div class="font-normal text-gray-500">
-                    {{ task.tareas[index].encargados_tareas[index].miembro.users.email }}
+                    {{ task.encargados_tareas[0]?.miembro?.users?.email }}
                   </div>
                 </div>
               </th>
               <td class="px-4 py-4">
-                {{ formatDateService.extractDate(task.tareas[index].FECHA_ENTREGA) }}
+                {{ formatDateService.extractDate(task.FECHA_ENTREGA) }}
               </td>
-              <td class="px-4 py-4">{{ task.tareas[index].DESCRIPCION }}</td>
+              <td class="px-4 py-4">{{ task.DESCRIPCION }}</td>
               <td class="px-4 py-4">
                 <!-- estado de la tarea cuando el acta no está pendiente  -->
-                {{ task.tareas[index].encargados_tareas[index].ESTADO }}        
+                {{ task.encargados_tareas[0]?.ESTADO }}        
               </td>
             </tr>
           </tbody>

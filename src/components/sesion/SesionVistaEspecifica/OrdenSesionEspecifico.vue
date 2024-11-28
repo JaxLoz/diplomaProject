@@ -1,5 +1,7 @@
 <template>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
+    <div 
+    v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro'" 
+    class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
         <!-- Sección de Encabezado -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
             <!-- Header Section -->
@@ -14,7 +16,7 @@
 
             <!-- Botón Crear -->
             <div 
-            v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+            v-if="(profile?.rol == 'coordinador' || profile?.rol == 'secretario') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
             class="p-4 border-b dark:border-gray-700 flex flex-row gap-4">
             
                 <button
@@ -45,7 +47,7 @@
                             <th scope="col" class="px-4 py-3">Orden</th>
                             <th scope="col" class="px-4 py-3">Tema</th>
                             <th scope="col" class="px-4 py-3">Descripción</th>
-                            <th v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
+                            <th v-if=" (profile?.rol == 'coordinador' || profile?.rol == 'secretario') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'"
                                 scope="col" class="px-4 py-3">Acción
                             </th>
                             <th scope="col" class="p-4 hidden sm:table-cell"></th>
@@ -72,7 +74,7 @@
                                 </div>
                             </td>
 
-                            <td v-if="props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-4 py-4">
+                            <td v-if="(profile?.rol == 'coordinador' || profile?.rol == 'secretario') && props.sesionInf.actas?.length > 0 && props.sesionInf.actas[0].ESTADO == 'pendiente'" class="px-4 py-4">
                                 <button @click="deleteItemOrdenSesion(item)" 
                                         class="text-white bg-red-700 hover:bg-red-800 focus:ring-2 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700">
                                     Borrar
@@ -134,6 +136,7 @@ const isUpdateMode = computed(() => orderSesionStore.getIsUpdateMode())
 const props = defineProps({
     sesionInf: {type: Object, required: true, default: new Object()},
     orderSesionInf: {type: Object, required: true, default: new Object()},
+    profile: {type: Object, required: true, default: new Object()}
 })
 
 const messageError = computed(() => orderSesionStore.getDateError())

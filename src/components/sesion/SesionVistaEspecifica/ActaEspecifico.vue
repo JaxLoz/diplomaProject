@@ -1,5 +1,7 @@
 <template>
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
+  <div
+  v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol =='invitado' || props.profile?.rol =='estudiante'" 
+  class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 space-y-8">
     <!-- Contenedor Principal -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
       <!-- Sección de Encabezado -->
@@ -37,10 +39,21 @@
                 {{ acta.ID_ACTA }}
               </td>
               <td class="px-4 py-4">
+
+                <div v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario' || props.profile?.rol == 'miembro' || props.profile?.rol =='invitado' || props.profile?.rol =='estudiante'" 
+                    class="flex items-center gap-2">
+                    <div :class="[
+                          'h-2.5 w-2.5 rounded-full',
+                          acta.ESTADO == 'aprobada' ? 'bg-green-500' : 'bg-red-500']">
+                    </div>
+                        <span>{{acta.ESTADO}}</span>
+                </div>
+
                 <!-- Selector de Estado -->
                 <select
                   v-model="acta.ESTADO"
                   @change="updateActaState(acta)"
+                  v-if="props.profile?.rol == 'coordinador' || props.profile?.rol == 'secretario'"
                   class="w-full max-w-[200px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 >
                   <option value="pendiente">Pendiente</option>
@@ -65,6 +78,9 @@ import { useActaStore } from '@/stores/actas.js'
 const route = useRoute()
 const actasStore = useActaStore()
 const emits = defineEmits(['updateStateOfActa'])
+const props = defineProps({
+    profile: {type: Object, required: true, default: new Object()}
+})
 
 // Local variable to store fetched actas
 const actas = ref([])

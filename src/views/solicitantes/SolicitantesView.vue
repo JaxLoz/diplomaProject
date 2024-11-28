@@ -6,6 +6,7 @@
       >
         <div>
           <button
+            v-if = "profile?.rol == 'coordinador' || profile?.rol == 'secretario' || profile?.rol == 'miembro' || profile?.rol == 'invitado'"
             id="dropdownActionButton"
             data-dropdown-toggle="dropdownAction"
             class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
@@ -109,7 +110,9 @@
 
             <th scope="col" class="px-6 py-3">TIPO SOLICITANTE</th>
 
-            <th scope="col" class="px-6 py-3"></th>
+            <th
+             v-if = "profile?.rol == 'coordinador' || profile?.rol == 'secretario' || profile?.rol == 'miembro' || profile?.rol == 'invitado'"
+            scope="col" class="px-6 py-3"></th>
           </tr>
         </thead>
         <tbody>
@@ -138,7 +141,9 @@
               {{ solicitante.tipo_solicitante }}
             </td>
 
-            <td class="px-6 py-4">
+            <td 
+             v-if = "profile?.rol == 'coordinador' || profile?.rol == 'secretario' || profile?.rol == 'miembro' || profile?.rol == 'invitado'"
+            class="px-6 py-4">
               <div class="flex flex-row justify-between items-center">
                 <div>
                   <button @click="openUpdateSolicitanteModal(solicitante)">
@@ -200,18 +205,22 @@ import useSolicitanteStore from '@/stores/solicitante'
 import SolicitanteModal from './SolicitanteModal.vue'
 import debounce from '@/utils/debounce'
 import { initFlowbite } from 'flowbite'
-import { useTemplateRef, ref, onMounted } from 'vue'
+import { useTemplateRef, ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/auth';
+
 
 const solicitanteModal = useTemplateRef('solicitudModal')
 
 const solicitanteStore = useSolicitanteStore()
 
 const { solicitantes } = storeToRefs(solicitanteStore)
+const authStore = useAuthStore();
 
 const { fetchSolicitantes, deleteSolicitante } = solicitanteStore
 
 const searchValue = ref('')
+const profile = computed(() => authStore.getProfile())
 
 const searchSolicitante = debounce(async () => {
   let filterType = 'nombre' // Valor predeterminado
