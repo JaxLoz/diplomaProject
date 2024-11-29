@@ -235,7 +235,9 @@ watch(() => props.actStatus, (newValueStatusAct) => {
 
         props.invitedMemberInf.data.map((member) => {
             updateStatusMember(props.sesionInf.IDSESION, member.miembro_id, member.asistencia != 'Pendiente' ? member.asistencia : 'No asistio' )
+            
         })
+        
     }
 })
 
@@ -259,6 +261,7 @@ const deleteMemberInvited = async (idSesion, idMiembro) => {
 
 const updateStatusGuest = async (idSesion, idInvitado, status) => {
     await invitacionStore.updateAttendanceGuests(idSesion, idInvitado, status)
+    
 }
 
 const changePageTableGuest = (numPage) => {

@@ -319,6 +319,7 @@ export const useTareaStore = defineStore("tarea", {
           
         // obtener los los miembros que hayan sidos invitados a una sesión y tengan el estado de asistido
                 async getMembersSesion(idSesion,estado, params = ''){
+                    console.log("reeeecalculandooo en cargados")
                     const response = await axios.requestAxios(`/memberInvitedToSesionByStatus/${idSesion}/${estado}?${params}` , 'GET');
                     
         

@@ -75,59 +75,61 @@ export const useSessionStore = defineStore("sesion", {
             return this.infViewSesion;
         },
 
-        checkLastDate(dateNewSesion){
-            // DD/MM/YYYY formato en que llega la nueva fecha (este formato es problematico para el objeto Date)
+        checkLastDate(dateNewSesion) {
             const [day, month, year] = dateNewSesion.split('/');
             const newDate = new Date(year, month - 1, day);
-            
-            if(!this.onUpdateMode){
-                if(this.sessions.data.length > 0){
+
+            newDate.setHours(0, 0, 0, 0);
+        
+            if (!this.onUpdateMode) {
+                if (this.sessions.data.length > 0) {
                     const lastSesion = this.sessions.data[0];
                     const lastSesionDate = new Date(lastSesion.FECHA);
-                    
-                    if(newDate.getDate() < lastSesionDate.getDate() + 8){
-                        lastSesionDate.setDate(lastSesionDate.getDate() + 9);
-                        const referenceDate = formatDateService.extractDate(lastSesionDate);
-
+                    lastSesionDate.setHours(0, 0, 0, 0);
+        
+                    const minAllowedDate = new Date(lastSesionDate);
+                    minAllowedDate.setDate(lastSesionDate.getDate() + 8);
+        
+                    if (newDate < minAllowedDate) {
+                        const referenceDate = formatDateService.extractDate(minAllowedDate);
+        
                         this.setDataError({
                             message: `Seleccione una fecha posterior a la de la sesion anterior`,
                             errors: {
-                                description: ["Seleccione una fecha a partir de: "+ referenceDate]
+                                description: [`Seleccione una fecha a partir de: ${referenceDate}`]
                             }
                         });
                         this.showErrorAlertModal();
                         return false;
-                    }else{
-                        return true;
                     }
-                }else{
                     return true;
                 }
+                return true;
+            } else {
 
-            }else{
-                console.log("else de checkLastDate cuando esta en modo update")
-                if(this.sessions.data.length > 1){
+                if (this.sessions.data.length > 1) {
                     const lastSesion = this.sessions.data[1];
                     const lastSesionDate = new Date(lastSesion.FECHA);
-                    
-                    if(newDate.getDate() < lastSesionDate.getDate() + 8){
-                        lastSesionDate.setDate(lastSesionDate.getDate() + 9);
-                        const referenceDate = formatDateService.extractDate(lastSesionDate);
-    
+                    lastSesionDate.setHours(0, 0, 0, 0);
+        
+                    const minAllowedDate = new Date(lastSesionDate);
+                    minAllowedDate.setDate(lastSesionDate.getDate() + 8);
+        
+                    if (newDate < minAllowedDate) {
+                        const referenceDate = formatDateService.extractDate(minAllowedDate);
+        
                         this.setDataError({
                             message: `Seleccione una fecha posterior a la de la sesion anterior`,
                             errors: {
-                                description: ["Seleccione una fecha a partir de: "+ referenceDate]
+                                description: [`Seleccione una fecha a partir de: ${referenceDate}`]
                             }
                         });
                         this.showErrorAlertModal();
                         return false;
-                    }else{
-                        return true;
                     }
-                }else{
                     return true;
                 }
+                return true;
             }
         },
 

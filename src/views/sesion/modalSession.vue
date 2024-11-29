@@ -280,11 +280,34 @@ const props = defineProps({
 
 // Métodos
 const buttonAction = () => {
+
+  sessionStore.hidenErrorAlertModal();
+  sessionStore.hidenSusccessAlertModal();
+
+  invitacionStore.hidenErrorAlertModal();
+  invitacionStore.hidenSusccessAlertModal();
+
+  actasStore.hidenErrorAlertModal();
+  actasStore.hidenSusccessAlertModal();
+
+  sessionStore.setDataError("");
+  sessionStore.setDataSuccesfull("");
+
+  invitacionStore.setDataError("");
+  invitacionStore.setDataSuccesfull("");
+
+  actasStore.setDataError("");
+  actasStore.setDataSuccesfull("");
+  
   if (onUpdateMode.value) {
     updateSession();
   } else {
     createSession();
+
+    
   }
+
+
 };
 
 const createSession = async () => {
@@ -331,6 +354,21 @@ const closeModal = () => {
 
   sessionStore.hidenErrorAlertModal();
   sessionStore.hidenSusccessAlertModal();
+
+  invitacionStore.hidenErrorAlertModal();
+  invitacionStore.hidenSusccessAlertModal();
+
+  actasStore.hidenErrorAlertModal();
+  actasStore.hidenSusccessAlertModal();
+
+  sessionStore.setDataError("");
+  sessionStore.setDataSuccesfull("");
+
+  invitacionStore.setDataError("");
+  invitacionStore.setDataSuccesfull("");
+
+  actasStore.setDataError("");
+  actasStore.setDataSuccesfull("");
 
   sessionStore.setShowModelSession(false);
   sessionStore.setOnUpdateMode(false);

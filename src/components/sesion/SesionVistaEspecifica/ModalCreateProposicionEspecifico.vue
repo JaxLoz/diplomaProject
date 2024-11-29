@@ -92,6 +92,7 @@ import { onMounted, computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSessionStore } from '@/stores/session';
 import { useProposicionStore } from '@/stores/proposiciones.js'
+import { data } from 'autoprefixer';
 
 //inicializa los stores
 const sessionStore = useSessionStore();
@@ -110,6 +111,9 @@ const idSesion = computed(() => {
 
 //constante para abrir y cerrar el modal
 const openModal = () => {
+  dataproposicion.value.DESICION = ""
+  dataproposicion.value.DESCRIPCION = ""
+  dataproposicion.value.MIEMBRO_IDMIEMBRO = ""
   isModalVisible.value = true
 }
 
